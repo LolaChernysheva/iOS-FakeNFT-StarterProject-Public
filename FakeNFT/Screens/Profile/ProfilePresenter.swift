@@ -6,10 +6,10 @@
 //  
 //
 
-import Foundation
+import UIKit
 
 protocol ProfilePresenterProtocol: AnyObject {
-    
+    func setup()
 }
 
 final class ProfilePresenter {
@@ -19,10 +19,31 @@ final class ProfilePresenter {
     init(view: ProfileViewProtocol?) {
         self.view = view
     }
+    
+    private func buildScreenModel() -> ProfileScreenModel {
+        ProfileScreenModel(
+            editProfileImage: UIImage(),
+            userName: "",
+            userImage: UIImage(),
+            userAbout: "",
+            websiteUrlString: "",
+            tableData: ProfileScreenModel.TableData(sections: [
+                .simple(cells: [
+                    
+                ])
+            ])
+        )
+    }
+    
+    private func render(reloadTableData: Bool = true) {
+        view?.display(data: buildScreenModel(), reloadTableData: reloadTableData)
+    }
 }
 
 //MARK: ProfilePresenterProtocol
 
 extension ProfilePresenter: ProfilePresenterProtocol {
-    
+    func setup() {
+        render()
+    }
 }

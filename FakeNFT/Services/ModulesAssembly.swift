@@ -31,9 +31,9 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
     
     static func profileScreenBuilder() -> UIViewController {
         let profileViewController = ProfileViewController()
+        let nc = UINavigationController(rootViewController: profileViewController)
         let profilePresenter = ProfilePresenter(view: profileViewController)
         profileViewController.presenter = profilePresenter
-        
-        return profileViewController
+        return nc
     }
 }
