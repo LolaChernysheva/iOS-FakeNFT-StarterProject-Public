@@ -36,7 +36,8 @@ final class DetailCell: UITableViewCell {
     
     private let disclosureIndicatorImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image =
+        imageView.image = UIImage(systemName: "chevron.right")
+        imageView.tintColor = .black
         return imageView
     }()
     
@@ -66,6 +67,21 @@ final class DetailCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
         contentView.addSubview(disclosureIndicatorImageView)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
+        }
+        
+        subtitleLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+        }
+        
+        disclosureIndicatorImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
     }
     
     private func addGuesture() {
