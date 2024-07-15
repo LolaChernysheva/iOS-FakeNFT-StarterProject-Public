@@ -22,7 +22,6 @@ final class ProfilePresenter {
     
     private func buildScreenModel() -> ProfileScreenModel {
         ProfileScreenModel(
-            editProfileImage: UIImage(),
             userName: "",
             userImage: UIImage(),
             userAbout: "",
