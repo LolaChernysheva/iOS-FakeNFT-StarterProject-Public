@@ -21,14 +21,22 @@ final class ProfileViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = .profileStackSpacing
         return stackView
+    }()
+    
+    private lazy var avatarNameContainer: UIStackView = {
+        let horizontalStack = UIStackView()
+        horizontalStack.axis = .horizontal
+        horizontalStack.distribution = .fill
+        horizontalStack.spacing = .avatarNameStackSpacing
+        return horizontalStack
     }()
     
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 35
+        imageView.layer.cornerRadius = .avatarCornerRadius
         imageView.clipsToBounds = true
         imageView.backgroundColor = .gray
         return imageView
@@ -67,11 +75,7 @@ final class ProfileViewController: UIViewController {
         return tableView
     }()
     
-    //MARK: - public properties
-    
     var presenter: ProfilePresenterProtocol!
-    
-    //MARK: - private properties
     
     private var model: ProfileScreenModel = .empty {
         didSet {
@@ -106,45 +110,51 @@ final class ProfileViewController: UIViewController {
         configireNavBar()
         configureProfileContainer()
         configureTableView()
-
     }
     
     private func configireNavBar() {
-        let editButton = UIBarButtonItem(image: Asset.Images.edit?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(editButtonTapped))
+        let editButton = UIBarButtonItem(
+            image: Asset.Images.edit?.withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(editButtonTapped)
+        )
         self.navigationItem.rightBarButtonItem = editButton
     }
     
     private func configureProfileContainer() {
+        configureAvatarNameStack()
         
-        let horizontalStack = UIStackView()
-        horizontalStack.axis = .horizontal
-        horizontalStack.distribution = .fill
-        horizontalStack.spacing = 16
-        horizontalStack.addArrangedSubview(avatarImageView)
-        horizontalStack.addArrangedSubview(userNameLabel)
-        
-        profileContainerView.addArrangedSubview(horizontalStack)
+        profileContainerView.addArrangedSubview(avatarNameContainer)
         profileContainerView.addArrangedSubview(descriptionLabel)
         profileContainerView.addArrangedSubview(linkTextView)
         
         profileContainerView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(CGFloat.topOffset)
+            make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
+            make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
         }
+    }
+    
+    private func configureAvatarNameStack() {
+        avatarNameContainer.addArrangedSubview(avatarImageView)
+        avatarNameContainer.addArrangedSubview(userNameLabel)
         
+        setupAvatarImageViewConstraints()
+    }
+    
+    private func setupAvatarImageViewConstraints() {
         avatarImageView.snp.makeConstraints { make in
-            make.width.equalTo(70)
-            make.height.equalTo(70)
+            make.width.equalTo(CGFloat.avatarWidthHeight)
+            make.height.equalTo(CGFloat.avatarWidthHeight)
         }
-        
     }
     
     private func configureTableView() {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(profileContainerView.snp.bottom).offset(40)
-            make.trailing.equalToSuperview().offset(-16)
-            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
+            make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
             make.bottom.equalToSuperview()
         }
     }
@@ -219,7 +229,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        54
+        .cellHeight
     }
 }
 
@@ -230,4 +240,14 @@ extension ProfileViewController: UITextViewDelegate {
         print("Link tapped: \(URL)")
         return true
     }
+}
+
+private extension CGFloat {
+    static let profileStackSpacing: CGFloat = 20
+    static let avatarCornerRadius: CGFloat = 35
+    static let cellHeight: CGFloat = 54
+    static let avatarNameStackSpacing: CGFloat = 16
+    static let horizontalOffset: CGFloat = 16
+    static let topOffset: CGFloat = 20
+    static let avatarWidthHeight: CGFloat = 70
 }
