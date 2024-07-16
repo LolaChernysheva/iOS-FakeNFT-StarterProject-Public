@@ -15,7 +15,7 @@ final class CartViewController: UIViewController {
 
     // MARK: Public Properties
 
-    var presenter: ProfilePresenterProtocol?
+    var presenter: CartPresenterProtocol?
 
     // MARK: Private Properties
 
