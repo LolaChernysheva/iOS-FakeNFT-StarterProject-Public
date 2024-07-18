@@ -19,6 +19,8 @@ final class CartViewController: UIViewController {
 
     // MARK: Private Properties
 
+    private var cards = [CartItemModel]()
+
     private lazy var nftTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(
@@ -37,6 +39,7 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
 
         configure()
+        presenter?.setup()
     }
 
     // MARK: Private Methods
@@ -86,7 +89,9 @@ final class CartViewController: UIViewController {
 
 extension CartViewController: CartViewProtocol {
     func update(with data: CartScreenModel) {
+        cards = data.items
 
+        nftTableView.reloadData()
     }
 }
 
@@ -94,7 +99,7 @@ extension CartViewController: CartViewProtocol {
 
 extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return cards.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,7 +112,7 @@ extension CartViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        cell.configure(with: CartItemModel.mock)
+        cell.configure(with: cards[indexPath.row])
 
         return cell
     }
