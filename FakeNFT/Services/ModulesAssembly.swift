@@ -18,20 +18,22 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         let tabbarController = UITabBarController()
 
         let profileViewController = Self.profileScreenBuilder()
-        let cartViewController = Self.cartScreenBuilder()
+        let navCartViewController = UINavigationController(
+            rootViewController: Self.cartScreenBuilder()
+        )
 
         profileViewController.tabBarItem = UITabBarItem(
             title: NSLocalizedString("Профиль", comment: ""),
             image: UIImage(systemName: "person.crop.circle.fill"),
             tag: 0)
 
-        cartViewController.tabBarItem = UITabBarItem(
+        navCartViewController.tabBarItem = UITabBarItem(
             title: NSLocalizedString("Корзина", comment: ""),
             image: Asset.Images.tabBarCart,
             tag: 2
         )
 
-        tabbarController.viewControllers = [profileViewController, cartViewController]
+        tabbarController.viewControllers = [profileViewController, navCartViewController]
 
         return tabbarController
     }

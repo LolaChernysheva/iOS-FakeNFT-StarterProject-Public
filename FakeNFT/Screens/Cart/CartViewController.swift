@@ -26,6 +26,7 @@ final class CartViewController: UIViewController {
             forCellReuseIdentifier: CartItemCell.reuseIdentifier
         )
         tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
 
         return tableView
     }()
@@ -61,7 +62,14 @@ final class CartViewController: UIViewController {
     }
 
     private func setupNavBar() {
-
+        let filterButton = UIBarButtonItem(
+            image: Asset.Images.sort,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        filterButton.tintColor = UIColor.segmentActive
+        navigationItem.setRightBarButton(filterButton, animated: false)
     }
 
     private func setupTableView() {
