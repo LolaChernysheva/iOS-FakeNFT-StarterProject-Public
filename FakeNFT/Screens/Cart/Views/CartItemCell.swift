@@ -11,7 +11,7 @@ import SnapKit
 final class CartItemCell: UITableViewCell {
     static let reuseIdentifier = "CartItemCell"
 
-    private let nftImageView: UIImageView = {
+    let nftImageView: UIImageView = {
         let imageView = UIImageView()
 
         return imageView
@@ -51,45 +51,46 @@ final class CartItemCell: UITableViewCell {
             target: nil,
             action: nil
         )
+        button.tintColor = UIColor.segmentActive
 
         return button
     }()
 
     private var infoVStack = UIStackView()
 
-    // MARK: Init
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     // MARK: Methods
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+    }
+
     func configure(with model: CartItemModel) {
+        selectionStyle = .none
+
         [nftImageView, titleLabel, priceTitleLabel, priceLabel, deleteButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         contentView.addSubview(nftImageView)
         contentView.addSubview(deleteButton)
 
-        setupImage(model.image)
         setupNftInfo(
             title: model.title,
             price: model.price,
             stars: model.starsCount
         )
+        setupImage(model.image)
+
         setupDeleteButton()
     }
 
     private func setupImage(_ image: UIImage) {
+        nftImageView.image = image
         nftImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.verticalEdges.equalToSuperview()
-            make.trailing.equalTo(infoVStack.snp.leading)
+            make.leading.equalTo(contentView.snp.leading)
+            make.verticalEdges.equalTo(contentView.snp.verticalEdges)
+            make.size.equalTo(nftImageView.snp.height)
         }
     }
 
@@ -114,31 +115,32 @@ final class CartItemCell: UITableViewCell {
             $0.alignment = .leading
         }
         titleAndStarsVStack.spacing = 4
-        priceVStack.spacing = 12
-        infoVStack.spacing = 2
+        priceVStack.spacing = 2
+        infoVStack.spacing = 12
 
         self.infoVStack = infoVStack
+        contentView.addSubview(self.infoVStack)
         self.infoVStack.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(8)
-            make.leading.equalTo(nftImageView.snp.trailing)
+            make.verticalEdges.equalTo(contentView.snp.verticalEdges).inset(8)
+            make.leading.equalTo(nftImageView.snp.trailing).offset(20)
         }
+
     }
 
     private func setupDeleteButton() {
         deleteButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(12)
-            make.centerY.equalToSuperview()
-            make.width.equalTo(16)
-            make.height.equalTo(18.56)
+            make.trailing.equalTo(contentView.snp.trailing)
+            make.centerY.equalTo(contentView.snp.centerY)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
         }
     }
 
     private func getRatingHStack(_ rating: Int) -> UIStackView {
-        let fillStarImageView = UIImageView(image: Asset.Images.starDone)
-        let emptyStarImageView = UIImageView(image: Asset.Images.starNoActive)
-
         var stars = [UIImageView]()
         for starIndex in 0..<5 {
+            let fillStarImageView = UIImageView(image: Asset.Images.starDone)
+            let emptyStarImageView = UIImageView(image: Asset.Images.starNoActive)
             stars.append(
                 (rating - 1) >= starIndex ? fillStarImageView : emptyStarImageView
             )
