@@ -13,7 +13,7 @@ struct CartItemModel {
     let image: UIImage
     let price: Double
     let starsCount: Int
-    
+
     static let mock = CartItemModel(
         id: "1",
         title: "Test",

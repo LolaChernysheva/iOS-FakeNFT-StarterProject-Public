@@ -29,6 +29,7 @@
 		16243B422C46657D005A4CA9 /* CartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16243B412C46657D005A4CA9 /* CartPresenter.swift */; };
 		16243B442C466D5A005A4CA9 /* CartScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16243B432C466D5A005A4CA9 /* CartScreenModel.swift */; };
 		16243B472C466E1E005A4CA9 /* CartItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16243B462C466E1E005A4CA9 /* CartItemModel.swift */; };
+		16243B4B2C47B3C3005A4CA9 /* CartItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16243B4A2C47B3C3005A4CA9 /* CartItemCell.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -95,6 +96,7 @@
 		16243B412C46657D005A4CA9 /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
 		16243B432C466D5A005A4CA9 /* CartScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartScreenModel.swift; sourceTree = "<group>"; };
 		16243B462C466E1E005A4CA9 /* CartItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemModel.swift; sourceTree = "<group>"; };
+		16243B4A2C47B3C3005A4CA9 /* CartItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemCell.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +212,7 @@
 		16243B3E2C466558005A4CA9 /* Cart */ = {
 			isa = PBXGroup;
 			children = (
+				16243B492C47B3AD005A4CA9 /* Views */,
 				16243B452C466DFD005A4CA9 /* Models */,
 				16243B3F2C466570005A4CA9 /* CartViewController.swift */,
 				16243B412C46657D005A4CA9 /* CartPresenter.swift */,
@@ -224,6 +227,14 @@
 				16243B462C466E1E005A4CA9 /* CartItemModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		16243B492C47B3AD005A4CA9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				16243B4A2C47B3C3005A4CA9 /* CartItemCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
@@ -602,6 +613,7 @@
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
+				16243B4B2C47B3C3005A4CA9 /* CartItemCell.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
 				0CFCB74E2A7817DC0009A829 /* NftStorage.swift in Sources */,
 				16243B232C4587F6005A4CA9 /* Asset.swift in Sources */,
