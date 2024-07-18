@@ -17,7 +17,7 @@ struct CartItemModel {
     static let mock = CartItemModel(
         id: "1",
         title: "Test",
-        image: UIImage(systemName: "square.fill") ?? UIImage(),
+        image: UIImage(named: "mockNft") ?? UIImage(),
         price: 1.79,
         starsCount: 3
     )
