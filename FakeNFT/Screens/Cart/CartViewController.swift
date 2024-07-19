@@ -22,6 +22,7 @@ final class CartViewController: UIViewController {
     private var cards = [CartItemModel]()
 
     private lazy var paymentPanel = PaymentPanelView()
+    private var stubView = CartStubView(text: "Корзина пуста")
 
     private lazy var nftTableView: UITableView = {
         let tableView = UITableView()
@@ -67,6 +68,16 @@ final class CartViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide.snp.horizontalEdges)
             make.height.equalTo(76)
+        }
+    }
+
+    private func setupStubView() {
+        stubView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stubView)
+
+        stubView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
     }
 
