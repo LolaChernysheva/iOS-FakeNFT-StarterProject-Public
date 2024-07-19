@@ -49,6 +49,8 @@ final class PaymentPanelView: UIView {
 
     func configure(count: Int, price: Double) {
         backgroundColor = UIColor.segmentInactive
+        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        layer.cornerRadius = 12
 
         setupViews(count: count, price: price)
     }
