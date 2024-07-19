@@ -23,7 +23,7 @@ final class PaymentPanelView: UIView {
         let label = UILabel()
         label.numberOfLines = 1
         label.font = UIFont.bodyBold
-        label.textColor = .green
+        label.textColor = UIColor.textGreen
 
         return label
     }()
