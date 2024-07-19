@@ -21,6 +21,8 @@ final class CartViewController: UIViewController {
 
     private var cards = [CartItemModel]()
 
+    private lazy var paymentPanel = PaymentPanelView()
+
     private lazy var nftTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(
@@ -50,18 +52,22 @@ final class CartViewController: UIViewController {
     }
 
     private func setupViews() {
-        [nftTableView].forEach {
+        [nftTableView, paymentPanel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
 
-        setupPayPanel()
+        setupPaymentPanel()
         setupNavBar()
         setupTableView()
     }
 
-    private func setupPayPanel() {
-
+    private func setupPaymentPanel() {
+        paymentPanel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide.snp.horizontalEdges)
+            make.height.equalTo(76)
+        }
     }
 
     private func setupNavBar() {
@@ -90,6 +96,10 @@ final class CartViewController: UIViewController {
 extension CartViewController: CartViewProtocol {
     func update(with data: CartScreenModel) {
         cards = data.items
+        paymentPanel.configure(
+            count: data.itemsCount,
+            price: data.totalPrice
+        )
 
         nftTableView.reloadData()
     }
