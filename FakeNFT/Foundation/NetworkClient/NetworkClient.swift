@@ -123,6 +123,10 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = dtoEncoded
         }
+        
+        if let token = request.token {
+            urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        }
 
         return urlRequest
     }
