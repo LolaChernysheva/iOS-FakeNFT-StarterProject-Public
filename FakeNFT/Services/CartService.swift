@@ -10,17 +10,17 @@ import Foundation
 final class CartService {
     let networkClient: NetworkClient = DefaultNetworkClient()
 
-    func getCartItems() {
+    func getCartItems(onResponse: @escaping (Result<CartItemsDTO, Error>) -> Void) {
         let request = CartItemsRequest()
         networkClient.send(
             request: request,
-            type: CartItemDTO.self
+            type: CartItemsDTO.self
         ) { result in
                 switch result {
-                case .success(let item):
-                    break
+                case .success(let items):
+                    onResponse(.success(items))
                 case .failure(let error):
-                    break
+                    onResponse(.failure(error))
                 }
         }
     }

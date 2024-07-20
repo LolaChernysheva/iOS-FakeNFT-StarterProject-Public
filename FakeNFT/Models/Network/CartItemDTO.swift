@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CartItemDTO: Codable {
+struct CartItemsDTO: Codable {
     let id: String
     let nfts: [String]
 }
