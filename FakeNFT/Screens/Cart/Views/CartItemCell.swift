@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class CartItemCell: UITableViewCell {
     static let reuseIdentifier = "CartItemCell"
@@ -85,8 +86,8 @@ final class CartItemCell: UITableViewCell {
         setupDeleteButton()
     }
 
-    private func setupImage(_ image: UIImage) {
-        nftImageView.image = image
+    private func setupImage(_ url: URL) {
+        nftImageView.kf.setImage(with: url)
         nftImageView.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading)
             make.verticalEdges.equalTo(contentView.snp.verticalEdges)
