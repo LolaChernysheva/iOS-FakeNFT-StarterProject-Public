@@ -35,6 +35,7 @@
 		16EE8F072C4BC25500B02EF9 /* CartService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EE8F062C4BC25500B02EF9 /* CartService.swift */; };
 		16EE8F092C4BCDF000B02EF9 /* CartItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EE8F082C4BCDF000B02EF9 /* CartItemsRequest.swift */; };
 		16EE8F0B2C4BCE4600B02EF9 /* CartItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EE8F0A2C4BCE4600B02EF9 /* CartItemDTO.swift */; };
+		16EE8F0D2C4BDB8200B02EF9 /* UpdateCartItemsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EE8F0C2C4BDB8200B02EF9 /* UpdateCartItemsRequest.swift */; };
 		3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ECE29DB474E00F6D39E /* Colors.swift */; };
 		3F478ED129DB476500F6D39E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F478ED029DB476500F6D39E /* Fonts.swift */; };
 		3F603CCD29DB4A53000C43D7 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 3F603CCC29DB4A53000C43D7 /* ProgressHUD */; };
@@ -107,6 +108,7 @@
 		16EE8F062C4BC25500B02EF9 /* CartService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartService.swift; sourceTree = "<group>"; };
 		16EE8F082C4BCDF000B02EF9 /* CartItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemsRequest.swift; sourceTree = "<group>"; };
 		16EE8F0A2C4BCE4600B02EF9 /* CartItemDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemDTO.swift; sourceTree = "<group>"; };
+		16EE8F0C2C4BDB8200B02EF9 /* UpdateCartItemsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCartItemsRequest.swift; sourceTree = "<group>"; };
 		3F478ECE29DB474E00F6D39E /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		3F478ED029DB476500F6D39E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		3F68069329CBBAF100B4F915 /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,6 +249,15 @@
 				16EE8F042C4A941C00B02EF9 /* CartStubView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		16EE8F0E2C4D426200B02EF9 /*   Cart */ = {
+			isa = PBXGroup;
+			children = (
+				16EE8F082C4BCDF000B02EF9 /* CartItemsRequest.swift */,
+				16EE8F0C2C4BDB8200B02EF9 /* UpdateCartItemsRequest.swift */,
+			);
+			path = "  Cart";
 			sourceTree = "<group>";
 		};
 		3F478ECD29DB473000F6D39E /* DesignSystem */ = {
@@ -390,7 +401,7 @@
 				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
 				0C79EE602A76DCD600EE90EA /* NftByIdRequest.swift */,
 				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
-				16EE8F082C4BCDF000B02EF9 /* CartItemsRequest.swift */,
+				16EE8F0E2C4D426200B02EF9 /*   Cart */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -635,6 +646,7 @@
 				0CFCB74E2A7817DC0009A829 /* NftStorage.swift in Sources */,
 				16EE8F0B2C4BCE4600B02EF9 /* CartItemDTO.swift in Sources */,
 				16243B232C4587F6005A4CA9 /* Asset.swift in Sources */,
+				16EE8F0D2C4BDB8200B02EF9 /* UpdateCartItemsRequest.swift in Sources */,
 				16243B442C466D5A005A4CA9 /* CartScreenModel.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
