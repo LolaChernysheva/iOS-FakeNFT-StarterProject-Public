@@ -254,6 +254,7 @@
 		16EE8F0E2C4D426200B02EF9 /*   Cart */ = {
 			isa = PBXGroup;
 			children = (
+				16EE8F062C4BC25500B02EF9 /* CartService.swift */,
 				16EE8F082C4BCDF000B02EF9 /* CartItemsRequest.swift */,
 				16EE8F0C2C4BDB8200B02EF9 /* UpdateCartItemsRequest.swift */,
 			);
@@ -330,7 +331,6 @@
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
 				F3EAEF472C41397700834E53 /* ModulesAssembly.swift */,
-				16EE8F062C4BC25500B02EF9 /* CartService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
