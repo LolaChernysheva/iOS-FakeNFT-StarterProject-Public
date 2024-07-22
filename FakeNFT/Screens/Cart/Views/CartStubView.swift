@@ -13,7 +13,6 @@ final class CartStubView: UIView {
         let label = UILabel()
         label.font = UIFont.bodyBold
         label.textColor = UIColor.segmentActive
-        label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
     }()

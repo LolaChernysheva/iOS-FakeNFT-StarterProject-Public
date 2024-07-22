@@ -59,10 +59,6 @@ final class PaymentPanelView: UIView {
         countLabel.text = "\(count) NFT"
         priceLabel.text = "\(String(format: "%.2f", price)) ETH"
 
-        [countLabel, priceLabel, payButton].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-
         addSubview(payButton)
         addSubview(countLabel)
         addSubview(priceLabel)

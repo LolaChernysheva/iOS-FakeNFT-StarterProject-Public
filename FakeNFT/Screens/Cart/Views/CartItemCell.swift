@@ -80,9 +80,6 @@ final class CartItemCell: UITableViewCell {
     func configure(with model: CartItemModel) {
         selectionStyle = .none
 
-        [nftImageView, titleLabel, priceTitleLabel, priceLabel, deleteButton].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
         contentView.addSubview(nftImageView)
         contentView.addSubview(deleteButton)
 

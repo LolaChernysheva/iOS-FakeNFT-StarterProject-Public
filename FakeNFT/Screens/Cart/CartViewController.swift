@@ -70,7 +70,6 @@ final class CartViewController: UIViewController {
 
     private func setupViews() {
         [nftTableView, paymentPanel].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
 
@@ -83,7 +82,6 @@ final class CartViewController: UIViewController {
         if stubView.isDescendant(of: view) {
             stubView.removeFromSuperview()
         }
-        progressHud.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(progressHud)
         progressHud.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -99,7 +97,6 @@ final class CartViewController: UIViewController {
     }
 
     private func setupStubView() {
-        stubView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stubView)
 
         stubView.snp.makeConstraints { make in
