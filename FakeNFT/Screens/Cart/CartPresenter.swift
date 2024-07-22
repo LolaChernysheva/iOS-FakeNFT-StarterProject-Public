@@ -13,22 +13,33 @@ protocol CartPresenterProtocol: AnyObject {
 
 final class CartPresenter {
     weak var view: CartViewProtocol?
+    private let cartService: CartService
 
-    init(view: CartViewProtocol?) {
+    init(view: CartViewProtocol?, cartService: CartService) {
         self.view = view
+        self.cartService = cartService
     }
 
     // MARK: Private Methods
 
-    private func buildScreenModel() -> CartScreenModel {
-        CartScreenModel(
-            items: buildCartItems()
-        )
-    }
-
-    private func buildCartItems() -> [CartItemModel] {
-        let items = Array(repeating: CartItemModel.mock, count: 3)
-        return items
+    private func buildScreenModel(
+        onResponse: @escaping (Result<CartScreenModel, Error>) -> Void
+    ) {
+        cartService.getCartItems { [weak self] result in
+            switch result {
+            case .success(let nfts):
+                self?.cartService.getCartItems { result in
+                    switch result {
+                    case .success(let items):
+                        onResponse(.success(CartScreenModel(items: items)))
+                    case .failure(let error):
+                        onResponse(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                onResponse(.failure(error))
+            }
+        }
     }
 }
 
@@ -36,6 +47,13 @@ final class CartPresenter {
 
 extension CartPresenter: CartPresenterProtocol {
     func setup() {
-        view?.update(with: buildScreenModel())
+        buildScreenModel { [weak self] result in
+            switch result {
+            case .success(let model):
+                self?.view?.update(with: model)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

@@ -48,7 +48,11 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
 
     static func cartScreenBuilder() -> UIViewController {
         let cartViewController = CartViewController()
-        let cartPresenter = CartPresenter(view: cartViewController)
+        let cartService = CartService()
+        let cartPresenter = CartPresenter(
+            view: cartViewController,
+            cartService: cartService
+        )
         cartViewController.presenter = cartPresenter
 
         return cartViewController

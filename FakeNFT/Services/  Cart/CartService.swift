@@ -9,19 +9,48 @@ import Foundation
 
 final class CartService {
     let networkClient: NetworkClient = DefaultNetworkClient()
-    private var items = [CartItemModel]()
 
-    func getCartItems(onResponse: @escaping (Result<[CartItemModel], Error>) -> Void) {
-        getCartItemsDTO { result in
+    func getCartItems(
+        onResponse: @escaping (Result<[CartItemModel], Error>) -> Void
+    ) {
+        let request = CartItemsRequest()
+        networkClient.send(
+            request: request,
+            type: CartItemsDTO.self
+        ) { [weak self] result in
             switch result {
-            case .success(let identifiers):
-                identifiers.forEach { [weak self] id in
-                    self?.getNftCartModel(by: id) { [weak self] item in
-                        guard let item, let self else { return }
-                        items.append(item)
-                        if items.count == identifiers.count {
-                            onResponse(.success(items))
+            case .success(let response):
+                let dispatchGroup = DispatchGroup()
+                var cartItems: [CartItemModel] = []
+                var errors: [Error] = []
+                let testIds = [
+                    "b2f44171-7dcd-46d7-a6d3-e2109aacf520",
+                    "1464520d-1659-4055-8a79-4593b9569e48",
+                    "b3907b86-37c4-4e15-95bc-7f8147a9a660"
+                ]
+
+                for id in testIds {
+                    dispatchGroup.enter()
+                    self?.getNftCartModel(by: id) { cartItem in
+                        if let cartItem = cartItem {
+                            cartItems.append(cartItem)
+                        } else {
+                            errors.append(NSError(
+                                domain: "fakenftapi",
+                                code: -1,
+                                userInfo: [
+                                    NSLocalizedDescriptionKey: "Failed to get cart item for id \(id)"
+                                ]))
                         }
+                        dispatchGroup.leave()
+                    }
+                }
+
+                dispatchGroup.notify(queue: .main) {
+                    if !errors.isEmpty {
+                        onResponse(.failure(errors.first!))
+                    } else {
+                        onResponse(.success(cartItems))
                     }
                 }
             case .failure(let error):
@@ -29,25 +58,8 @@ final class CartService {
             }
         }
     }
-    
-    private func getCartItemsDTO(
-        onResponse: @escaping (Result<[String], Error>) -> Void
-    ) {
-        let request = CartItemsRequest()
-        networkClient.send(
-            request: request,
-            type: CartItemsDTO.self
-        ) { result in
-            switch result {
-            case .success(let response):
-                onResponse(.success(response.nfts))
-            case .failure(let error):
-                onResponse(.failure(error))
-            }
-        }
-    }
 
-    private func getNftCartModel(by id: String, onResponse: @escaping (CartItemModel?) -> Void) {
+    func getNftCartModel(by id: String, onResponse: @escaping (CartItemModel?) -> Void) {
         let request = GetNftRequest(id: id)
         networkClient.send(
             request: request,
