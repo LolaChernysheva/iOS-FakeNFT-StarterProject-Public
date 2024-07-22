@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol CartViewProtocol: AnyObject {
     func update(with data: CartScreenModel)
+    func showProgressHud()
+    func hideProgressHud()
 }
 
 final class CartViewController: UIViewController {
@@ -23,6 +26,13 @@ final class CartViewController: UIViewController {
 
     private lazy var paymentPanel = PaymentPanelView()
     private var stubView = CartStubView(text: "Корзина пуста")
+    private var progressHud: UIActivityIndicatorView = {
+        let progress = UIActivityIndicatorView(style: .medium)
+        progress.hidesWhenStopped = true
+        progress.color = UIColor.segmentActive
+
+        return progress
+    }()
 
     private lazy var nftTableView: UITableView = {
         let tableView = UITableView()
@@ -53,14 +63,21 @@ final class CartViewController: UIViewController {
     }
 
     private func setupViews() {
-        [nftTableView, paymentPanel].forEach {
+        [nftTableView, paymentPanel, progressHud].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
 
+        setupProgressHud()
         setupPaymentPanel()
         setupNavBar()
         setupTableView()
+    }
+
+    private func setupProgressHud() {
+        progressHud.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 
     private func setupPaymentPanel() {
@@ -113,6 +130,14 @@ extension CartViewController: CartViewProtocol {
         )
 
         nftTableView.reloadData()
+    }
+
+    func showProgressHud() {
+        progressHud.startAnimating()
+    }
+
+    func hideProgressHud() {
+        progressHud.stopAnimating()
     }
 }
 

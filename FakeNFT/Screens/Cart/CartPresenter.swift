@@ -25,17 +25,10 @@ final class CartPresenter {
     private func buildScreenModel(
         onResponse: @escaping (Result<CartScreenModel, Error>) -> Void
     ) {
-        cartService.getCartItems { [weak self] result in
+        cartService.getCartItems { result in
             switch result {
-            case .success(let nfts):
-                self?.cartService.getCartItems { result in
-                    switch result {
-                    case .success(let items):
-                        onResponse(.success(CartScreenModel(items: items)))
-                    case .failure(let error):
-                        onResponse(.failure(error))
-                    }
-                }
+            case .success(let items):
+                onResponse(.success(CartScreenModel(items: items)))
             case .failure(let error):
                 onResponse(.failure(error))
             }
@@ -47,6 +40,7 @@ final class CartPresenter {
 
 extension CartPresenter: CartPresenterProtocol {
     func setup() {
+        view?.showProgressHud()
         buildScreenModel { [weak self] result in
             switch result {
             case .success(let model):
@@ -54,6 +48,7 @@ extension CartPresenter: CartPresenterProtocol {
             case .failure(let error):
                 print(error)
             }
+            self?.view?.hideProgressHud()
         }
     }
 }
