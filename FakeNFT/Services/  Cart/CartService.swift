@@ -23,7 +23,7 @@ final class CartService {
                 let dispatchGroup = DispatchGroup()
                 var cartItems: [CartItemModel] = []
                 var errors: [Error] = []
-                let testIds = [
+                var testIds: [String] = [
                     "b2f44171-7dcd-46d7-a6d3-e2109aacf520",
                     "1464520d-1659-4055-8a79-4593b9569e48",
                     "b3907b86-37c4-4e15-95bc-7f8147a9a660"

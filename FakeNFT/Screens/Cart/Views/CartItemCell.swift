@@ -20,6 +20,8 @@ final class CartItemCell: UITableViewCell {
         return imageView
     }()
 
+    var titleAndStarsVStack = UIStackView()
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
@@ -69,6 +71,12 @@ final class CartItemCell: UITableViewCell {
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        titleAndStarsVStack.removeFromSuperview()
+    }
+
     func configure(with model: CartItemModel) {
         selectionStyle = .none
 
@@ -102,7 +110,7 @@ final class CartItemCell: UITableViewCell {
         priceLabel.text = "\(price) ETH"
         let ratingHStack = getRatingHStack(stars)
 
-        let titleAndStarsVStack = UIStackView(
+        titleAndStarsVStack = UIStackView(
             arrangedSubviews: [titleLabel, ratingHStack]
         )
         let priceVStack = UIStackView(

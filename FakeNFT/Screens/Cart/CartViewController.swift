@@ -25,7 +25,8 @@ final class CartViewController: UIViewController {
     private var cards = [CartItemModel]()
 
     private lazy var paymentPanel = PaymentPanelView()
-    private var stubView = CartStubView(text: "Корзина пуста")
+    private lazy var stubView = CartStubView(text: "Корзина пуста")
+
     private var progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
         progress.hidesWhenStopped = true
@@ -52,6 +53,11 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
 
         configure()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         presenter?.setup()
     }
 
@@ -59,22 +65,26 @@ final class CartViewController: UIViewController {
 
     private func configure() {
         view.backgroundColor = UIColor.background
-        setupViews()
+        setupProgressHud()
     }
 
     private func setupViews() {
-        [nftTableView, paymentPanel, progressHud].forEach {
+        [nftTableView, paymentPanel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
 
-        setupProgressHud()
         setupPaymentPanel()
         setupNavBar()
         setupTableView()
     }
 
     private func setupProgressHud() {
+        if stubView.isDescendant(of: view) {
+            stubView.removeFromSuperview()
+        }
+        progressHud.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(progressHud)
         progressHud.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
@@ -117,6 +127,13 @@ final class CartViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide.snp.edges)
         }
     }
+
+    private func removeMainViews() {
+        [nftTableView, paymentPanel].forEach {
+            $0.removeFromSuperview()
+        }
+        navigationItem.setRightBarButton(nil, animated: false)
+    }
 }
 
 // MARK: CartViewProtocol
@@ -124,15 +141,31 @@ final class CartViewController: UIViewController {
 extension CartViewController: CartViewProtocol {
     func update(with data: CartScreenModel) {
         cards = data.items
-        paymentPanel.configure(
-            count: data.itemsCount,
-            price: data.totalPrice
-        )
-
-        nftTableView.reloadData()
+        if cards.isEmpty {
+            if nftTableView.isDescendant(of: view) {
+                removeMainViews()
+            }
+            setupStubView()
+        } else {
+            if !nftTableView.isDescendant(of: view) {
+                setupViews()
+                paymentPanel.configure(
+                    count: data.itemsCount,
+                    price: data.totalPrice
+                )
+                nftTableView.reloadData()
+                stubView.removeFromSuperview()
+            }
+        }
     }
 
     func showProgressHud() {
+        if stubView.isDescendant(of: view) {
+            stubView.removeFromSuperview()
+        }
+        if nftTableView.isDescendant(of: view) {
+            removeMainViews()
+        }
         progressHud.startAnimating()
     }
 
