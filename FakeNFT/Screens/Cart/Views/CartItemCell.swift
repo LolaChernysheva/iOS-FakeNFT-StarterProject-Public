@@ -14,6 +14,8 @@ final class CartItemCell: UITableViewCell {
 
     let nftImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 12
+        imageView.clipsToBounds = true
 
         return imageView
     }()
