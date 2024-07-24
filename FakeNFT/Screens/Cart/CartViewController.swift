@@ -91,9 +91,6 @@ final class CartViewController: UIViewController {
     }
 
     private func setupProgressHud() {
-        if stubView.isDescendant(of: view) {
-            stubView.removeFromSuperview()
-        }
         view.addSubview(progressHud)
         progressHud.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -137,11 +134,30 @@ final class CartViewController: UIViewController {
         }
     }
 
-    private func removeMainViews() {
+    private func hideMainViews() {
         [nftTableView, paymentPanel].forEach {
-            $0.removeFromSuperview()
+            $0.isHidden = true
         }
         navigationItem.setRightBarButton(nil, animated: false)
+    }
+
+    private func showMainViews(with data: CartScreenModel) {
+        if !nftTableView.isDescendant(of: view) {
+            setupViews()
+            paymentPanel.configure(
+                count: data.itemsCount,
+                price: data.totalPrice
+            )
+        }
+        if nftTableView.isHidden {
+            [nftTableView, paymentPanel].forEach {
+                $0.isHidden = false
+            }
+            setupNavBar()
+
+            nftTableView.reloadData()
+            stubView.isHidden = true
+        }
     }
 }
 
@@ -151,29 +167,22 @@ extension CartViewController: CartViewProtocol {
     func update(with data: CartScreenModel) {
         cards = data.items
         if cards.isEmpty {
-            if nftTableView.isDescendant(of: view) {
-                removeMainViews()
+            if !stubView.isDescendant(of: view) {
+                setupStubView()
             }
-            setupStubView()
+            hideMainViews()
+            stubView.isHidden = false
         } else {
-            if !nftTableView.isDescendant(of: view) {
-                setupViews()
-                paymentPanel.configure(
-                    count: data.itemsCount,
-                    price: data.totalPrice
-                )
-                nftTableView.reloadData()
-                stubView.removeFromSuperview()
-            }
+            showMainViews(with: data)
+            stubView.isHidden = true
         }
     }
 
     func showProgressHud() {
-        if stubView.isDescendant(of: view) {
-            stubView.removeFromSuperview()
-        }
-        if nftTableView.isDescendant(of: view) {
-            removeMainViews()
+        if !stubView.isHidden {
+            stubView.isHidden = true
+        } else {
+            hideMainViews()
         }
         progressHud.startAnimating()
     }
