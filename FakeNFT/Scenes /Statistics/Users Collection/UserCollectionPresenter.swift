@@ -14,9 +14,9 @@ protocol UserCollectionPresenterProtocol: AnyObject {
 
 final class UserCollectionPresenter {
 
-    weak var view: UsersCollectionViewProtocol?
+    weak var view: UserCollectionViewProtocol?
 
-    init(view: UsersCollectionViewProtocol?) {
+    init(view: UserCollectionViewProtocol?) {
         self.view = view
     }
 }

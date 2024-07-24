@@ -70,12 +70,11 @@ final class StatisticsCustomNavBar: UIView {
     private func prepareSortButton() {
         sortButton.tintColor = .textMainColor
         sortButton.setImage(UIImage(named: "sort"), for: .normal)
-        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
     }
     private func prepareBackButton() {
-        backButton.setImage(UIImage(named: "backward"), for: .normal)
+        backButton.setImage(UIImage(named:
+                                        "backward"), for: .normal)
         backButton.tintColor = .textMainColor
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
 
     private func prepareTitle() {
@@ -84,13 +83,7 @@ final class StatisticsCustomNavBar: UIView {
         titleLabel.textAlignment = .center
     }
 
-    @objc func sortButtonTapped() {
-        // Show options
-    }
 
-    @objc func backButtonTapped() {
-        // Go back
-    }
 
      func isTitleInvisible(it_s newValue: Bool) {
         titleLabel.isHidden = newValue
@@ -100,6 +93,6 @@ final class StatisticsCustomNavBar: UIView {
     }
 
      func isBackButtonInvisible(it_s newValue: Bool) {
-        backButton.isHidden = true
+        backButton.isHidden = newValue
     }
 }
