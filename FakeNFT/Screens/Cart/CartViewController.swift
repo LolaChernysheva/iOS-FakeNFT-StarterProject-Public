@@ -18,7 +18,7 @@ final class CartViewController: UIViewController {
 
     // MARK: Public Properties
 
-    var presenter: CartPresenterProtocol?
+    private let presenter: CartPresenterProtocol
 
     // MARK: Private Properties
 
@@ -47,6 +47,18 @@ final class CartViewController: UIViewController {
         return tableView
     }()
 
+    // MARK: Init
+
+    init(presenter: CartPresenterProtocol) {
+        self.presenter = presenter
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: Life Cycle
 
     override func viewDidLoad() {
@@ -58,7 +70,7 @@ final class CartViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        presenter?.setup()
+        presenter.setup()
     }
 
     // MARK: Private Methods

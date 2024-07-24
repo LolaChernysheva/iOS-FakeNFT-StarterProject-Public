@@ -15,8 +15,7 @@ final class CartPresenter {
     weak var view: CartViewProtocol?
     private let cartService: CartService
 
-    init(view: CartViewProtocol?, cartService: CartService) {
-        self.view = view
+    init(cartService: CartService) {
         self.cartService = cartService
     }
 
