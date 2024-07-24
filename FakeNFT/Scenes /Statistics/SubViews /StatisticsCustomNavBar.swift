@@ -28,7 +28,7 @@ final class StatisticsCustomNavBar: UIView {
     }
 
     private func initializeUI() {
-        backgroundColor = UIColor(named: "FakeWhite")
+        backgroundColor = .background
         prepareSortButton()
         prepareBackButton()
         prepareTitle()
@@ -68,13 +68,13 @@ final class StatisticsCustomNavBar: UIView {
     }
 
     private func prepareSortButton() {
-        sortButton.tintColor = UIColor(named: "FakeBlack")
-        sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
+        sortButton.tintColor = .textMainColor
+        sortButton.setImage(UIImage(named: "sort"), for: .normal)
         sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
     }
     private func prepareBackButton() {
-        backButton.tintColor = UIColor(named: "FakeBlack")
-        backButton.setImage(UIImage(named: "backwardButton"), for: .normal)
+        backButton.setImage(UIImage(named: "backward"), for: .normal)
+        backButton.tintColor = .textMainColor
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
 
@@ -92,14 +92,14 @@ final class StatisticsCustomNavBar: UIView {
         // Go back
     }
 
-    private func isTitleInvisible(it_s newValue: Bool) {
+     func isTitleInvisible(it_s newValue: Bool) {
         titleLabel.isHidden = newValue
     }
-    private func isSortButtonInvisible(it_s newValue: Bool) {
+     func isSortButtonInvisible(it_s newValue: Bool) {
         sortButton.isHidden = newValue
     }
 
-    private func isBackButtonInvisible(it_s newValue: Bool) {
+     func isBackButtonInvisible(it_s newValue: Bool) {
         backButton.isHidden = true
     }
 }

@@ -1,5 +1,5 @@
 //
-//  UsersCollectionScreenModel.swift
+//  UserCollectionScreenModel.swift
 //  FakeNFT
 //
 //  Created by Vladimir Vinakheras on 12.07.2024.

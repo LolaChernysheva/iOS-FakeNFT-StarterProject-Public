@@ -10,103 +10,115 @@ import UIKit
 import SnapKit
 
 final class StatisticsTableViewCell: UITableViewCell {
-
+    
     private var userAvatarImageView = UIImageView()
     private var userNameLabel = UILabel()
     private var nftAmountLabel = UILabel()
-    private let cellIndex = UILabel()
-    private let horizontalStack = UIStackView()
-
+    private var cellIndex = UILabel()
+    private let horizontalContainer = UIView()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        backgroundColor = UIColor(named: "FakeWhite")
-        setupUI()
+        backgroundColor = .background
+        self.layer.cornerRadius = 14
         prepareUserNameLabel()
         prepareNFTAmonuntLabel()
         prepareUserAvatarImageView()
         prepareCellIndexLabel()
-        prepareHorizontalStack()
+        prepareContainer()
+        setupUI()
         activatingConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupUI() {
-        for subView in [horizontalStack, userAvatarImageView, userNameLabel, nftAmountLabel, cellIndex] {
+        
+        for subView in [horizontalContainer, userAvatarImageView, userNameLabel, nftAmountLabel, cellIndex] {
+            contentView.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
-
-            if subView == horizontalStack || subView == cellIndex {
-                self.addSubview(subView)
-            } else {
-                horizontalStack.addArrangedSubview(subView)
-            }
         }
-
-        horizontalStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        
     }
     private func activatingConstraints() {
         cellIndex.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(8)
             make.centerY.equalToSuperview()
             make.height.equalTo(20)
             make.width.equalTo(27)
         }
-        horizontalStack.snp.makeConstraints { make in
-            make.leading.equalTo(cellIndex.snp.trailing).inset(8)
-            make.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(80)
+        
+        horizontalContainer.snp.makeConstraints { make in
+            make.leading.equalTo(cellIndex.snp.trailing).offset(8)
+            make.trailing.equalTo(contentView.snp.trailing).inset(8)
+            make.top.bottom.equalToSuperview().inset(4)
         }
+        
         userAvatarImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(16)
+            make.leading.equalTo(horizontalContainer.snp.leading).offset(20)
             make.centerY.equalToSuperview()
-            make.height.equalTo(28)
-            make.width.equalTo(28)
+            make.height.width.equalTo(28)
         }
+        
         userNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(userAvatarImageView.snp.trailing).inset(8)
-            make.centerY.equalToSuperview()
-            make.height.equalTo(28)
+            make.leading.equalTo(userAvatarImageView.snp.trailing).offset(8)
+            make.centerY.equalTo(userAvatarImageView)
+            make.trailing.lessThanOrEqualTo(nftAmountLabel.snp.leading).offset(-8)
         }
+        
         nftAmountLabel.snp.makeConstraints { make in
-            make.leading.equalTo(userNameLabel.snp.trailing).inset(16)
-            make.centerY.equalToSuperview()
+            make.trailing.equalTo(horizontalContainer.snp.trailing).inset(16)
+            make.centerY.equalTo(userAvatarImageView)
             make.height.equalTo(28)
         }
-
     }
+    
+    
     private func prepareUserAvatarImageView() {
         userAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
-        userAvatarImageView.layer.cornerRadius = 28
-        userAvatarImageView.image = UIImage(systemName: "person")
-
+        userAvatarImageView.layer.cornerRadius = 14
+        userAvatarImageView.image = UIImage(systemName: "person.crop.circle.fill")
     }
     private func prepareUserNameLabel() {
-
+        
         userNameLabel.textAlignment = .natural
         userNameLabel.font = .headline3
-        userNameLabel.textColor = UIColor(named: "FakeBlack")
+        userNameLabel.textColor = .textMainColor
     }
     private func prepareNFTAmonuntLabel() {
         nftAmountLabel.textAlignment = .center
         nftAmountLabel.font = .headline3
-        nftAmountLabel.textColor = UIColor(named: "FakeBlack")
+        nftAmountLabel.textColor = .textMainColor
     }
     private func prepareCellIndexLabel() {
-        nftAmountLabel.textAlignment = .center
-        nftAmountLabel.font = .caption1
-        nftAmountLabel.textColor = UIColor(named: "FakeBlack")
+        cellIndex.textAlignment = .center
+        cellIndex.font = .caption1
+        cellIndex.textColor = .textMainColor
     }
-    private func prepareHorizontalStack() {
-       horizontalStack.axis = .horizontal
-       horizontalStack.spacing = 0
-        horizontalStack.backgroundColor = UIColor(named: "FakeLightGray")
-        horizontalStack.layer.cornerRadius = 12
+    private func prepareContainer() {
+        horizontalContainer.layer.cornerRadius = 12
+        horizontalContainer.backgroundColor = .segmentInactive
     }
-
+    
+    func setUserName(with newName: String){
+        userNameLabel.text = newName
+    }
+    
+    func setUserImage(with newImage : UIImage){
+        userAvatarImageView.image = newImage
+    }
+    
+    func setUserCollectionAmount(with newAmout: Int){
+        nftAmountLabel.text = newAmout.description
+    }
+    
+    func setCellIndex(with newValue : Int){
+        cellIndex.text = newValue.description
+    }
+    
 }

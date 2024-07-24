@@ -1,5 +1,5 @@
 //
-//  UsersCollectionPresenter.swift
+//  UserCollectionPresenter.swift
 //  FakeNFT
 //
 //  Created by Vladimir Vinakheras on 12.07.2024.
@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-protocol UsersCollectionPresenterProtocol: AnyObject {
+protocol UserCollectionPresenterProtocol: AnyObject {
 
 }
 
-final class UsersCollectionPresenter {
+final class UserCollectionPresenter {
 
     weak var view: UsersCollectionViewProtocol?
 
@@ -23,6 +23,6 @@ final class UsersCollectionPresenter {
 
 // MARK: UsersCollectionPresenterProtocol
 
-extension UsersCollectionPresenter: UsersCollectionPresenterProtocol {
+extension UserCollectionPresenter: UserCollectionPresenterProtocol {
 
 }

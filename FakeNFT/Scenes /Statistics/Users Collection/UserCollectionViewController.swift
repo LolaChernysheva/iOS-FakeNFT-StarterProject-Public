@@ -12,13 +12,18 @@ protocol UsersCollectionViewProtocol: AnyObject {
 
 }
 
-final class UsersCollectionViewController: UIViewController {
+final class UserCollectionViewController: UIViewController {
 
     var presenter: UsersCollectionPresenterProtocol!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        if #available(iOS 15.0, *) {
+            view.backgroundColor = .systemMint
+        } else {
+            view.backgroundColor = .lightGray
+        }
+        
     }
 }
 
