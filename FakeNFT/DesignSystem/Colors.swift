@@ -34,8 +34,11 @@ extension UIColor {
     static let secondary = UIColor(red: 255 / 255, green: 193 / 255, blue: 7 / 255, alpha: 1.0)
 
     // Background Colors
-    static let background = UIColor.white
-
+    static let background = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .yaBlackLight
+        : .yaBlackDark
+    }
     // Text Colors
     static let textPrimary = UIColor.black
     static let textSecondary = UIColor.gray
@@ -44,7 +47,7 @@ extension UIColor {
     static let textGreen = UIColor(hexString: "#1C9F00")
 
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
-    private static let yaBlackDark = UIColor.white
+    private static let yaBlackDark = UIColor(hexString: "FFFFFF")
     private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
     private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
 
@@ -65,4 +68,12 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
+    
+    static let textMainColor = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .yaBlackDark
+        : .yaBlackLight
+    }
+    
+
 }
