@@ -20,8 +20,6 @@ final class CartItemCell: UITableViewCell {
         return imageView
     }()
 
-    var titleAndStarsVStack = UIStackView()
-
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
@@ -62,39 +60,70 @@ final class CartItemCell: UITableViewCell {
     }()
 
     private var infoVStack = UIStackView()
+    private var ratingHStack = UIStackView()
+    private var titleAndStarsVStack = UIStackView()
+
+    // MARK: Init
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
+        contentView.addSubview(nftImageView)
+        contentView.addSubview(deleteButton)
+
+        setupImage()
+        setupNftInfo()
+        setupDeleteButton()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: Methods
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16))
+        contentView.frame = contentView.frame.inset(
+            by: UIEdgeInsets(
+                top: 16,
+                left: 16,
+                bottom: 16,
+                right: 16
+            )
+        )
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        titleAndStarsVStack.removeFromSuperview()
+        ratingHStack.removeFromSuperview()
     }
 
     func configure(with model: CartItemModel) {
-        selectionStyle = .none
+        ratingHStack = getRatingHStack(model.starsCount)
+        titleAndStarsVStack.addArrangedSubview(ratingHStack)
 
-        contentView.addSubview(nftImageView)
-        contentView.addSubview(deleteButton)
-
-        setupNftInfo(
-            title: model.title,
-            price: model.price,
-            stars: model.starsCount
-        )
-        setupImage(model.image)
-
-        setupDeleteButton()
+        changeImage(model.image)
+        setPrice(model.price)
+        setTitle(model.title)
     }
 
-    private func setupImage(_ url: URL) {
+    private func changeImage(_ url: URL) {
         nftImageView.kf.setImage(with: url)
+    }
+
+    private func setTitle(_ title: String) {
+        titleLabel.text = title
+    }
+
+    private func setPrice(_ price: Double) {
+        priceLabel.text = "\(price) ETH"
+    }
+
+    private func setupImage() {
         nftImageView.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading)
             make.verticalEdges.equalTo(contentView.snp.verticalEdges)
@@ -102,13 +131,9 @@ final class CartItemCell: UITableViewCell {
         }
     }
 
-    private func setupNftInfo(title: String, price: Double, stars: Int) {
-        titleLabel.text = title
-        priceLabel.text = "\(price) ETH"
-        let ratingHStack = getRatingHStack(stars)
-
+    private func setupNftInfo() {
         titleAndStarsVStack = UIStackView(
-            arrangedSubviews: [titleLabel, ratingHStack]
+            arrangedSubviews: [titleLabel]
         )
         let priceVStack = UIStackView(
             arrangedSubviews: [priceTitleLabel, priceLabel]
