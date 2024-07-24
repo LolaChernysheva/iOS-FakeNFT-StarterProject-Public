@@ -7,8 +7,18 @@
 
 import Foundation
 
-final class CartService {
-    let networkClient: NetworkClient = DefaultNetworkClient()
+protocol CartServiceProtocol {
+    func getCartItems(
+        onResponse: @escaping (Result<[CartItemModel], Error>) -> Void
+    )
+    func updateCart(
+        _ items: [String],
+        onResponse: @escaping (Result<Data, Error>) -> Void
+    )
+}
+
+final class CartService: CartServiceProtocol {
+    private let networkClient: NetworkClient = DefaultNetworkClient()
 
     func getCartItems(
         onResponse: @escaping (Result<[CartItemModel], Error>) -> Void
@@ -54,7 +64,22 @@ final class CartService {
         }
     }
 
-    func getNftCartModel(by id: String, onResponse: @escaping (CartItemModel?) -> Void) {
+    func updateCart(
+        _ items: [String],
+        onResponse: @escaping (Result<Data, Error>) -> Void
+    ) {
+        let request = UpdateCartItemsRequest(dto: ["1"])
+        networkClient.send(request: request) { result in
+            switch result {
+            case .success(let data):
+                onResponse(.success(data))
+            case .failure(let error):
+                onResponse(.failure(error))
+            }
+        }
+    }
+
+    private func getNftCartModel(by id: String, onResponse: @escaping (CartItemModel?) -> Void) {
         let request = GetNftRequest(id: id)
         networkClient.send(
             request: request,
@@ -76,17 +101,4 @@ final class CartService {
             }
         }
     }
-
-    func updateCart(_ items: [String], onResponse: @escaping (Result<Data, Error>) -> Void) {
-        let request = UpdateCartItemsRequest(dto: ["1"])
-        networkClient.send(request: request) { result in
-            switch result {
-            case .success(let data):
-                onResponse(.success(data))
-            case .failure(let error):
-                onResponse(.failure(error))
-            }
-        }
-    }
-
 }

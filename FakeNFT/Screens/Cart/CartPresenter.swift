@@ -13,7 +13,7 @@ protocol CartPresenterProtocol: AnyObject {
 
 final class CartPresenter {
     weak var view: CartViewProtocol?
-    private let cartService: CartService
+    private let cartService: CartServiceProtocol
 
     init(cartService: CartService) {
         self.cartService = cartService
