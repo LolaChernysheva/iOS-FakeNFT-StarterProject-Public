@@ -144,7 +144,7 @@ final class CartViewController: UIViewController {
     private func showMainViews(with data: CartScreenModel) {
         if !nftTableView.isDescendant(of: view) {
             setupViews()
-            paymentPanel.configure(
+            paymentPanel.set(
                 count: data.itemsCount,
                 price: data.totalPrice
             )

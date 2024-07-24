@@ -45,20 +45,34 @@ final class PaymentPanelView: UIView {
         return button
     }()
 
+    // MARK: Init
+
+    init() {
+        super.init(frame: .zero)
+
+        configure()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: Methods
 
-    func configure(count: Int, price: Double) {
+    func set(count: Int, price: Double) {
+        countLabel.text = "\(count) NFT"
+        priceLabel.text = "\(String(format: "%.2f", price)) ETH"
+    }
+
+    private func configure() {
         backgroundColor = UIColor.segmentInactive
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         layer.cornerRadius = 12
 
-        setupViews(count: count, price: price)
+        setupViews()
     }
 
-    private func setupViews(count: Int, price: Double) {
-        countLabel.text = "\(count) NFT"
-        priceLabel.text = "\(String(format: "%.2f", price)) ETH"
-
+    private func setupViews() {
         addSubview(payButton)
         addSubview(countLabel)
         addSubview(priceLabel)
