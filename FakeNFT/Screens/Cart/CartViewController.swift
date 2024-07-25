@@ -26,6 +26,7 @@ final class CartViewController: UIViewController {
 
     private lazy var paymentPanel = PaymentPanelView()
     private lazy var stubView = CartStubView(text: "Корзина пуста")
+    private lazy var deleteAlert = DeleteAlertView()
 
     private var progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
@@ -176,6 +177,8 @@ extension CartViewController: CartViewProtocol {
             showMainViews(with: data)
             stubView.isHidden = true
         }
+
+        //deleteAlert.show(on: self, with: view.frame.height, image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Yellow/Helga/1.png")!)
     }
 
     func showProgressHud() {
