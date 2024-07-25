@@ -178,7 +178,7 @@ extension CartViewController: CartViewProtocol {
             stubView.isHidden = true
         }
 
-        //deleteAlert.show(on: self, with: view.frame.height, image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Yellow/Helga/1.png")!)
+        deleteAlert.show(on: self, with: view.frame.height, image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Yellow/Helga/1.png")!)
     }
 
     func showProgressHud() {

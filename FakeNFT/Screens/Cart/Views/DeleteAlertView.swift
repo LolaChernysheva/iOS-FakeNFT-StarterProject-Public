@@ -12,6 +12,8 @@ import Kingfisher
 final class DeleteAlertView: UIView {
     // MARK: Properties
 
+    private let mainView = UIView()
+
     private let nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -88,8 +90,9 @@ final class DeleteAlertView: UIView {
     // MARK: Methods
 
     func show(on viewController: UIViewController, with height: CGFloat, image: URL) {
-        self.layer.opacity = 0
-        self.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        blurEffectView.layer.opacity = 0
+        mainView.layer.opacity = 0
+        mainView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         if !self.isDescendant(of: viewController.view) {
             add(on: viewController, with: height)
         }
@@ -98,7 +101,7 @@ final class DeleteAlertView: UIView {
     }
 
     private func add(on viewController: UIViewController, with height: CGFloat) {
-        nftImageView.snp.updateConstraints { make in
+        mainView.snp.updateConstraints { make in
             make.top.equalToSuperview().offset(height * 0.32)
         }
 
@@ -118,26 +121,46 @@ final class DeleteAlertView: UIView {
     }
 
     func animateViewAppearance() {
-        // Используем UIView.animate для анимации появления
-        UIView.animate(withDuration: 0.4,
+        UIView.animate(withDuration: 0.2,
                        delay: 0,
-                       options: [.curveEaseInOut],
+                       options: [.curveLinear],
                        animations: { [weak self] in
             guard let self else { return }
-            self.layer.opacity = 1
-            self.transform = CGAffineTransform.identity
-        }, completion: nil)
+            blurEffectView.layer.opacity = 1
+        }, completion: { isCompleted in
+            if isCompleted {
+                UIView.animate(withDuration: 0.3,
+                               delay: 0,
+                               options: [.curveEaseInOut],
+                               animations: { [weak self] in
+                    guard let self else { return }
+                    mainView.transform = CGAffineTransform.identity
+                    mainView.layer.opacity = 1
+                })
+            }
+        })
     }
 
     private func setupSubviews() {
         setupBlur()
         [textLabel, nftImageView, buttonsStack].forEach {
-            addSubview($0)
+            mainView.addSubview($0)
         }
+        addSubview(mainView)
 
         setupImageView()
         setupLabel()
         setupButtons()
+        setupMainView()
+    }
+
+    private func setupMainView() {
+        mainView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(200)
+            make.centerX.equalToSuperview()
+            make.leading.lessThanOrEqualToSuperview().inset(57)
+            make.trailing.lessThanOrEqualToSuperview().inset(57)
+        }
     }
 
     private func setupBlur() {
@@ -151,7 +174,7 @@ final class DeleteAlertView: UIView {
 
     private func setupImageView() {
         nftImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(200)
+            make.top.equalToSuperview()
             make.centerX.equalToSuperview()
             make.size.equalTo(108)
         }
