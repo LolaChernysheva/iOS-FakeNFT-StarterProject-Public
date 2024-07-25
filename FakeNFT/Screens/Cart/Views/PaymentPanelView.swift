@@ -64,10 +64,15 @@ final class PaymentPanelView: UIView {
         priceLabel.text = "\(String(format: "%.2f", price)) ETH"
     }
 
+    @objc private func startPayment() {
+        print("start payment")
+    }
+
     private func configure() {
         backgroundColor = UIColor.segmentInactive
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         layer.cornerRadius = 12
+        payButton.addTarget(self, action: #selector(startPayment), for: .touchUpInside)
 
         setupViews()
     }

@@ -37,7 +37,8 @@ final class DeleteAlertView: UIView {
     }()
 
     private let backButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
+        button.frame = CGRect(x: 0, y: 0, width: 127, height: 44)
         button.backgroundColor = UIColor.segmentActive
         button.setTitleColor(UIColor.background, for: .normal)
         button.setTitle(
@@ -52,6 +53,7 @@ final class DeleteAlertView: UIView {
 
     private let deleteButton: UIButton = {
         let button = UIButton()
+        button.frame = CGRect(x: 0, y: 0, width: 127, height: 44)
         button.backgroundColor = UIColor.segmentActive
         button.setTitleColor(UIColor.textRed, for: .normal)
         button.setTitle(
@@ -89,7 +91,14 @@ final class DeleteAlertView: UIView {
 
     // MARK: Methods
 
+    @objc private func dismissAlert() {
+        print("dismiss")
+        animateViewDismissing()
+        self.isHidden = true
+    }
+
     func show(on viewController: UIViewController, with height: CGFloat, image: URL) {
+        self.isHidden = false
         blurEffectView.layer.opacity = 0
         mainView.layer.opacity = 0
         mainView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
@@ -98,6 +107,12 @@ final class DeleteAlertView: UIView {
         }
         animateViewAppearance()
         nftImageView.kf.setImage(with: image)
+
+        addTargetForButtons()
+    }
+
+    func addTargetForButtons() {
+        backButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
     }
 
     private func add(on viewController: UIViewController, with height: CGFloat) {
@@ -115,19 +130,38 @@ final class DeleteAlertView: UIView {
             make.bottom.equalTo(view.snp.bottom)
         }
 
-        view.bringSubviewToFront(self)
         viewController.navigationController?.navigationBar.isHidden = true
         viewController.tabBarController?.tabBar.isHidden = true
     }
 
-    func animateViewAppearance() {
+    private func animateViewDismissing() {
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       options: [.curveEaseInOut],
+                       animations: { [weak self] in
+            guard let self else { return }
+            mainView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+            mainView.layer.opacity = 0
+        }, completion: { [weak self] isCompleted in
+            if isCompleted {
+                UIView.animate(withDuration: 0.2,
+                               delay: 0,
+                               options: [.curveEaseInOut],
+                               animations: { [weak self] in
+                    self?.blurEffectView.layer.opacity = 0
+                })
+            }
+        })
+    }
+
+    private func animateViewAppearance() {
         UIView.animate(withDuration: 0.2,
                        delay: 0,
                        options: [.curveLinear],
                        animations: { [weak self] in
             guard let self else { return }
             blurEffectView.layer.opacity = 1
-        }, completion: { isCompleted in
+        }, completion: { [weak self] isCompleted in
             if isCompleted {
                 UIView.animate(withDuration: 0.3,
                                delay: 0,
@@ -148,10 +182,16 @@ final class DeleteAlertView: UIView {
         }
         addSubview(mainView)
 
+        isUserInteractionEnabled = true
+        mainView.isUserInteractionEnabled = true
+        buttonsStack.isUserInteractionEnabled = true
+        backButton.isUserInteractionEnabled = true
+
         setupImageView()
         setupLabel()
         setupButtons()
         setupMainView()
+
     }
 
     private func setupMainView() {
@@ -190,6 +230,15 @@ final class DeleteAlertView: UIView {
     }
 
     private func setupButtons() {
+//        mainView.addSubview(backButton)
+//
+//        backButton.snp.makeConstraints { make in
+//            make.width.equalTo(127)
+//            make.height.equalTo(44)
+//            make.top.equalTo(textLabel.snp.bottom).offset(20)
+//            make.trailing.equalToSuperview()
+//        }
+
         buttonsStack.addArrangedSubview(deleteButton)
         buttonsStack.addArrangedSubview(backButton)
 
@@ -201,6 +250,7 @@ final class DeleteAlertView: UIView {
             make.width.equalTo(hStackWidth)
             make.height.equalTo(buttonHeight)
         }
+
     }
 
 }
