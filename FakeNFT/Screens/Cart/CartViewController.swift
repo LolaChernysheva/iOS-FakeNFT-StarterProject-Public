@@ -209,7 +209,6 @@ extension CartViewController: UITableViewDataSource {
         guard let cell = cell as? CartItemCell else {
             return UITableViewCell()
         }
-
         cell.configure(with: cards[indexPath.row]) { [weak self] in
             guard let self else { return }
             deleteAlert.show(
@@ -217,6 +216,7 @@ extension CartViewController: UITableViewDataSource {
                 with: view.frame.height,
                 image: cards[indexPath.row].image
             )
+            view.layoutSubviews()
         }
 
         return cell

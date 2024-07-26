@@ -11,6 +11,7 @@ import Kingfisher
 
 final class DeleteAlertView: UIView {
     // MARK: Properties
+    private var parent: UIViewController?
 
     private let mainView = UIView()
 
@@ -38,7 +39,6 @@ final class DeleteAlertView: UIView {
 
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
-        button.frame = CGRect(x: 0, y: 0, width: 127, height: 44)
         button.backgroundColor = UIColor.segmentActive
         button.setTitleColor(UIColor.background, for: .normal)
         button.setTitle(
@@ -92,13 +92,14 @@ final class DeleteAlertView: UIView {
     // MARK: Methods
 
     @objc private func dismissAlert() {
-        print("dismiss")
-        animateViewDismissing()
-        self.isHidden = true
+        guard let parent else { return }
+        animateViewDismissing(on: parent)
+        parent.view.layoutIfNeeded()
     }
 
     func show(on viewController: UIViewController, with height: CGFloat, image: URL) {
-        self.isHidden = false
+        parent = viewController
+        isHidden = false
         blurEffectView.layer.opacity = 0
         mainView.layer.opacity = 0
         mainView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
@@ -108,10 +109,7 @@ final class DeleteAlertView: UIView {
         animateViewAppearance(on: viewController)
         nftImageView.kf.setImage(with: image)
 
-        addTargetForButtons()
-    }
-
-    func addTargetForButtons() {
+        layoutIfNeeded()
         backButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
     }
 
@@ -131,8 +129,8 @@ final class DeleteAlertView: UIView {
         }
     }
 
-    private func animateViewDismissing() {
-        UIView.animate(withDuration: 0.3,
+    private func animateViewDismissing(on viewController: UIViewController) {
+        UIView.animate(withDuration: 0.2,
                        delay: 0,
                        options: [.curveEaseInOut],
                        animations: { [weak self] in
@@ -141,29 +139,32 @@ final class DeleteAlertView: UIView {
             mainView.layer.opacity = 0
         }, completion: { [weak self] isCompleted in
             if isCompleted {
-                UIView.animate(withDuration: 0.2,
+                UIView.animate(withDuration: 0.1,
                                delay: 0,
                                options: [.curveEaseInOut],
                                animations: { [weak self] in
                     self?.blurEffectView.layer.opacity = 0
+                    viewController.navigationController?.navigationBar.layer.opacity = 1
+                    viewController.tabBarController?.tabBar.layer.opacity = 1
+                }, completion: { _ in
+                    self?.isHidden = true
                 })
             }
         })
     }
 
     private func animateViewAppearance(on viewController: UIViewController) {
-        UIView.animate(withDuration: 0.2,
+        UIView.animate(withDuration: 0.1,
                        delay: 0,
                        options: [.curveLinear],
                        animations: { [weak self] in
             guard let self else { return }
             blurEffectView.layer.opacity = 1
+            viewController.navigationController?.navigationBar.layer.opacity = 0
+            viewController.tabBarController?.tabBar.layer.opacity = 0
         }, completion: { [weak self] isCompleted in
             if isCompleted {
-                viewController.navigationController?.navigationBar.isHidden = true
-                viewController.tabBarController?.tabBar.isHidden = true
-
-                UIView.animate(withDuration: 0.3,
+                UIView.animate(withDuration: 0.2,
                                delay: 0,
                                options: [.curveEaseInOut],
                                animations: { [weak self] in
@@ -191,15 +192,14 @@ final class DeleteAlertView: UIView {
         setupLabel()
         setupButtons()
         setupMainView()
-
     }
 
     private func setupMainView() {
         mainView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(200)
             make.centerX.equalToSuperview()
-            make.leading.lessThanOrEqualToSuperview().inset(57)
-            make.trailing.lessThanOrEqualToSuperview().inset(57)
+            make.height.equalTo(220)
+            make.width.equalTo(262)
         }
     }
 
@@ -230,15 +230,6 @@ final class DeleteAlertView: UIView {
     }
 
     private func setupButtons() {
-//        mainView.addSubview(backButton)
-//
-//        backButton.snp.makeConstraints { make in
-//            make.width.equalTo(127)
-//            make.height.equalTo(44)
-//            make.top.equalTo(textLabel.snp.bottom).offset(20)
-//            make.trailing.equalToSuperview()
-//        }
-
         buttonsStack.addArrangedSubview(deleteButton)
         buttonsStack.addArrangedSubview(backButton)
 
