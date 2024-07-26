@@ -116,12 +116,16 @@ struct DefaultNetworkClient: NetworkClient {
         }
 
         var urlRequest = URLRequest(url: endpoint)
+        print(request.httpMethod.rawValue)
         urlRequest.httpMethod = request.httpMethod.rawValue
+
+        if request.httpMethod == .put {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        }
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {
-            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
             urlRequest.httpBody = dtoEncoded
         }
 

@@ -12,6 +12,7 @@ import Kingfisher
 final class DeleteAlertView: UIView {
     // MARK: Properties
     private var parent: UIViewController?
+    private var onDelete: (() -> Void)?
 
     private let mainView = UIView()
 
@@ -52,7 +53,7 @@ final class DeleteAlertView: UIView {
     }()
 
     private let deleteButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.frame = CGRect(x: 0, y: 0, width: 127, height: 44)
         button.backgroundColor = UIColor.segmentActive
         button.setTitleColor(UIColor.textRed, for: .normal)
@@ -97,8 +98,22 @@ final class DeleteAlertView: UIView {
         parent.view.layoutIfNeeded()
     }
 
-    func show(on viewController: UIViewController, with height: CGFloat, image: URL) {
+    @objc private func deleteNft() {
+        guard let parent else { return }
+        onDelete?()
+        animateViewDismissing(on: parent)
+        parent.view.layoutIfNeeded()
+    }
+
+    func show(
+        on viewController: UIViewController,
+        with height: CGFloat,
+        image: URL,
+        onDelete: @escaping () -> Void
+    ) {
         parent = viewController
+        self.onDelete = onDelete
+
         isHidden = false
         blurEffectView.layer.opacity = 0
         mainView.layer.opacity = 0
@@ -111,6 +126,7 @@ final class DeleteAlertView: UIView {
 
         layoutIfNeeded()
         backButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(deleteNft), for: .touchUpInside)
     }
 
     private func add(on viewController: UIViewController, with height: CGFloat) {

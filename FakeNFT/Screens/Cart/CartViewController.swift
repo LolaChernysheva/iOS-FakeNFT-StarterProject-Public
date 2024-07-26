@@ -10,6 +10,7 @@ import SnapKit
 
 protocol CartViewProtocol: AnyObject {
     func update(with data: CartScreenModel)
+    func updateAfterDelete(with data: CartScreenModel)
     func showProgressHud()
     func hideProgressHud()
 }
@@ -19,10 +20,8 @@ final class CartViewController: UIViewController {
     // MARK: Public Properties
 
     private let presenter: CartPresenterProtocol
-
-    // MARK: Private Properties
-
     private var cards = [CartItemModel]()
+    private var lastDeletedIndexPath: IndexPath?
 
     private lazy var paymentPanel = PaymentPanelView()
     private lazy var stubView = CartStubView(text: "Корзина пуста")
@@ -145,10 +144,6 @@ final class CartViewController: UIViewController {
     private func showMainViews(with data: CartScreenModel) {
         if !nftTableView.isDescendant(of: view) {
             setupViews()
-            paymentPanel.set(
-                count: data.itemsCount,
-                price: data.totalPrice
-            )
         }
         if nftTableView.isHidden {
             [nftTableView, paymentPanel].forEach {
@@ -159,6 +154,15 @@ final class CartViewController: UIViewController {
             nftTableView.reloadData()
             stubView.isHidden = true
         }
+        paymentPanel.set(
+            count: data.itemsCount,
+            price: data.totalPrice
+        )
+    }
+
+    private func deleteNft(with id: String, at indexPath: IndexPath) {
+        presenter.deleteNft(id: cards[indexPath.row].id)
+        lastDeletedIndexPath = indexPath
     }
 }
 
@@ -176,6 +180,13 @@ extension CartViewController: CartViewProtocol {
         } else {
             showMainViews(with: data)
             stubView.isHidden = true
+        }
+    }
+
+    func updateAfterDelete(with data: CartScreenModel) {
+        update(with: data)
+        nftTableView.performBatchUpdates {
+            nftTableView.deleteRows(at: [lastDeletedIndexPath!], with: .automatic)
         }
     }
 
@@ -214,21 +225,23 @@ extension CartViewController: UITableViewDataSource {
             deleteAlert.show(
                 on: self,
                 with: view.frame.height,
-                image: cards[indexPath.row].image
+                image: cards[indexPath.row].image,
+                onDelete: { [weak self] in
+                    guard let self else { return }
+                    self.deleteNft(with: cards[indexPath.row].id, at: indexPath)
+                }
             )
             view.layoutSubviews()
         }
 
         return cell
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
-    }
 }
 
 // MARK: UITableViewDelegate
 
 extension CartViewController: UITableViewDelegate {
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
 }
