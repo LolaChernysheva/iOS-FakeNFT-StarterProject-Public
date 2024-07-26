@@ -105,7 +105,7 @@ final class DeleteAlertView: UIView {
         if !self.isDescendant(of: viewController.view) {
             add(on: viewController, with: height)
         }
-        animateViewAppearance()
+        animateViewAppearance(on: viewController)
         nftImageView.kf.setImage(with: image)
 
         addTargetForButtons()
@@ -129,9 +129,6 @@ final class DeleteAlertView: UIView {
             make.trailing.equalTo(view.snp.trailing)
             make.bottom.equalTo(view.snp.bottom)
         }
-
-        viewController.navigationController?.navigationBar.isHidden = true
-        viewController.tabBarController?.tabBar.isHidden = true
     }
 
     private func animateViewDismissing() {
@@ -154,7 +151,7 @@ final class DeleteAlertView: UIView {
         })
     }
 
-    private func animateViewAppearance() {
+    private func animateViewAppearance(on viewController: UIViewController) {
         UIView.animate(withDuration: 0.2,
                        delay: 0,
                        options: [.curveLinear],
@@ -163,6 +160,9 @@ final class DeleteAlertView: UIView {
             blurEffectView.layer.opacity = 1
         }, completion: { [weak self] isCompleted in
             if isCompleted {
+                viewController.navigationController?.navigationBar.isHidden = true
+                viewController.tabBarController?.tabBar.isHidden = true
+
                 UIView.animate(withDuration: 0.3,
                                delay: 0,
                                options: [.curveEaseInOut],

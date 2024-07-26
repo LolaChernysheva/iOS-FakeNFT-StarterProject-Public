@@ -177,8 +177,6 @@ extension CartViewController: CartViewProtocol {
             showMainViews(with: data)
             stubView.isHidden = true
         }
-
-        deleteAlert.show(on: self, with: view.frame.height, image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/NFT/Yellow/Helga/1.png")!)
     }
 
     func showProgressHud() {
@@ -212,7 +210,14 @@ extension CartViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        cell.configure(with: cards[indexPath.row])
+        cell.configure(with: cards[indexPath.row]) { [weak self] in
+            guard let self else { return }
+            deleteAlert.show(
+                on: self,
+                with: view.frame.height,
+                image: cards[indexPath.row].image
+            )
+        }
 
         return cell
     }
