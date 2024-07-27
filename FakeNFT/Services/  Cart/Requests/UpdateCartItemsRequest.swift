@@ -18,7 +18,6 @@ struct UpdateCartItemsRequest: NetworkRequest {
             let sepSymbol = index == 0 ? "?" : "&"
             url += "\(sepSymbol)nfts=\(ids[index])"
         }
-        print(url)
         self.endpoint = URL(string: url)
         self.token = RequestConstants.token
         self.httpMethod = .put

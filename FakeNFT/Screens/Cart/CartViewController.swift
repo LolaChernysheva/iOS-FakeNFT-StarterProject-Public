@@ -10,18 +10,17 @@ import SnapKit
 
 protocol CartViewProtocol: AnyObject {
     func update(with data: CartScreenModel)
-    func updateAfterDelete(with data: CartScreenModel)
+    func updateAfterDelete(with data: CartScreenModel, deletedId: String)
     func showProgressHud()
     func hideProgressHud()
 }
 
 final class CartViewController: UIViewController {
 
-    // MARK: Public Properties
+    // MARK: Properties
 
     private let presenter: CartPresenterProtocol
     private var cards = [CartItemModel]()
-    private var lastDeletedIndexPath: IndexPath?
 
     private lazy var paymentPanel = PaymentPanelView()
     private lazy var stubView = CartStubView(text: "Корзина пуста")
@@ -159,11 +158,6 @@ final class CartViewController: UIViewController {
             price: data.totalPrice
         )
     }
-
-    private func deleteNft(with id: String, at indexPath: IndexPath) {
-        presenter.deleteNft(id: cards[indexPath.row].id)
-        lastDeletedIndexPath = indexPath
-    }
 }
 
 // MARK: CartViewProtocol
@@ -183,10 +177,13 @@ extension CartViewController: CartViewProtocol {
         }
     }
 
-    func updateAfterDelete(with data: CartScreenModel) {
+    func updateAfterDelete(with data: CartScreenModel, deletedId: String) {
+        guard let row = (cards.firstIndex { $0.id == deletedId }) else { return }
+        let lastDeletedIndexPath = IndexPath(row: row, section: 0)
+
         update(with: data)
         nftTableView.performBatchUpdates {
-            nftTableView.deleteRows(at: [lastDeletedIndexPath!], with: .automatic)
+            nftTableView.deleteRows(at: [lastDeletedIndexPath], with: .automatic)
         }
     }
 
@@ -220,15 +217,15 @@ extension CartViewController: UITableViewDataSource {
         guard let cell = cell as? CartItemCell else {
             return UITableViewCell()
         }
-        cell.configure(with: cards[indexPath.row]) { [weak self] in
+        let model = cards[indexPath.row]
+        cell.configure(with: model) { [weak self] in
             guard let self else { return }
             deleteAlert.show(
                 on: self,
                 with: view.frame.height,
-                image: cards[indexPath.row].image,
-                onDelete: { [weak self] in
-                    guard let self else { return }
-                    self.deleteNft(with: cards[indexPath.row].id, at: indexPath)
+                image: model.image,
+                onDelete: { [presenter] in
+                    presenter.deleteNft(id: model.id)
                 }
             )
             view.layoutSubviews()

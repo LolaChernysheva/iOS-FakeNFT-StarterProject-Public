@@ -116,7 +116,6 @@ struct DefaultNetworkClient: NetworkClient {
         }
 
         var urlRequest = URLRequest(url: endpoint)
-        print(request.httpMethod.rawValue)
         urlRequest.httpMethod = request.httpMethod.rawValue
 
         if request.httpMethod == .put {

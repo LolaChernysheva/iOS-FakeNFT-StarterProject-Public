@@ -51,7 +51,7 @@ extension CartPresenter: CartPresenterProtocol {
             case .success(let ids):
                 guard let self else { return }
                 self.ids = ids
-                self.view?.updateAfterDelete(with: CartScreenModel(items: self.items))
+                self.view?.updateAfterDelete(with: CartScreenModel(items: self.items), deletedId: id)
             case .failure(let error):
                 print(error)
             }
