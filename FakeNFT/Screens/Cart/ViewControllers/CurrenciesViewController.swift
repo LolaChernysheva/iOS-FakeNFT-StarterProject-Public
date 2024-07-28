@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-protocol CurrenciesViewControllerProtocol: AnyObject {
+protocol CurrenciesViewControllerProtocol: AnyObject, Loadable {
     func setup(with data: CurrenciesScreenModel)
 }
 
@@ -21,6 +21,14 @@ final class CurrenciesViewController: UIViewController {
     private let paymentPanel = FinalPaymentBottomPanel {
 
     }
+    
+    private var progressHud: UIActivityIndicatorView = {
+        let progress = UIActivityIndicatorView(style: .medium)
+        progress.hidesWhenStopped = true
+        progress.color = UIColor.segmentActive
+
+        return progress
+    }()
 
     private let currenciesCollection: UICollectionView = {
         let collection = UICollectionView(
@@ -93,6 +101,14 @@ final class CurrenciesViewController: UIViewController {
 // MARK: CurrenciesViewControllerProtocol
 
 extension CurrenciesViewController: CurrenciesViewControllerProtocol {
+    func showProgressHud() {
+        progressHud.startAnimating()
+    }
+    
+    func hideProgressHud() {
+        progressHud.stopAnimating()
+    }
+    
     func setup(with data: CurrenciesScreenModel) {
         currencies = data.currencies
         currenciesCollection.reloadData()

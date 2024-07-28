@@ -8,11 +8,9 @@
 import UIKit
 import SnapKit
 
-protocol CartViewProtocol: AnyObject {
+protocol CartViewProtocol: AnyObject, Loadable {
     func update(with data: CartScreenModel)
     func updateAfterDelete(with data: CartScreenModel, deletedId: String)
-    func showProgressHud()
-    func hideProgressHud()
 }
 
 final class CartViewController: UIViewController {
