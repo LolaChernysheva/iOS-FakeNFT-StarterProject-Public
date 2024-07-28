@@ -8,12 +8,19 @@
 import Foundation
 
 protocol CartPresenterProtocol: AnyObject {
+    var needsReloadAfterReturning: Bool { get set }
     func setup()
     func deleteNft(id: String)
 }
 
 final class CartPresenter {
+    // MARK: Public Properties
+
     weak var view: CartViewProtocol?
+    var needsReloadAfterReturning = true
+
+    // MARK: Private Properties
+
     private let cartService: CartServiceProtocol
     private var ids: [String] = []
     private var items = [CartItemModel]()
@@ -59,6 +66,10 @@ extension CartPresenter: CartPresenterProtocol {
     }
 
     func setup() {
+        if !needsReloadAfterReturning {
+            needsReloadAfterReturning = true
+            return
+        }
         view?.showProgressHud()
         buildScreenModel { [weak self] result in
             switch result {
