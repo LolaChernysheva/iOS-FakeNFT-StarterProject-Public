@@ -22,7 +22,10 @@ final class CartViewController: UIViewController {
     private let presenter: CartPresenterProtocol
     private var cards = [CartItemModel]()
 
-    private lazy var paymentPanel = PaymentPanelView()
+    private lazy var paymentPanel = PaymentPanelView { [weak self] in
+        let currenciesVC = ModulesAssembly.currenciesScreenBuilder()
+        self?.navigationController?.pushViewController(currenciesVC, animated: true)
+    }
     private lazy var stubView = CartStubView(text: "Корзина пуста")
     private lazy var deleteAlert = DeleteAlertView()
 
@@ -120,6 +123,11 @@ final class CartViewController: UIViewController {
             target: nil,
             action: nil
         )
+
+        navigationItem.backBarButtonItem = UIBarButtonItem()
+        navigationItem.backButtonTitle = ""
+        navigationItem.backBarButtonItem?.tintColor = UIColor.segmentActive
+
         filterButton.tintColor = UIColor.segmentActive
         navigationItem.setRightBarButton(filterButton, animated: false)
     }

@@ -54,4 +54,12 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
 
         return cartViewController
     }
+
+    static func currenciesScreenBuilder() -> UIViewController {
+        let currenciesPresenter = CurrenciesPresenter()
+        let currenciesViewController = CurrenciesViewController(presenter: currenciesPresenter)
+        currenciesPresenter.view = currenciesViewController
+
+        return currenciesViewController
+    }
 }

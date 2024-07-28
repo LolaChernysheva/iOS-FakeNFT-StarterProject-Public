@@ -9,6 +9,7 @@ import UIKit
 
 final class PaymentPanelView: UIView {
     // MARK: Properties
+    private let onTap: () -> Void
 
     private let countLabel: UILabel = {
         let label = UILabel()
@@ -29,7 +30,7 @@ final class PaymentPanelView: UIView {
     }()
 
     private let payButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.setTitle(
             NSLocalizedString("К оплате", comment: ""),
             for: .normal
@@ -47,7 +48,9 @@ final class PaymentPanelView: UIView {
 
     // MARK: Init
 
-    init() {
+    init(onTap: @escaping () -> Void) {
+        self.onTap = onTap
+
         super.init(frame: .zero)
 
         configure()
@@ -65,7 +68,7 @@ final class PaymentPanelView: UIView {
     }
 
     @objc private func startPayment() {
-        print("start payment")
+        onTap()
     }
 
     private func configure() {
