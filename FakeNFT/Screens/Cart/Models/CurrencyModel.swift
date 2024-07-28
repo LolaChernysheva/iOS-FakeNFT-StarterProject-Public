@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CurrencyModel {
+struct CurrencyModel: Decodable {
     let title: String
     let name: String
     let image: URL?

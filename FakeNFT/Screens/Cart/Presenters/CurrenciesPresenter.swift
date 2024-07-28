@@ -25,12 +25,15 @@ final class CurrenciesPresenter {
 
     // MARK: Methods
 
-    private func buildScreenModel() -> CurrenciesScreenModel {
-        return CurrenciesScreenModel(currencies: [
-            CurrencyModel(title: "Shiba_Inu", name: "SHIB", image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/Currencies/Shiba_Inu_(SHIB).png"), id: "0"),
-            CurrencyModel(title: "Cardano", name: "ADA", image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/Currencies/Cardano_(ADA).png"), id: "1"),
-            CurrencyModel(title: "Tether", name: "USDT", image: URL(string: "https://code.s3.yandex.net/Mobile/iOS/Currencies/Tether_(USDT).png"), id: "2")
-        ])
+    private func buildScreenModel(onResponse: @escaping (Result<CurrenciesScreenModel, Error>) -> Void) {
+        currenciesService.getCurrencies { result in
+            switch result {
+            case .success(let currencies):
+                onResponse(.success(CurrenciesScreenModel(currencies: currencies)))
+            case .failure(let error):
+                onResponse(.failure(error))
+            }
+        }
     }
 }
 
@@ -38,6 +41,15 @@ final class CurrenciesPresenter {
 
 extension CurrenciesPresenter: CurrenciesPresenterProtocol {
     func setupData() {
-        view?.setup(with: buildScreenModel())
+        view?.showProgressHud()
+        buildScreenModel { [view] result in
+            switch result {
+            case .success(let model):
+                view?.hideProgressHud()
+                view?.setup(with: model)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ final class CurrenciesViewController: UIViewController {
     private let paymentPanel = FinalPaymentBottomPanel {
 
     }
-    
+
     private var progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
         progress.hidesWhenStopped = true
@@ -84,8 +84,9 @@ final class CurrenciesViewController: UIViewController {
     }
 
     private func setupSubviews() {
-        view.addSubview(currenciesCollection)
-        view.addSubview(paymentPanel)
+        [currenciesCollection, paymentPanel, progressHud].forEach {
+            view.addSubview($0)
+        }
 
         currenciesCollection.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -94,6 +95,10 @@ final class CurrenciesViewController: UIViewController {
         paymentPanel.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-152)
+        }
+
+        progressHud.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }
@@ -104,11 +109,11 @@ extension CurrenciesViewController: CurrenciesViewControllerProtocol {
     func showProgressHud() {
         progressHud.startAnimating()
     }
-    
+
     func hideProgressHud() {
         progressHud.stopAnimating()
     }
-    
+
     func setup(with data: CurrenciesScreenModel) {
         currencies = data.currencies
         currenciesCollection.reloadData()
