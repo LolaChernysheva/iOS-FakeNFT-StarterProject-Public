@@ -18,6 +18,10 @@ final class CurrenciesViewController: UIViewController {
     private let presenter: CurrenciesPresenter
     private var currencies: [CurrencyModel] = []
 
+    private let paymentPanel = FinalPaymentBottomPanel {
+
+    }
+
     private let currenciesCollection: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
@@ -64,15 +68,6 @@ final class CurrenciesViewController: UIViewController {
             .foregroundColor: UIColor.segmentActive
         ]
 
-//        self.navigationController?.navigationBar.backIndicatorImage = Asset.Images.backward
-//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = Asset.Images.backward
-//        self.navigationController?.navigationBar.backItem?.title = ""
-//        self.navigationItem.backBarButtonItem?.image = Asset.Images.backward
-//        self.navigationItem.backButtonTitle = ""
-        // navigationItem.backBarButtonItem?.tintColor = UIColor.segmentActive
-
-        // self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-
         currenciesCollection.dataSource = self
         currenciesCollection.delegate = self
 
@@ -82,12 +77,20 @@ final class CurrenciesViewController: UIViewController {
 
     private func setupSubviews() {
         view.addSubview(currenciesCollection)
+        view.addSubview(paymentPanel)
 
         currenciesCollection.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+
+        paymentPanel.snp.makeConstraints { make in
+            make.horizontalEdges.bottom.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-152)
+        }
     }
 }
+
+// MARK: CurrenciesViewControllerProtocol
 
 extension CurrenciesViewController: CurrenciesViewControllerProtocol {
     func setup(with data: CurrenciesScreenModel) {
@@ -95,6 +98,8 @@ extension CurrenciesViewController: CurrenciesViewControllerProtocol {
         currenciesCollection.reloadData()
     }
 }
+
+// MARK: UICollectionViewDataSource
 
 extension CurrenciesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -118,6 +123,8 @@ extension CurrenciesViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
+// MARK: UICollectionViewDelegateFlowLayout
 
 extension CurrenciesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(

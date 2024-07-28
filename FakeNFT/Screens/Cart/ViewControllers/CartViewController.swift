@@ -24,6 +24,7 @@ final class CartViewController: UIViewController {
 
     private lazy var paymentPanel = PaymentPanelView { [weak self] in
         let currenciesVC = ModulesAssembly.currenciesScreenBuilder()
+        currenciesVC.hidesBottomBarWhenPushed = true
         self?.navigationController?.pushViewController(currenciesVC, animated: true)
     }
     private lazy var stubView = CartStubView(text: "Корзина пуста")
