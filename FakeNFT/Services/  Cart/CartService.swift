@@ -18,7 +18,19 @@ protocol CartServiceProtocol {
 }
 
 final class CartService: CartServiceProtocol {
-    private let networkClient: NetworkClient = DefaultNetworkClient()
+    private let networkClient: NetworkClient
+
+    // MARK: Init
+
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
+    }
+
+    convenience init() {
+        self.init(networkClient: DefaultNetworkClient())
+    }
+
+    // MARK: Methods
 
     func getCartItems(
         onResponse: @escaping (Result<([CartItemModel], [String]), Error>) -> Void

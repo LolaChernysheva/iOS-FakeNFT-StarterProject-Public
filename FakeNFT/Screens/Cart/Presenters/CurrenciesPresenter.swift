@@ -12,7 +12,18 @@ protocol CurrenciesPresenterProtocol {
 }
 
 final class CurrenciesPresenter {
+    // MARK: Properties
+
     weak var view: CurrenciesViewControllerProtocol?
+    private let currenciesService: CurrenciesServiceProtocol
+
+    // MARK: Init
+
+    init(currenciesService: CurrenciesServiceProtocol) {
+        self.currenciesService = currenciesService
+    }
+
+    // MARK: Methods
 
     private func buildScreenModel() -> CurrenciesScreenModel {
         return CurrenciesScreenModel(currencies: [

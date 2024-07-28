@@ -56,7 +56,7 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
     }
 
     static func currenciesScreenBuilder() -> UIViewController {
-        let currenciesPresenter = CurrenciesPresenter()
+        let currenciesPresenter = CurrenciesPresenter(currenciesService: CurrenciesService())
         let currenciesViewController = CurrenciesViewController(presenter: currenciesPresenter)
         currenciesPresenter.view = currenciesViewController
 
