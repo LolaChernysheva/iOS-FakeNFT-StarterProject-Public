@@ -14,6 +14,14 @@ final class CurrencyCollectionCell: UICollectionViewCell {
 
     static let reuseId = "CurrencyCollectionCell"
 
+    private let imageBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.segmentActive
+        view.layer.cornerRadius = 6
+
+        return view
+    }()
+
     private let currencyImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -79,15 +87,19 @@ final class CurrencyCollectionCell: UICollectionViewCell {
     }
 
     private func setupSubviews() {
-        contentView.addSubview(currencyImageView)
-        contentView.addSubview(fullNameLabel)
-        contentView.addSubview(shortNameLabel)
+        [imageBackgroundView, currencyImageView, fullNameLabel, shortNameLabel].forEach {
+            contentView.addSubview($0)
+        }
 
-        currencyImageView.snp.makeConstraints { make in
+        imageBackgroundView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(12)
             make.centerY.equalToSuperview()
-            make.width.equalTo(36)
-            make.height.equalTo(36)
+            make.size.equalTo(36)
+        }
+
+        currencyImageView.snp.makeConstraints { make in
+            make.center.equalTo(imageBackgroundView.snp.center)
+            make.size.equalTo(31.5)
         }
 
         shortNameLabel.snp.makeConstraints { make in
