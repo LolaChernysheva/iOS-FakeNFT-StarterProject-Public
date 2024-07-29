@@ -16,6 +16,7 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
 
     static func mainScreenBuilder() -> UIViewController {
         let tabbarController = UITabBarController()
+        tabbarController.tabBar.unselectedItemTintColor = UIColor.segmentActive
 
         let profileViewController = Self.profileScreenBuilder()
         let navCartViewController = UINavigationController(

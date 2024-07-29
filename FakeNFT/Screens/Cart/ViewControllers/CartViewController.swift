@@ -137,7 +137,9 @@ final class CartViewController: UIViewController {
         nftTableView.delegate = self
 
         nftTableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide.snp.edges)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(paymentPanel.snp.top)
         }
     }
 
