@@ -164,6 +164,7 @@ extension CurrenciesViewController: UICollectionViewDelegateFlowLayout {
         guard let cell = getCell(collectionView, at: indexPath) else { return }
 
         cell.select()
+        paymentPanel.unlockButton()
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

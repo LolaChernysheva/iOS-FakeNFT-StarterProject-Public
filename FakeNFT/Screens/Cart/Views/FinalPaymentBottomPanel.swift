@@ -78,8 +78,14 @@ final class FinalPaymentBottomPanel: UIView {
 
     // MARK: Methods
 
-    @objc private func showWebView() {
-        onTap()
+    func blockButton() {
+        paymentButton.isEnabled = false
+        paymentButton.backgroundColor = UIColor.notEnabled
+    }
+
+    func unlockButton() {
+        paymentButton.isEnabled = true
+        paymentButton.backgroundColor = UIColor.segmentActive
     }
 
     private func configure() {
@@ -88,6 +94,7 @@ final class FinalPaymentBottomPanel: UIView {
         layer.cornerRadius = 12
 
         paymentButton.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
+        blockButton()
 
         setupSubviews()
     }
@@ -109,5 +116,9 @@ final class FinalPaymentBottomPanel: UIView {
             make.top.equalTo(vStack.snp.bottom).offset(16)
             make.height.equalTo(60)
         }
+    }
+
+    @objc private func showWebView() {
+        onTap()
     }
 }
