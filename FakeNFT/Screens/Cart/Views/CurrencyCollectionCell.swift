@@ -42,7 +42,7 @@ final class CurrencyCollectionCell: UICollectionViewCell {
 
     // MARK: Life Cycle
 
-    override init (frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
 
         layer.cornerRadius = 12
@@ -67,6 +67,15 @@ final class CurrencyCollectionCell: UICollectionViewCell {
         currencyImageView.kf.setImage(with: model.image)
         fullNameLabel.text = model.title
         shortNameLabel.text = model.name
+    }
+
+    func select() {
+        layer.borderColor = UIColor.segmentActive.cgColor
+        layer.borderWidth = 1
+    }
+
+    func deselect() {
+        layer.borderWidth = 0
     }
 
     private func setupSubviews() {

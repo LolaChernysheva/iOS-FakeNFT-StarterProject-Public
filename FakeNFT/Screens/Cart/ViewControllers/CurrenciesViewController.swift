@@ -22,7 +22,7 @@ final class CurrenciesViewController: UIViewController {
 
     }
 
-    private var progressHud: UIActivityIndicatorView = {
+    private let progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
         progress.hidesWhenStopped = true
         progress.color = UIColor.segmentActive
@@ -37,6 +37,7 @@ final class CurrenciesViewController: UIViewController {
         )
         collection.backgroundColor = UIColor.background
         collection.showsHorizontalScrollIndicator = false
+        collection.allowsMultipleSelection = false
 
         collection.register(
             CurrencyCollectionCell.self,
@@ -101,6 +102,17 @@ final class CurrenciesViewController: UIViewController {
             make.center.equalToSuperview()
         }
     }
+
+    private func getCell(
+        _ collectionView: UICollectionView,
+        at indexPath: IndexPath
+    ) -> CurrencyCollectionCell? {
+        guard let cell = collectionView.cellForItem(
+            at: indexPath
+        ) as? CurrencyCollectionCell else { return nil }
+
+        return cell
+    }
 }
 
 // MARK: CurrenciesViewControllerProtocol
@@ -134,10 +146,7 @@ extension CurrenciesViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CurrencyCollectionCell.reuseId,
             for: indexPath
-        ) as? CurrencyCollectionCell
-        else {
-            return UICollectionViewCell()
-        }
+        ) as? CurrencyCollectionCell else { return UICollectionViewCell() }
 
         cell.configure(with: currencies[indexPath.item])
 
@@ -148,6 +157,23 @@ extension CurrenciesViewController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegateFlowLayout
 
 extension CurrenciesViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard let cell = getCell(collectionView, at: indexPath) else { return }
+
+        cell.select()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = getCell(collectionView, at: indexPath) else {
+            return
+        }
+
+        cell.deselect()
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
