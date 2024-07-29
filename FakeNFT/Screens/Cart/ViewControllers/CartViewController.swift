@@ -14,7 +14,6 @@ protocol CartViewProtocol: AnyObject, Loadable {
 }
 
 final class CartViewController: UIViewController {
-
     // MARK: Properties
 
     private let presenter: CartPresenterProtocol

@@ -9,6 +9,7 @@ import UIKit
 
 final class PaymentPanelView: UIView {
     // MARK: Properties
+    
     private let onTap: () -> Void
 
     private let countLabel: UILabel = {

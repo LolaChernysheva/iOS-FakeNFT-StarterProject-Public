@@ -257,7 +257,5 @@ final class DeleteAlertView: UIView {
             make.width.equalTo(hStackWidth)
             make.height.equalTo(buttonHeight)
         }
-
     }
-
 }
