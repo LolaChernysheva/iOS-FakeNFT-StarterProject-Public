@@ -119,8 +119,8 @@ final class CartViewController: UIViewController {
         let filterButton = UIBarButtonItem(
             image: Asset.Images.sort,
             style: .plain,
-            target: nil,
-            action: nil
+            target: self,
+            action: #selector(showFilters)
         )
 
         navigationItem.backBarButtonItem = UIBarButtonItem()
@@ -166,6 +166,32 @@ final class CartViewController: UIViewController {
             count: data.itemsCount,
             price: data.totalPrice
         )
+    }
+
+    @objc private func showFilters() {
+        let actionSheet = UIAlertController(
+            title: nil,
+            message: NSLocalizedString("Сортировка", comment: ""),
+            preferredStyle: .actionSheet
+        )
+        let titles = [
+            NSLocalizedString("По цене", comment: ""),
+            NSLocalizedString("По рейтингу", comment: ""),
+            NSLocalizedString("По названию", comment: ""),
+            NSLocalizedString("Закрыть", comment: "")
+        ]
+
+        for index in 0..<4 {
+            actionSheet.addAction(
+                UIAlertAction(
+                    title: titles[index],
+                    style: index == 3 ? .cancel : .default,
+                    handler: { _ in }
+                )
+            )
+        }
+
+        present(actionSheet, animated: true)
     }
 }
 
