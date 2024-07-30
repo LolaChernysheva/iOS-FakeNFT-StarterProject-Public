@@ -58,7 +58,14 @@ final class PaymentService: PaymentServiceProtocol {
             type: PaymentDTO.self) { result in
                 switch result {
                 case .success(let payment):
-                    onResponse(.success(payment))
+                    CartService().updateCart([]) { result in
+                        switch result {
+                        case .success:
+                            onResponse(.success(payment))
+                        case .failure(let error):
+                            onResponse(.failure(error))
+                        }
+                    }
                 case .failure(let error):
                     onResponse(.failure(error))
                 }
