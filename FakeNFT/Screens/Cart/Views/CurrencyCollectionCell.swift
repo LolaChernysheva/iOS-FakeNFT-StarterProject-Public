@@ -67,7 +67,7 @@ final class CurrencyCollectionCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         fullNameLabel.text = nil
         shortNameLabel.text = nil
         currencyImageView.image = nil

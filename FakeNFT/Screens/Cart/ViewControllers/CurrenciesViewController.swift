@@ -17,9 +17,13 @@ final class CurrenciesViewController: UIViewController {
 
     private let presenter: CurrenciesPresenter
     private var currencies: [CurrencyModel] = []
+    private var userAgreementLink: URL?
 
-    private let paymentPanel = FinalPaymentBottomPanel {
+    private lazy var paymentPanel = FinalPaymentBottomPanel { [weak self] in
+        let userAgreementVC = UserAgreementViewController(link: self?.userAgreementLink)
+        userAgreementVC.modalPresentationStyle = .pageSheet
 
+        self?.present(userAgreementVC, animated: true)
     }
 
     private let progressHud: UIActivityIndicatorView = {
@@ -127,6 +131,7 @@ extension CurrenciesViewController: CurrenciesViewControllerProtocol {
     }
 
     func setup(with data: CurrenciesScreenModel) {
+        userAgreementLink = data.userAgreementLink
         currencies = data.currencies
         currenciesCollection.reloadData()
     }
