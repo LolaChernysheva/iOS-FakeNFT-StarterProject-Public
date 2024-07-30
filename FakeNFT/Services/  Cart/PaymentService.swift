@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol CurrenciesServiceProtocol {
+protocol PaymentServiceProtocol {
     func getCurrencies(
         onResponse: @escaping (Result<[CurrencyModel], Error>) -> Void
     )
 }
 
-final class CurrenciesService: CurrenciesServiceProtocol {
+final class PaymentService: PaymentServiceProtocol {
     private let networkClient: NetworkClient
 
     // MARK: Init

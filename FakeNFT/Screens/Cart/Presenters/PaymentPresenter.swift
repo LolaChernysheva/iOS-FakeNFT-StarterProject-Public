@@ -1,5 +1,5 @@
 //
-//  CurrenciesPresenter.swift
+//  PaymentPresenter.swift
 //  FakeNFT
 //
 //  Created by Александр Плешаков on 27.07.2024.
@@ -7,19 +7,19 @@
 
 import Foundation
 
-protocol CurrenciesPresenterProtocol {
+protocol PaymentPresenterProtocol {
     func setupData()
 }
 
-final class CurrenciesPresenter {
+final class PaymentPresenter {
     // MARK: Properties
 
-    weak var view: CurrenciesViewControllerProtocol?
-    private let currenciesService: CurrenciesServiceProtocol
+    weak var view: PaymentViewControllerProtocol?
+    private let currenciesService: PaymentServiceProtocol
 
     // MARK: Init
 
-    init(currenciesService: CurrenciesServiceProtocol) {
+    init(currenciesService: PaymentServiceProtocol) {
         self.currenciesService = currenciesService
     }
 
@@ -37,9 +37,9 @@ final class CurrenciesPresenter {
     }
 }
 
-// MARK: CurrenciesPresenterProtocol
+// MARK: PaymentPresenterProtocol
 
-extension CurrenciesPresenter: CurrenciesPresenterProtocol {
+extension PaymentPresenter: PaymentPresenterProtocol {
     func setupData() {
         view?.showProgressHud()
         buildScreenModel { [view] result in
@@ -51,5 +51,9 @@ extension CurrenciesPresenter: CurrenciesPresenterProtocol {
                 print(error)
             }
         }
+    }
+    
+    func pay(in currencyId: String) {
+        
     }
 }

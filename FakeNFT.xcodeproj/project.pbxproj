@@ -34,10 +34,10 @@
 		162E11A12C554E6C002E0BC2 /* CurrencyCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11A02C554E6C002E0BC2 /* CurrencyCollectionCell.swift */; };
 		162E11A32C555563002E0BC2 /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11A22C555563002E0BC2 /* CurrencyModel.swift */; };
 		162E11A52C55583C002E0BC2 /* CurrenciesScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11A42C55583C002E0BC2 /* CurrenciesScreenModel.swift */; };
-		162E11A92C55650F002E0BC2 /* CurrenciesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11A82C55650F002E0BC2 /* CurrenciesViewController.swift */; };
-		162E11AB2C5565CB002E0BC2 /* CurrenciesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11AA2C5565CB002E0BC2 /* CurrenciesPresenter.swift */; };
+		162E11A92C55650F002E0BC2 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11A82C55650F002E0BC2 /* PaymentViewController.swift */; };
+		162E11AB2C5565CB002E0BC2 /* PaymentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11AA2C5565CB002E0BC2 /* PaymentPresenter.swift */; };
 		162E11AD2C567989002E0BC2 /* FinalPaymentBottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11AC2C567989002E0BC2 /* FinalPaymentBottomPanel.swift */; };
-		162E11AF2C568A88002E0BC2 /* CurrenciesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11AE2C568A88002E0BC2 /* CurrenciesService.swift */; };
+		162E11AF2C568A88002E0BC2 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11AE2C568A88002E0BC2 /* PaymentService.swift */; };
 		162E11B12C568B3C002E0BC2 /* CurrenciesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11B02C568B3C002E0BC2 /* CurrenciesRequest.swift */; };
 		162E11B42C56A91F002E0BC2 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11B32C56A91F002E0BC2 /* Loadable.swift */; };
 		162E11D62C58FBE7002E0BC2 /* UserAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162E11D52C58FBE6002E0BC2 /* UserAgreementViewController.swift */; };
@@ -120,10 +120,10 @@
 		162E11A02C554E6C002E0BC2 /* CurrencyCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCollectionCell.swift; sourceTree = "<group>"; };
 		162E11A22C555563002E0BC2 /* CurrencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModel.swift; sourceTree = "<group>"; };
 		162E11A42C55583C002E0BC2 /* CurrenciesScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesScreenModel.swift; sourceTree = "<group>"; };
-		162E11A82C55650F002E0BC2 /* CurrenciesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesViewController.swift; sourceTree = "<group>"; };
-		162E11AA2C5565CB002E0BC2 /* CurrenciesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesPresenter.swift; sourceTree = "<group>"; };
+		162E11A82C55650F002E0BC2 /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
+		162E11AA2C5565CB002E0BC2 /* PaymentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPresenter.swift; sourceTree = "<group>"; };
 		162E11AC2C567989002E0BC2 /* FinalPaymentBottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalPaymentBottomPanel.swift; sourceTree = "<group>"; };
-		162E11AE2C568A88002E0BC2 /* CurrenciesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesService.swift; sourceTree = "<group>"; };
+		162E11AE2C568A88002E0BC2 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		162E11B02C568B3C002E0BC2 /* CurrenciesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesRequest.swift; sourceTree = "<group>"; };
 		162E11B32C56A91F002E0BC2 /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		162E11D52C58FBE6002E0BC2 /* UserAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgreementViewController.swift; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				16243B3F2C466570005A4CA9 /* CartViewController.swift */,
-				162E11A82C55650F002E0BC2 /* CurrenciesViewController.swift */,
+				162E11A82C55650F002E0BC2 /* PaymentViewController.swift */,
 				162E11D52C58FBE6002E0BC2 /* UserAgreementViewController.swift */,
 			);
 			path = ViewControllers;
@@ -297,7 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				16243B412C46657D005A4CA9 /* CartPresenter.swift */,
-				162E11AA2C5565CB002E0BC2 /* CurrenciesPresenter.swift */,
+				162E11AA2C5565CB002E0BC2 /* PaymentPresenter.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -314,7 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				16EE8F062C4BC25500B02EF9 /* CartService.swift */,
-				162E11AE2C568A88002E0BC2 /* CurrenciesService.swift */,
+				162E11AE2C568A88002E0BC2 /* PaymentService.swift */,
 				16EE8F0F2C4D691700B02EF9 /* Requests */,
 			);
 			path = "  Cart";
@@ -714,7 +714,7 @@
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				16EE8F132C4D6A5400B02EF9 /* NftDTO.swift in Sources */,
-				162E11A92C55650F002E0BC2 /* CurrenciesViewController.swift in Sources */,
+				162E11A92C55650F002E0BC2 /* PaymentViewController.swift in Sources */,
 				16EE8F072C4BC25500B02EF9 /* CartService.swift in Sources */,
 				16EE8F112C4D694A00B02EF9 /* GetNftRequest.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
@@ -745,8 +745,8 @@
 				162E11D62C58FBE7002E0BC2 /* UserAgreementViewController.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
-				162E11AF2C568A88002E0BC2 /* CurrenciesService.swift in Sources */,
-				162E11AB2C5565CB002E0BC2 /* CurrenciesPresenter.swift in Sources */,
+				162E11AF2C568A88002E0BC2 /* PaymentService.swift in Sources */,
+				162E11AB2C5565CB002E0BC2 /* PaymentPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

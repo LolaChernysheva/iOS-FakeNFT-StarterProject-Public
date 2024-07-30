@@ -1,5 +1,5 @@
 //
-//  CurrenciesViewController.swift
+//  PaymentViewController.swift
 //  FakeNFT
 //
 //  Created by Александр Плешаков on 27.07.2024.
@@ -8,14 +8,14 @@
 import UIKit
 import SnapKit
 
-protocol CurrenciesViewControllerProtocol: AnyObject, Loadable {
+protocol PaymentViewControllerProtocol: AnyObject, Loadable {
     func setup(with data: CurrenciesScreenModel)
 }
 
-final class CurrenciesViewController: UIViewController {
+final class PaymentViewController: UIViewController {
     // MARK: Properties
 
-    private let presenter: CurrenciesPresenter
+    private let presenter: PaymentPresenter
     private var currencies: [CurrencyModel] = []
     private var userAgreementLink: URL?
 
@@ -53,7 +53,7 @@ final class CurrenciesViewController: UIViewController {
 
     // MARK: Init
 
-    init(presenter: CurrenciesPresenter) {
+    init(presenter: PaymentPresenter) {
         self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
@@ -121,7 +121,7 @@ final class CurrenciesViewController: UIViewController {
 
 // MARK: CurrenciesViewControllerProtocol
 
-extension CurrenciesViewController: CurrenciesViewControllerProtocol {
+extension PaymentViewController: PaymentViewControllerProtocol {
     func showProgressHud() {
         progressHud.startAnimating()
     }
@@ -139,7 +139,7 @@ extension CurrenciesViewController: CurrenciesViewControllerProtocol {
 
 // MARK: UICollectionViewDataSource
 
-extension CurrenciesViewController: UICollectionViewDataSource {
+extension PaymentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         currencies.count
     }
@@ -161,7 +161,7 @@ extension CurrenciesViewController: UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegateFlowLayout
 
-extension CurrenciesViewController: UICollectionViewDelegateFlowLayout {
+extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
