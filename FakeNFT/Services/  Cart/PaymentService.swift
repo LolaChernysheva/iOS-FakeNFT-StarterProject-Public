@@ -11,6 +11,10 @@ protocol PaymentServiceProtocol {
     func getCurrencies(
         onResponse: @escaping (Result<[CurrencyModel], Error>) -> Void
     )
+    func pay(
+        currencyId: String,
+        onResponse: @escaping (Result<PaymentDTO, any Error>) -> Void
+    )
 }
 
 final class PaymentService: PaymentServiceProtocol {
@@ -38,6 +42,23 @@ final class PaymentService: PaymentServiceProtocol {
                 switch result {
                 case .success(let models):
                     onResponse(.success(models))
+                case .failure(let error):
+                    onResponse(.failure(error))
+                }
+            }
+    }
+
+    func pay(
+        currencyId: String,
+        onResponse: @escaping (Result<PaymentDTO, any Error>) -> Void
+    ) {
+        let request = PayRequest(currencyId: currencyId)
+        networkClient.send(
+            request: request,
+            type: PaymentDTO.self) { result in
+                switch result {
+                case .success(let payment):
+                    onResponse(.success(payment))
                 case .failure(let error):
                     onResponse(.failure(error))
                 }

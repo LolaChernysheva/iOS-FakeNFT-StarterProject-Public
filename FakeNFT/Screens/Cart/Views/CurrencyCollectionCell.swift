@@ -13,6 +13,7 @@ final class CurrencyCollectionCell: UICollectionViewCell {
     // MARK: Properties
 
     static let reuseId = "CurrencyCollectionCell"
+    private(set) var model: CurrencyModel?
 
     private let imageBackgroundView: UIView = {
         let view = UIView()
@@ -74,6 +75,7 @@ final class CurrencyCollectionCell: UICollectionViewCell {
     }
 
     func configure(with model: CurrencyModel) {
+        self.model = model
         currencyImageView.kf.setImage(with: model.image)
         fullNameLabel.text = model.title
         shortNameLabel.text = model.name

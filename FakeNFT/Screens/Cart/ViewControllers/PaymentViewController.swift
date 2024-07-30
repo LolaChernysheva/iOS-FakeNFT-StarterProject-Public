@@ -8,8 +8,11 @@
 import UIKit
 import SnapKit
 
-protocol PaymentViewControllerProtocol: AnyObject, Loadable {
+protocol PaymentViewControllerProtocol: AnyObject,
+                                        Loadable,
+                                        ErrorPresentable {
     func setup(with data: CurrenciesScreenModel)
+    func showPaymentSuccess()
 }
 
 final class PaymentViewController: UIViewController {
@@ -18,13 +21,12 @@ final class PaymentViewController: UIViewController {
     private let presenter: PaymentPresenter
     private var currencies: [CurrencyModel] = []
     private var userAgreementLink: URL?
+    private var selectedCurrencyId: String?
 
-    private lazy var paymentPanel = FinalPaymentBottomPanel { [weak self] in
-        let userAgreementVC = UserAgreementViewController(link: self?.userAgreementLink)
-        userAgreementVC.modalPresentationStyle = .pageSheet
-
-        self?.present(userAgreementVC, animated: true)
-    }
+    private lazy var paymentPanel = FinalPaymentBottomPanel(
+        onPayTap: startPayment,
+        onLinkTap: openUserAgreement
+    )
 
     private let progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
@@ -72,6 +74,17 @@ final class PaymentViewController: UIViewController {
     }
 
     // MARK: Methods
+
+    private func openUserAgreement() {
+        let userAgreementVC = UserAgreementViewController(link: userAgreementLink)
+        userAgreementVC.modalPresentationStyle = .pageSheet
+
+        present(userAgreementVC, animated: true)
+    }
+
+    private func startPayment() {
+        presenter.pay(in: selectedCurrencyId)
+    }
 
     private func configure() {
         view.backgroundColor = UIColor.background
@@ -122,6 +135,10 @@ final class PaymentViewController: UIViewController {
 // MARK: CurrenciesViewControllerProtocol
 
 extension PaymentViewController: PaymentViewControllerProtocol {
+    func showError(title: String?, message: String?) {
+        print("Error")
+    }
+
     func showProgressHud() {
         progressHud.startAnimating()
     }
@@ -134,6 +151,10 @@ extension PaymentViewController: PaymentViewControllerProtocol {
         userAgreementLink = data.userAgreementLink
         currencies = data.currencies
         currenciesCollection.reloadData()
+    }
+
+    func showPaymentSuccess() {
+        print("Success")
     }
 }
 
@@ -168,6 +189,7 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     ) {
         guard let cell = getCell(collectionView, at: indexPath) else { return }
 
+        selectedCurrencyId = cell.model?.id
         cell.select()
         paymentPanel.unlockButton()
     }
