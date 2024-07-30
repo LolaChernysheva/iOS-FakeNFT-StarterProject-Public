@@ -8,24 +8,25 @@
 import UIKit
 import SnapKit
 
-protocol CartViewProtocol: AnyObject {
+protocol CartViewProtocol: AnyObject, Loadable {
     func update(with data: CartScreenModel)
-    func showProgressHud()
-    func hideProgressHud()
+    func updateAfterDelete(with data: CartScreenModel, deletedId: String)
 }
 
 final class CartViewController: UIViewController {
-
-    // MARK: Public Properties
+    // MARK: Properties
 
     private let presenter: CartPresenterProtocol
-
-    // MARK: Private Properties
-
     private var cards = [CartItemModel]()
 
-    private lazy var paymentPanel = PaymentPanelView()
+    private lazy var paymentPanel = PaymentPanelView { [weak self] in
+        let currenciesVC = ModulesAssembly.currenciesScreenBuilder()
+        currenciesVC.hidesBottomBarWhenPushed = true
+        self?.presenter.needsReloadAfterReturning = false
+        self?.navigationController?.pushViewController(currenciesVC, animated: true)
+    }
     private lazy var stubView = CartStubView(text: "Корзина пуста")
+    private lazy var deleteAlert = DeleteAlertView()
 
     private var progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
@@ -121,6 +122,11 @@ final class CartViewController: UIViewController {
             target: nil,
             action: nil
         )
+
+        navigationItem.backBarButtonItem = UIBarButtonItem()
+        navigationItem.backButtonTitle = ""
+        navigationItem.backBarButtonItem?.tintColor = UIColor.segmentActive
+
         filterButton.tintColor = UIColor.segmentActive
         navigationItem.setRightBarButton(filterButton, animated: false)
     }
@@ -130,7 +136,9 @@ final class CartViewController: UIViewController {
         nftTableView.delegate = self
 
         nftTableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide.snp.edges)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(paymentPanel.snp.top)
         }
     }
 
@@ -144,10 +152,6 @@ final class CartViewController: UIViewController {
     private func showMainViews(with data: CartScreenModel) {
         if !nftTableView.isDescendant(of: view) {
             setupViews()
-            paymentPanel.set(
-                count: data.itemsCount,
-                price: data.totalPrice
-            )
         }
         if nftTableView.isHidden {
             [nftTableView, paymentPanel].forEach {
@@ -158,6 +162,10 @@ final class CartViewController: UIViewController {
             nftTableView.reloadData()
             stubView.isHidden = true
         }
+        paymentPanel.set(
+            count: data.itemsCount,
+            price: data.totalPrice
+        )
     }
 }
 
@@ -175,6 +183,16 @@ extension CartViewController: CartViewProtocol {
         } else {
             showMainViews(with: data)
             stubView.isHidden = true
+        }
+    }
+
+    func updateAfterDelete(with data: CartScreenModel, deletedId: String) {
+        guard let row = (cards.firstIndex { $0.id == deletedId }) else { return }
+        let lastDeletedIndexPath = IndexPath(row: row, section: 0)
+
+        update(with: data)
+        nftTableView.performBatchUpdates {
+            nftTableView.deleteRows(at: [lastDeletedIndexPath], with: .automatic)
         }
     }
 
@@ -208,19 +226,28 @@ extension CartViewController: UITableViewDataSource {
         guard let cell = cell as? CartItemCell else {
             return UITableViewCell()
         }
-
-        cell.configure(with: cards[indexPath.row])
+        let model = cards[indexPath.row]
+        cell.configure(with: model) { [weak self] in
+            guard let self else { return }
+            deleteAlert.show(
+                on: self,
+                with: view.frame.height,
+                image: model.image,
+                onDelete: { [presenter] in
+                    presenter.deleteNft(id: model.id)
+                }
+            )
+            view.layoutSubviews()
+        }
 
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
     }
 }
 
 // MARK: UITableViewDelegate
 
 extension CartViewController: UITableViewDelegate {
-
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 140
+    }
 }

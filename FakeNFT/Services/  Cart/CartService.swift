@@ -9,19 +9,31 @@ import Foundation
 
 protocol CartServiceProtocol {
     func getCartItems(
-        onResponse: @escaping (Result<[CartItemModel], Error>) -> Void
+        onResponse: @escaping (Result<([CartItemModel], [String]), Error>) -> Void
     )
     func updateCart(
         _ items: [String],
-        onResponse: @escaping (Result<Data, Error>) -> Void
+        onResponse: @escaping (Result<[String], Error>) -> Void
     )
 }
 
 final class CartService: CartServiceProtocol {
-    private let networkClient: NetworkClient = DefaultNetworkClient()
+    private let networkClient: NetworkClient
+
+    // MARK: Init
+
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
+    }
+
+    convenience init() {
+        self.init(networkClient: DefaultNetworkClient())
+    }
+
+    // MARK: Methods
 
     func getCartItems(
-        onResponse: @escaping (Result<[CartItemModel], Error>) -> Void
+        onResponse: @escaping (Result<([CartItemModel], [String]), Error>) -> Void
     ) {
         let request = CartItemsRequest()
         networkClient.send(
@@ -55,7 +67,7 @@ final class CartService: CartServiceProtocol {
                     if !errors.isEmpty {
                         onResponse(.failure(errors.first!))
                     } else {
-                        onResponse(.success(cartItems))
+                        onResponse(.success((cartItems, response.nfts)))
                     }
                 }
             case .failure(let error):
@@ -66,13 +78,13 @@ final class CartService: CartServiceProtocol {
 
     func updateCart(
         _ items: [String],
-        onResponse: @escaping (Result<Data, Error>) -> Void
+        onResponse: @escaping (Result<[String], Error>) -> Void
     ) {
-        let request = UpdateCartItemsRequest(dto: ["1"])
-        networkClient.send(request: request) { result in
+        let request = UpdateCartItemsRequest(ids: items)
+        networkClient.send(request: request, type: CartItemsDTO.self) { result in
             switch result {
             case .success(let data):
-                onResponse(.success(data))
+                onResponse(.success(data.nfts))
             case .failure(let error):
                 onResponse(.failure(error))
             }

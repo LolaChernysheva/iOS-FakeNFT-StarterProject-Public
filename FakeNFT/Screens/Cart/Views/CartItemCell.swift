@@ -11,8 +11,9 @@ import Kingfisher
 
 final class CartItemCell: UITableViewCell {
     static let reuseIdentifier = "CartItemCell"
+    private var alertShowingMethod: (() -> Void)?
 
-    let nftImageView: UIImageView = {
+    private let nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
@@ -102,7 +103,12 @@ final class CartItemCell: UITableViewCell {
         ratingHStack.removeFromSuperview()
     }
 
-    func configure(with model: CartItemModel) {
+    @objc private func showDeleteAlert() {
+        alertShowingMethod?()
+    }
+
+    func configure(with model: CartItemModel, action: @escaping () -> Void) {
+        alertShowingMethod = action
         ratingHStack = getRatingHStack(model.starsCount)
         titleAndStarsVStack.addArrangedSubview(ratingHStack)
 
@@ -161,6 +167,7 @@ final class CartItemCell: UITableViewCell {
     }
 
     private func setupDeleteButton() {
+        deleteButton.addTarget(self, action: #selector(showDeleteAlert), for: .touchUpInside)
         deleteButton.snp.makeConstraints { make in
             make.trailing.equalTo(contentView.snp.trailing)
             make.centerY.equalTo(contentView.snp.centerY)

@@ -8,12 +8,22 @@
 import Foundation
 
 protocol CartPresenterProtocol: AnyObject {
+    var needsReloadAfterReturning: Bool { get set }
     func setup()
+    func deleteNft(id: String)
 }
 
 final class CartPresenter {
+    // MARK: Public Properties
+
     weak var view: CartViewProtocol?
+    var needsReloadAfterReturning = true
+
+    // MARK: Private Properties
+
     private let cartService: CartServiceProtocol
+    private var ids: [String] = []
+    private var items = [CartItemModel]()
 
     init(cartService: CartService) {
         self.cartService = cartService
@@ -24,10 +34,12 @@ final class CartPresenter {
     private func buildScreenModel(
         onResponse: @escaping (Result<CartScreenModel, Error>) -> Void
     ) {
-        cartService.getCartItems { result in
+        cartService.getCartItems { [weak self] result in
             switch result {
             case .success(let items):
-                onResponse(.success(CartScreenModel(items: items)))
+                self?.ids = items.1
+                self?.items = items.0
+                onResponse(.success(CartScreenModel(items: items.0)))
             case .failure(let error):
                 onResponse(.failure(error))
             }
@@ -38,7 +50,26 @@ final class CartPresenter {
 // MARK: CartPresenterProtocol
 
 extension CartPresenter: CartPresenterProtocol {
+    func deleteNft(id: String) {
+        ids.removeAll { $0 == id }
+        items.removeAll { $0.id == id }
+        cartService.updateCart(ids) { [weak self] result in
+            switch result {
+            case .success(let ids):
+                guard let self else { return }
+                self.ids = ids
+                self.view?.updateAfterDelete(with: CartScreenModel(items: self.items), deletedId: id)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
     func setup() {
+        if !needsReloadAfterReturning {
+            needsReloadAfterReturning = true
+            return
+        }
         view?.showProgressHud()
         buildScreenModel { [weak self] result in
             switch result {

@@ -16,6 +16,7 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
 
     static func mainScreenBuilder() -> UIViewController {
         let tabbarController = UITabBarController()
+        tabbarController.tabBar.unselectedItemTintColor = UIColor.segmentActive
 
         let profileViewController = Self.profileScreenBuilder()
         let navCartViewController = UINavigationController(
@@ -53,5 +54,13 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         cartPresenter.view = cartViewController
 
         return cartViewController
+    }
+
+    static func currenciesScreenBuilder() -> UIViewController {
+        let currenciesPresenter = CurrenciesPresenter(currenciesService: CurrenciesService())
+        let currenciesViewController = CurrenciesViewController(presenter: currenciesPresenter)
+        currenciesPresenter.view = currenciesViewController
+
+        return currenciesViewController
     }
 }
