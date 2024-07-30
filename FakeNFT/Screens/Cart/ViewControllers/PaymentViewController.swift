@@ -154,7 +154,17 @@ extension PaymentViewController: PaymentViewControllerProtocol {
     }
 
     func showPaymentSuccess() {
-        print("Success")
+        let successPaymentVC = SuccessPaymentViewController(delegate: self)
+        successPaymentVC.modalPresentationStyle = .fullScreen
+        present(successPaymentVC, animated: true)
+    }
+}
+
+// MARK: SuccessPaymentViewControllerDelegate
+
+extension PaymentViewController: SuccessPaymentViewControllerDelegate {
+    func close() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
