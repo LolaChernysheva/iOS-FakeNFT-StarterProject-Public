@@ -93,7 +93,8 @@ final class FinalPaymentBottomPanel: UIView {
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         layer.cornerRadius = 12
 
-        paymentButton.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
+        paymentButton.addTarget(self, action: #selector(startPayment), for: .touchUpInside)
+        linkButton.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
         blockButton()
 
         setupSubviews()
@@ -120,5 +121,9 @@ final class FinalPaymentBottomPanel: UIView {
 
     @objc private func showWebView() {
         onTap()
+    }
+
+    @objc private func startPayment() {
+
     }
 }
