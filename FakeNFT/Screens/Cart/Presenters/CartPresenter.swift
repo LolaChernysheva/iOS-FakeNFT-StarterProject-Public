@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CartPresenterProtocol: AnyObject {
+protocol CartPresenterProtocol: AnyObject, Filterable {
     var needsReloadAfterReturning: Bool { get set }
     func setup()
     func deleteNft(id: String)
@@ -50,6 +50,27 @@ final class CartPresenter {
 // MARK: CartPresenterProtocol
 
 extension CartPresenter: CartPresenterProtocol {
+    func sortByName() {
+        items = items.sorted { lhs, rhs in
+            lhs.title < rhs.title
+        }
+        view?.update(with: CartScreenModel(items: items))
+    }
+
+    func sortByPrice() {
+        items = items.sorted { lhs, rhs in
+            lhs.price > rhs.price
+        }
+        view?.update(with: CartScreenModel(items: items))
+    }
+
+    func sortByRating() {
+        items = items.sorted { lhs, rhs in
+            lhs.starsCount > rhs.starsCount
+        }
+        view?.update(with: CartScreenModel(items: items))
+    }
+
     func deleteNft(id: String) {
         ids.removeAll { $0 == id }
         items.removeAll { $0.id == id }

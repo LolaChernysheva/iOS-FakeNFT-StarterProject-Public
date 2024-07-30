@@ -180,15 +180,24 @@ final class CartViewController: UIViewController {
             NSLocalizedString("По названию", comment: ""),
             NSLocalizedString("Закрыть", comment: "")
         ]
+        let actions = [
+            presenter.sortByPrice,
+            presenter.sortByRating,
+            presenter.sortByName,
+            {}
+        ]
 
         for index in 0..<4 {
-            actionSheet.addAction(
-                UIAlertAction(
-                    title: titles[index],
-                    style: index == 3 ? .cancel : .default,
-                    handler: { _ in }
-                )
-            )
+            let action = UIAlertAction(
+                title: titles[index],
+                style: index == 3 ? .cancel : .default,
+                handler: { [nftTableView] _ in
+                    actions[index]()
+                    if index != 3 {
+                        nftTableView.reloadData()
+                    }
+                })
+            actionSheet.addAction(action)
         }
 
         present(actionSheet, animated: true)
