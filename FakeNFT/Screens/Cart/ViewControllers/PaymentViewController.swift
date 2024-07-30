@@ -136,7 +136,31 @@ final class PaymentViewController: UIViewController {
 
 extension PaymentViewController: PaymentViewControllerProtocol {
     func showError(title: String?, message: String?) {
-        print("Error")
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let repeatAction = UIAlertAction(
+            title: NSLocalizedString("Повторить", comment: ""),
+            style: .default,
+            handler: { [presenter, selectedCurrencyId] _ in
+                presenter.pay(in: selectedCurrencyId)
+            }
+        )
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Отмена", comment: ""),
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+            }
+        )
+
+        alert.addAction(cancelAction)
+        alert.addAction(repeatAction)
+        alert.preferredAction = repeatAction
+
+        present(alert, animated: true)
     }
 
     func showProgressHud() {
