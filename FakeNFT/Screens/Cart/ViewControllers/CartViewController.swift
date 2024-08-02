@@ -22,7 +22,7 @@ final class CartViewController: UIViewController {
     private lazy var paymentPanel = PaymentPanelView { [weak self] in
         let currenciesVC = ModulesAssembly.currenciesScreenBuilder()
         currenciesVC.hidesBottomBarWhenPushed = true
-        self?.presenter.needsReloadAfterReturning = false
+        self?.presenter.needsReloadAfterReturning = true
         self?.navigationController?.pushViewController(currenciesVC, animated: true)
     }
     private lazy var stubView = CartStubView(text: "Корзина пуста")
@@ -119,8 +119,8 @@ final class CartViewController: UIViewController {
         let filterButton = UIBarButtonItem(
             image: Asset.Images.sort,
             style: .plain,
-            target: nil,
-            action: nil
+            target: self,
+            action: #selector(showFilters)
         )
 
         navigationItem.backBarButtonItem = UIBarButtonItem()
@@ -166,6 +166,41 @@ final class CartViewController: UIViewController {
             count: data.itemsCount,
             price: data.totalPrice
         )
+    }
+
+    @objc private func showFilters() {
+        let actionSheet = UIAlertController(
+            title: nil,
+            message: NSLocalizedString("Сортировка", comment: ""),
+            preferredStyle: .actionSheet
+        )
+        let titles = [
+            NSLocalizedString("По цене", comment: ""),
+            NSLocalizedString("По рейтингу", comment: ""),
+            NSLocalizedString("По названию", comment: ""),
+            NSLocalizedString("Закрыть", comment: "")
+        ]
+        let actions = [
+            presenter.sortByPrice,
+            presenter.sortByRating,
+            presenter.sortByName,
+            {}
+        ]
+
+        for index in 0..<4 {
+            let action = UIAlertAction(
+                title: titles[index],
+                style: index == 3 ? .cancel : .default,
+                handler: { [nftTableView] _ in
+                    actions[index]()
+                    if index != 3 {
+                        nftTableView.reloadData()
+                    }
+                })
+            actionSheet.addAction(action)
+        }
+
+        present(actionSheet, animated: true)
     }
 }
 

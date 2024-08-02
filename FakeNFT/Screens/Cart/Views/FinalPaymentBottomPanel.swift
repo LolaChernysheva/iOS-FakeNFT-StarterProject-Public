@@ -11,7 +11,8 @@ import SnapKit
 final class FinalPaymentBottomPanel: UIView {
     // MARK: Properties
 
-    private let onTap: () -> Void
+    private let onPayTap: () -> Void
+    private let onLinkTap: () -> Void
 
     private let textLabel: UILabel = {
         let label = UILabel()
@@ -64,8 +65,12 @@ final class FinalPaymentBottomPanel: UIView {
 
     // MARK: Init
 
-    init(onTap: @escaping () -> Void) {
-        self.onTap = onTap
+    init(
+        onPayTap: @escaping () -> Void,
+        onLinkTap: @escaping () -> Void
+    ) {
+        self.onPayTap = onPayTap
+        self.onLinkTap = onLinkTap
 
         super.init(frame: .zero)
 
@@ -93,7 +98,8 @@ final class FinalPaymentBottomPanel: UIView {
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         layer.cornerRadius = 12
 
-        paymentButton.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
+        paymentButton.addTarget(self, action: #selector(startPayment), for: .touchUpInside)
+        linkButton.addTarget(self, action: #selector(showWebView), for: .touchUpInside)
         blockButton()
 
         setupSubviews()
@@ -119,6 +125,10 @@ final class FinalPaymentBottomPanel: UIView {
     }
 
     @objc private func showWebView() {
-        onTap()
+        onLinkTap()
+    }
+
+    @objc private func startPayment() {
+        onPayTap()
     }
 }

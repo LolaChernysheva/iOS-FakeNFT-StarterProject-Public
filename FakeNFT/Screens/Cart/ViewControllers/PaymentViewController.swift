@@ -1,5 +1,5 @@
 //
-//  CurrenciesViewController.swift
+//  PaymentViewController.swift
 //  FakeNFT
 //
 //  Created by Александр Плешаков on 27.07.2024.
@@ -8,19 +8,25 @@
 import UIKit
 import SnapKit
 
-protocol CurrenciesViewControllerProtocol: AnyObject, Loadable {
+protocol PaymentViewControllerProtocol: AnyObject,
+                                        Loadable,
+                                        ErrorPresentable {
     func setup(with data: CurrenciesScreenModel)
+    func showPaymentSuccess()
 }
 
-final class CurrenciesViewController: UIViewController {
+final class PaymentViewController: UIViewController {
     // MARK: Properties
 
-    private let presenter: CurrenciesPresenter
+    private let presenter: PaymentPresenter
     private var currencies: [CurrencyModel] = []
+    private var userAgreementLink: URL?
+    private var selectedCurrencyId: String?
 
-    private let paymentPanel = FinalPaymentBottomPanel {
-
-    }
+    private lazy var paymentPanel = FinalPaymentBottomPanel(
+        onPayTap: startPayment,
+        onLinkTap: openUserAgreement
+    )
 
     private let progressHud: UIActivityIndicatorView = {
         let progress = UIActivityIndicatorView(style: .medium)
@@ -49,7 +55,7 @@ final class CurrenciesViewController: UIViewController {
 
     // MARK: Init
 
-    init(presenter: CurrenciesPresenter) {
+    init(presenter: PaymentPresenter) {
         self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
@@ -68,6 +74,17 @@ final class CurrenciesViewController: UIViewController {
     }
 
     // MARK: Methods
+
+    private func openUserAgreement() {
+        let userAgreementVC = UserAgreementViewController(link: userAgreementLink)
+        userAgreementVC.modalPresentationStyle = .pageSheet
+
+        present(userAgreementVC, animated: true)
+    }
+
+    private func startPayment() {
+        presenter.pay(in: selectedCurrencyId)
+    }
 
     private func configure() {
         view.backgroundColor = UIColor.background
@@ -117,7 +134,35 @@ final class CurrenciesViewController: UIViewController {
 
 // MARK: CurrenciesViewControllerProtocol
 
-extension CurrenciesViewController: CurrenciesViewControllerProtocol {
+extension PaymentViewController: PaymentViewControllerProtocol {
+    func showError(title: String?, message: String?) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let repeatAction = UIAlertAction(
+            title: NSLocalizedString("Повторить", comment: ""),
+            style: .default,
+            handler: { [presenter, selectedCurrencyId] _ in
+                presenter.pay(in: selectedCurrencyId)
+            }
+        )
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Отмена", comment: ""),
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+            }
+        )
+
+        alert.addAction(cancelAction)
+        alert.addAction(repeatAction)
+        alert.preferredAction = repeatAction
+
+        present(alert, animated: true)
+    }
+
     func showProgressHud() {
         progressHud.startAnimating()
     }
@@ -127,14 +172,29 @@ extension CurrenciesViewController: CurrenciesViewControllerProtocol {
     }
 
     func setup(with data: CurrenciesScreenModel) {
+        userAgreementLink = data.userAgreementLink
         currencies = data.currencies
         currenciesCollection.reloadData()
+    }
+
+    func showPaymentSuccess() {
+        let successPaymentVC = SuccessPaymentViewController(delegate: self)
+        successPaymentVC.modalPresentationStyle = .fullScreen
+        present(successPaymentVC, animated: true)
+    }
+}
+
+// MARK: SuccessPaymentViewControllerDelegate
+
+extension PaymentViewController: SuccessPaymentViewControllerDelegate {
+    func close() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
 // MARK: UICollectionViewDataSource
 
-extension CurrenciesViewController: UICollectionViewDataSource {
+extension PaymentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         currencies.count
     }
@@ -156,13 +216,14 @@ extension CurrenciesViewController: UICollectionViewDataSource {
 
 // MARK: UICollectionViewDelegateFlowLayout
 
-extension CurrenciesViewController: UICollectionViewDelegateFlowLayout {
+extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
         guard let cell = getCell(collectionView, at: indexPath) else { return }
 
+        selectedCurrencyId = cell.model?.id
         cell.select()
         paymentPanel.unlockButton()
     }
