@@ -96,8 +96,34 @@ struct DefaultNetworkClient: NetworkClient {
       urlRequest.httpBody = dtoEncoded
     }
 
+<<<<<<< HEAD
     if request.isUrlEncoded {
       urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+=======
+    // MARK: - Private
+
+    private func create(request: NetworkRequest) -> URLRequest? {
+        guard let endpoint = request.endpoint else {
+            assertionFailure("Empty endpoint")
+            return nil
+        }
+
+        var urlRequest = URLRequest(url: endpoint)
+        urlRequest.httpMethod = request.httpMethod.rawValue
+
+        if let token = request.token {
+            urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        }
+        
+        urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        if let dto = request.dto,
+           let dtoEncoded = try? encoder.encode(dto) {
+            urlRequest.httpBody = dtoEncoded
+        }
+        
+        return urlRequest
+>>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     }
 
     if let token = request.token {

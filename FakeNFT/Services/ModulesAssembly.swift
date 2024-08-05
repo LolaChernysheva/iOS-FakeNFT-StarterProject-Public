@@ -47,6 +47,7 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
 
     static func mainScreenBuilder() -> UIViewController {
         let tabbarController = UITabBarController()
+<<<<<<< HEAD
 
         let profileViewController = UINavigationController(
             rootViewController: Self.catalogScreenBuilder()
@@ -98,5 +99,29 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         )
         viewController.hidesBottomBarWhenPushed = true
         return viewController
+=======
+        
+        let statisticsViewController = Self.statisticsScreenBuilder()
+        
+   
+        
+        statisticsViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("Статистика", comment: ""),
+            image: UIImage(systemName: "flag.2.crossed.fill"),
+            tag: 3)
+        
+        
+        tabbarController.viewControllers = [statisticsViewController]
+        
+        return tabbarController
     }
+    
+    static func statisticsScreenBuilder() -> UIViewController {
+        let statisticsViewController = StatisticsViewController()
+        let statisticsPresenter = StatisticsPresenter(view: statisticsViewController)
+        statisticsViewController.presenter = statisticsPresenter
+        return statisticsViewController
+>>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
+    }
+
 }
