@@ -82,6 +82,7 @@ final class StatisticsTableViewCell: UITableViewCell {
     private func prepareUserAvatarImageView() {
         userAvatarImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
         userAvatarImageView.layer.cornerRadius = 14
+        userAvatarImageView.clipsToBounds = true
         userAvatarImageView.image = UIImage(systemName: "person.crop.circle.fill")
     }
     private func prepareUserNameLabel() {
@@ -108,17 +109,22 @@ final class StatisticsTableViewCell: UITableViewCell {
     func setUserName(with newName: String){
         userNameLabel.text = newName
     }
-    
-    func setUserImage(with newImage : UIImage){
-        userAvatarImageView.image = newImage
-    }
-    
-    func setUserCollectionAmount(with newAmout: Int){
-        nftAmountLabel.text = newAmout.description
+
+    func setUserCollectionAmount(with newAmout: String){
+        nftAmountLabel.text = newAmout
     }
     
     func setCellIndex(with newValue : Int){
         cellIndex.text = newValue.description
     }
     
+    func setUserImage(with userImageURL: String) {
+        let placeholderImage = UIImage(systemName: "person.crop.circle.fill")
+        userAvatarImageView.image = placeholderImage
+        userAvatarImageView.tintColor = .nftPlaceHolderGray
+
+        if let url = URL(string: userImageURL) {
+            userAvatarImageView.loadImage(from: url, placeholder: placeholderImage)
+        }
+    }
 }
