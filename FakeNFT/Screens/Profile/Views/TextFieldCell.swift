@@ -21,6 +21,7 @@ final class TextFieldCell: UITableViewCell {
         textField.backgroundColor = .clear
         textField.clearButtonMode = .whileEditing
         textField.font = .bodyRegular
+        textField.delegate = self
         textField.textColor = .black
         return textField
     }()
@@ -58,6 +59,13 @@ final class TextFieldCell: UITableViewCell {
     private func setup() {
         guard let model else {return}
         textField.text = model.text
+    }
+}
+
+extension TextFieldCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 

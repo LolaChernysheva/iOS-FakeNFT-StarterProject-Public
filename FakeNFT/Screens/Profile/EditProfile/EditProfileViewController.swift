@@ -55,6 +55,7 @@ final class EditProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupView()
+        setupTapGesture()
     }
     
     private func setupView() {
@@ -101,6 +102,16 @@ final class EditProfileViewController: UIViewController {
         case .headeredSection(_, cells: let cells):
             return cells[indexPath.row]
         }
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func hideKeyboard() {
+        view.endEditing(true)
     }
 }
 
@@ -181,4 +192,11 @@ private struct Constants {
     static let avatarSize: CGFloat = 70
     static let horizontalInsets: CGFloat = 16
     static let tableViewTopInsets: CGFloat = 24
+}
+
+extension EditProfileViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
