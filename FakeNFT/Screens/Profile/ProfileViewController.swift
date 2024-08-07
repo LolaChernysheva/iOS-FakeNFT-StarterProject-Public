@@ -163,8 +163,7 @@ final class ProfileViewController: UIViewController {
         avatarImageView.image = model.userImage
         userNameLabel.text = model.userName
         descriptionLabel.text = model.userAbout
-        let attributedString = NSMutableAttributedString(string: "\(model.websiteUrlString)")
-        attributedString.addAttribute(.link, value: "https://www.apple.com", range: NSRange(location: 6, length: 5)) //TODO: - 
+        let attributedString = NSMutableAttributedString(string: "\(model.websiteUrlString)") //TODO: - 
         linkTextView.attributedText = attributedString
     }
     
@@ -177,7 +176,7 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func editButtonTapped() {
-        
+        presenter.editProfile()
     }
 }
 

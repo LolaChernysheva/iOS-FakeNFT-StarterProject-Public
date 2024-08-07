@@ -117,6 +117,12 @@ struct DefaultNetworkClient: NetworkClient {
 
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
+        
+        if let headers = request.headers {
+            for (key, value) in headers {
+                urlRequest.setValue(value, forHTTPHeaderField: key)
+            }
+        }
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {
