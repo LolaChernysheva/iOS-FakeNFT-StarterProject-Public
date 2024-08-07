@@ -20,6 +20,8 @@ final class EditProfileViewController: UIViewController {
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = Constants.avatarRadius
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -65,6 +67,7 @@ final class EditProfileViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .white
         tableView.register(TextViewCell.self, forCellReuseIdentifier: TextViewCell.identifier)
+        tableView.register(HeaderView.self, forHeaderFooterViewReuseIdentifier: HeaderView.reuseIdentifier)
     }
     
     private func setupConstraints() {
@@ -72,17 +75,17 @@ final class EditProfileViewController: UIViewController {
         view.addSubview(tableView)
         
         avatarImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().offset(Constants.avatarTopOffset)
             make.centerX.equalToSuperview()
-            make.width.equalTo(70)
-            make.height.equalTo(70)
+            make.width.equalTo(Constants.avatarSize)
+            make.height.equalTo(Constants.avatarSize)
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(avatarImageView.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-16)
+            make.top.equalTo(avatarImageView.snp.bottom).offset(Constants.tableViewTopInsets)
+            make.leading.equalToSuperview().offset(Constants.horizontalInsets)
+            make.trailing.equalToSuperview().offset(-Constants.horizontalInsets)
+            make.bottom.equalToSuperview().offset(-Constants.horizontalInsets)
         }
     }
     
@@ -146,11 +149,31 @@ extension EditProfileViewController: UITableViewDataSource {
         
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch model.tableData.sections[section] {
-            
-        case .headeredSection(header: let header, _):
-            return header
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderView.reuseIdentifier) as? HeaderView else {
+            return nil
         }
+        
+        let headerText: String
+        
+        switch model.tableData.sections[section] {
+        case .headeredSection(header: let header, _):
+            headerText = header
+        }
+        
+        headerView.configure(with: headerText)
+        return headerView
     }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+
+private struct Constants {
+    static let avatarRadius: CGFloat = 35
+    static let avatarTopOffset: CGFloat = 80
+    static let avatarSize: CGFloat = 70
+    static let horizontalInsets: CGFloat = 16
+    static let tableViewTopInsets: CGFloat = 24
 }

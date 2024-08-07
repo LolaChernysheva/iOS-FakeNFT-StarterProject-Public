@@ -54,6 +54,7 @@
 		F36E448D2C614EB300D00ED6 /* ProfileNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36E448C2C614EB300D00ED6 /* ProfileNetworkService.swift */; };
 		F36E44902C61568D00D00ED6 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36E448F2C61568D00D00ED6 /* Profile.swift */; };
 		F36E44922C61693D00D00ED6 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36E44912C61693D00D00ED6 /* ProfileRequest.swift */; };
+		F384BBFC2C63A310004E9C0F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BBFB2C63A310004E9C0F /* HeaderView.swift */; };
 		F3D9B24A2C45A4FF00509587 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9B2492C45A4FE00509587 /* DetailCell.swift */; };
 		F3EAEF482C41397700834E53 /* ModulesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF472C41397700834E53 /* ModulesAssembly.swift */; };
 		F3EAEF4B2C413DAA00834E53 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */; };
@@ -129,6 +130,7 @@
 		F36E448C2C614EB300D00ED6 /* ProfileNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkService.swift; sourceTree = "<group>"; };
 		F36E448F2C61568D00D00ED6 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		F36E44912C61693D00D00ED6 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
+		F384BBFB2C63A310004E9C0F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		F3D9B2492C45A4FE00509587 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		F3EAEF472C41397700834E53 /* ModulesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesAssembly.swift; sourceTree = "<group>"; };
 		F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 			children = (
 				F3D9B2492C45A4FE00509587 /* DetailCell.swift */,
 				F33924B92C46C20000D4FD6E /* TextViewCell.swift */,
+				F384BBFB2C63A310004E9C0F /* HeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 				F33924B82C46C0B600D4FD6E /* EditProfileScreenModel.swift in Sources */,
 				0CFCB7402A78002A0009A829 /* NftService.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
+				F384BBFC2C63A310004E9C0F /* HeaderView.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				F36E44922C61693D00D00ED6 /* ProfileRequest.swift in Sources */,
