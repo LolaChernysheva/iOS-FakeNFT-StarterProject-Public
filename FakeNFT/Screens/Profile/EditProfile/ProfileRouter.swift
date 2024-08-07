@@ -23,6 +23,8 @@ final class ProfileRouter: ProfileRouterProtocol {
     func showEditProfileController(profile: Profile) {
         guard let view = view as? UIViewController else { return }
         let editProfileViewController = ModulesAssembly.editProfileScreenBuilder(profile: profile)
-        view.navigationController?.pushViewController(editProfileViewController, animated: true)
+        editProfileViewController.modalPresentationStyle = .pageSheet
+        editProfileViewController.hidesBottomBarWhenPushed = true
+        view.present(editProfileViewController, animated: true)
     }
 }
