@@ -135,6 +135,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func editProfile() {
-        router?.showEditProfileController()
+        guard let profile = profile else { return }
+        router?.showEditProfileController(profile: profile)
     }
 }

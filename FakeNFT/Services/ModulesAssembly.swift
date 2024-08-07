@@ -10,7 +10,7 @@ import UIKit
 
 protocol ModulesAssemblyProtocol: AnyObject {
     static func mainScreenBuilder() -> UIViewController
-    static func editProfileScreenBuilder() -> UIViewController
+    static func editProfileScreenBuilder(profile: Profile) -> UIViewController
 }
 
 final class ModulesAssembly: ModulesAssemblyProtocol {
@@ -41,9 +41,9 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         return nc
     }
     
-    static func editProfileScreenBuilder() -> UIViewController {
+    static func editProfileScreenBuilder(profile: Profile) -> UIViewController {
         let editProfileViewController = EditProfileViewController()
-        let presenter = EditProfilePresenter(view: editProfileViewController)
+        let presenter = EditProfilePresenter(view: editProfileViewController, profile: profile)
         editProfileViewController.presenter = presenter
         return editProfileViewController
     }

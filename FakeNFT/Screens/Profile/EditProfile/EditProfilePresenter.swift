@@ -16,14 +16,17 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     
     typealias Section = EditProfileScreenModel.TableData.Section
     private weak var view: EditProfileViewProtocol?
+    private var profile: Profile?
     
-    init(view: EditProfileViewProtocol?) {
+    
+    init(view: EditProfileViewProtocol?, profile: Profile?) {
         self.view = view
+        self.profile = profile
     }
     
     private func buildScreenModel() -> EditProfileScreenModel {
         EditProfileScreenModel(
-            image: UIImage(), //TODO: -
+            image: profile?.avatar ?? UIImage(),
             tableData: EditProfileScreenModel.TableData(sections: [
                 buildNameSection(),
                 buildDescriptionSection(),
@@ -35,21 +38,21 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     private func buildNameSection() -> Section {
         .headeredSection(header: NSLocalizedString("Имя", comment: ""),
                          cells: [
-                            .textViewCell(TextViewCellModel(text: "Joaquin Phoenix")) //TODO: -
+                            .textViewCell(TextViewCellModel(text: profile?.name ?? ""))
                          ])
     }
     
     private func buildDescriptionSection() -> Section {
         .headeredSection(header: NSLocalizedString("Описание", comment: ""),
                          cells: [
-                            .textViewCell(TextViewCellModel(text: "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT,и еще больше — на моём сайте. Открыт к коллаборациям.")) //TODO: -
+                            .textViewCell(TextViewCellModel(text: profile?.description ?? ""))
                          ])
     }
     
     private func buildSiteSection() -> Section {
         .headeredSection(header: NSLocalizedString("Сайт", comment: ""),
                          cells: [
-                            .textViewCell(TextViewCellModel(text: "Joaquin Phoenix.com")) //TODO: -
+                            .textViewCell(TextViewCellModel(text: profile?.website ?? ""))
                          ])
     }
     

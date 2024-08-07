@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ProfileRouterProtocol: AnyObject {
-    func showEditProfileController()
+    func showEditProfileController(profile: Profile)
 }
 
 final class ProfileRouter: ProfileRouterProtocol {
@@ -20,9 +20,9 @@ final class ProfileRouter: ProfileRouterProtocol {
         self.view = view
     }
     
-    func showEditProfileController() {
+    func showEditProfileController(profile: Profile) {
         guard let view = view as? UIViewController else { return }
-        let editProfileViewController = ModulesAssembly.editProfileScreenBuilder()
+        let editProfileViewController = ModulesAssembly.editProfileScreenBuilder(profile: profile)
         view.navigationController?.pushViewController(editProfileViewController, animated: true)
     }
 }
