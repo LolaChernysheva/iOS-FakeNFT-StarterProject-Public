@@ -19,12 +19,12 @@ final class NFTCardViewController: UIViewController {
     weak var delegate: NFTCollectionCelllDelegate?
     weak var delegatee: NFTCollectionUpdaterDelegate?
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
     private lazy var tableView: UITableView = {
         var tableView = UITableView()
         tableView.register(NFTCardCell.self)
         tableView.backgroundColor = .white
         tableView.showsVerticalScrollIndicator = false
+        tableView.layer.cornerRadius = 16
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
@@ -86,6 +86,7 @@ final class NFTCardViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.layer.cornerRadius = 16
         scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
         return scrollView
     }()
@@ -150,6 +151,7 @@ final class NFTCardViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         presenter.viewController = self
         presenter.setupData(data: presenter.nftArray)
         presenter.setupDataNft(data: presenter.nftCollection)
@@ -234,8 +236,8 @@ final class NFTCardViewController: UIViewController {
 
         tableView.snp.makeConstraints { make in
             make.top.equalTo(addToCart.snp.bottom).offset(12)
-            make.leading.equalTo(view.safeAreaLayoutGuide)
-            make.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.height.equalTo(576)
         }
 

@@ -34,7 +34,7 @@ class NFTCardCell: UITableViewCell, ReuseIdentifying {
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .regular)
-        label.textColor = .green
+        label.textColor = UIColor(red: 28/255.0, green: 159/255.0, blue: 0/255.0, alpha: 1)
         return label
     }()
 
@@ -42,7 +42,7 @@ class NFTCardCell: UITableViewCell, ReuseIdentifying {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        contentView.backgroundColor = UIColor(red: 247/255.0, green: 247/255.0, blue: 248/255.0, alpha: 1)
         setup()
     }
 
