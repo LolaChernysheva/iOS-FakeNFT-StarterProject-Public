@@ -82,7 +82,7 @@ final class ProfilePresenter {
     private func buildMyNFTCell() -> Cell {
         .detail(DetailCellModel(
             title: NSLocalizedString("Мои NFT", comment: ""),
-            subtitle: "(112)",
+            subtitle: String(profile?.nfts.count ?? 0),
             action: {
                 
             }))
@@ -91,7 +91,7 @@ final class ProfilePresenter {
     private func buildFavorieNFTCell() -> Cell {
         .detail(DetailCellModel(
             title: NSLocalizedString("Избранные NFT", comment: ""),
-            subtitle: "(11)",
+            subtitle: String(profile?.likes.count ?? 0),
             action: {
                 
             }))

@@ -60,10 +60,8 @@ final class ProfileViewController: UIViewController {
     private lazy var linkTextView: UITextView = {
         let textView = UITextView()
         textView.isScrollEnabled = false
-        textView.linkTextAttributes = [
-            .foregroundColor: UIColor.blue,
-            .underlineStyle: NSUnderlineStyle.single.rawValue
-        ]
+        textView.isEditable = false
+        textView.textColor = .linkBlue
         return textView
     }()
     
@@ -163,8 +161,7 @@ final class ProfileViewController: UIViewController {
         avatarImageView.image = model.userImage
         userNameLabel.text = model.userName
         descriptionLabel.text = model.userAbout
-        let attributedString = NSMutableAttributedString(string: "\(model.websiteUrlString)") //TODO: - 
-        linkTextView.attributedText = attributedString
+        linkTextView.text = model.websiteUrlString
     }
     
     private func tableDataCell(indexPath: IndexPath) -> Cell {
