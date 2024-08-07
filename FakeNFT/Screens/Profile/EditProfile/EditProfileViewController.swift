@@ -27,10 +27,21 @@ final class EditProfileViewController: UIViewController {
     
     private lazy var overlayLabel: UILabel = {
         let label = UILabel()
+        label.text = "Сменить \nфото"
         label.numberOfLines = 0
         label.font = .caption3
+        label.textAlignment = .center
         label.textColor = .white
         return label
+    }()
+    
+    private lazy var darkOverlay: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.layer.opacity = 0.5
+        view.layer.cornerRadius = Constants.avatarRadius
+        view.clipsToBounds = true
+        return view
     }()
     
     private lazy var tableView: UITableView = {
@@ -75,12 +86,26 @@ final class EditProfileViewController: UIViewController {
     private func setupConstraints() {
         view.addSubview(avatarImageView)
         view.addSubview(tableView)
+        avatarImageView.addSubview(darkOverlay)
+        darkOverlay.addSubview(overlayLabel)
         
         avatarImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Constants.avatarTopOffset)
             make.centerX.equalToSuperview()
             make.width.equalTo(Constants.avatarSize)
             make.height.equalTo(Constants.avatarSize)
+        }
+        
+        darkOverlay.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        overlayLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
         
         tableView.snp.makeConstraints { make in
