@@ -18,6 +18,8 @@ final class TextViewCell: UITableViewCell {
     
     private lazy var textView: UITextView = {
         let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.isEditable = true
         textView.textColor = .black
         return textView
     }()
@@ -33,7 +35,7 @@ final class TextViewCell: UITableViewCell {
         reuseIdentifier: String?
     ){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .secondary
+        contentView.backgroundColor = .segmentInactive
         setupConstraints()
     }
     

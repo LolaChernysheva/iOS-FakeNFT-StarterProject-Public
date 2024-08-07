@@ -67,6 +67,7 @@ final class EditProfileViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .white
         tableView.register(TextViewCell.self, forCellReuseIdentifier: TextViewCell.identifier)
+        tableView.register(TextFieldCell.self, forCellReuseIdentifier: TextFieldCell.identifier)
         tableView.register(HeaderView.self, forHeaderFooterViewReuseIdentifier: HeaderView.reuseIdentifier)
     }
     
@@ -141,6 +142,10 @@ extension EditProfileViewController: UITableViewDataSource {
             guard let textViewCell = tableView.dequeueReusableCell(withIdentifier: TextViewCell.identifier, for: indexPath) as? TextViewCell else { return UITableViewCell() }
             textViewCell.model = model
             cell = textViewCell
+        case let .textFieldCell(model):
+            guard let textFieldCell = tableView.dequeueReusableCell(withIdentifier: TextFieldCell.identifier, for: indexPath) as? TextFieldCell else { return UITableViewCell() }
+            textFieldCell.model = model
+            cell = textFieldCell
         }
         return cell
     }

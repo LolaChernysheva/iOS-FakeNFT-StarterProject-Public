@@ -16,6 +16,7 @@ struct EditProfileScreenModel {
         
         enum Cell {
             case textViewCell(TextViewCellModel)
+            case textFieldCell(TextFieldCellModel)
         }
         
         let sections: [Section]

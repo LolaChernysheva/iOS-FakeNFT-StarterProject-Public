@@ -38,7 +38,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     private func buildNameSection() -> Section {
         .headeredSection(header: NSLocalizedString("Имя", comment: ""),
                          cells: [
-                            .textViewCell(TextViewCellModel(text: profile?.name ?? ""))
+                            .textFieldCell(TextFieldCellModel(text: profile?.name ?? ""))
                          ])
     }
     
@@ -52,7 +52,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     private func buildSiteSection() -> Section {
         .headeredSection(header: NSLocalizedString("Сайт", comment: ""),
                          cells: [
-                            .textViewCell(TextViewCellModel(text: profile?.website ?? ""))
+                            .textFieldCell(TextFieldCellModel(text: profile?.website ?? ""))
                          ])
     }
     

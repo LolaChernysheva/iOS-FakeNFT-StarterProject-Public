@@ -8,9 +8,11 @@
 
 import UIKit
 import SnapKit
+import ProgressHUD
 
 protocol ProfileViewProtocol: AnyObject {
     func display(data: ProfileScreenModel, reloadTableData: Bool)
+    func updateLoadingState(isLoading: Bool)
 }
 
 final class ProfileViewController: UIViewController {
@@ -172,6 +174,14 @@ final class ProfileViewController: UIViewController {
         }
     }
     
+    private func disableUserInteraction() {
+        view.isUserInteractionEnabled = false
+    }
+    
+    private func enableUserInteraction() {
+        view.isUserInteractionEnabled = true
+    }
+    
     @objc private func editButtonTapped() {
         presenter.editProfile()
     }
@@ -184,6 +194,16 @@ extension ProfileViewController: ProfileViewProtocol {
         model = data
         if reloadTableData {
             tableView.reloadData()
+        }
+    }
+    
+    func updateLoadingState(isLoading: Bool) {
+        if isLoading {
+            ProgressHUD.show()
+            disableUserInteraction()
+        } else {
+            ProgressHUD.dismiss()
+            enableUserInteraction()
         }
     }
 }

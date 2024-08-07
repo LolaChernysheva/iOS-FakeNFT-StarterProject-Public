@@ -23,6 +23,14 @@ final class ProfilePresenter {
     private var networkService: ProfileNetworkServiceProtocol?
     private var profile: Profile?
     
+    private(set) var isLoading: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.view?.updateLoadingState(isLoading: self.isLoading)
+            }
+        }
+    }
+    
     init(view: ProfileViewProtocol, router: ProfileRouterProtocol, networkService: ProfileNetworkServiceProtocol) {
         self.view = view
         self.router = router
@@ -47,7 +55,9 @@ final class ProfilePresenter {
     }
     
     private func loadProfile() {
+        isLoading = true
         networkService?.loadProfile(profileId: "1", completion: { [weak self] result in
+            self?.isLoading = false
             switch result {
             case let .success(profileResponce):
                 self?.profile = Profile(
