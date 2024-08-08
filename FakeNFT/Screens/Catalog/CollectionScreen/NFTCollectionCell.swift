@@ -173,7 +173,6 @@ protocol NFTCollectionCellDelegate: AnyObject {
         guard let nftModel = nftModel else { return }
         let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
         presenter?.indexLike = isAlreadyLiked
-        print(isAlreadyLiked)
         configureLikeButtonImage(isAlreadyLiked)
     }
 

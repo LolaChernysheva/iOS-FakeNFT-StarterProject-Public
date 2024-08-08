@@ -293,7 +293,9 @@ final class NFTCardViewController: UIViewController {
         coverImageView.kf.setImage(with: presenter.ima[(presenter.currentIndex + 1) % presenter.ima.count], options: [.keepCurrentImageWhileLoading])
         presenter.currentIndex = (presenter.currentIndex + 1) % presenter.ima.count
         UIView.transition(with: coverImageView, duration: 0.5, options: .transitionCrossDissolve, animations: nil, completion: { [weak self] _ in
-            self?.pageControl.set(progress: self!.presenter.currentIndex, animated: true)
+            if let self = self {
+                self.pageControl.set(progress: self.presenter.currentIndex, animated: true)
+            }
         })
     }
 

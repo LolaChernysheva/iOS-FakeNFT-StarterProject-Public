@@ -343,14 +343,16 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
             didSelectItemAt indexPath: IndexPath
         ) {
             let data = presenter.nftArray[indexPath.row]
+            guard let userProfile = presenter.userProfile,
+                  let userOrder = presenter.userOrder else { return }
             let aataProvider = CollectionDataProvider(networkClient: DefaultNetworkClient())
             let presenter = NFTCardPresenter(nftArray: data,
                                              dataProvider: aataProvider,
                                              cartController: CartService(),
                                              nftCollection: das,
                                              nftArrayss: presenter.nftArray,
-                                             userProfile: presenter.userProfile!,
-                                             userOrder: presenter.userOrder!, indexLike: presenter.indexLike)
+                                             userProfile: userProfile,
+                                             userOrder: userOrder, indexLike: presenter.indexLike)
             let viewController = NFTCardViewController(presenter: presenter)
             navigationController?.pushViewController(viewController, animated: true)
         }

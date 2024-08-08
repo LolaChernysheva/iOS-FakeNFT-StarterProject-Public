@@ -174,7 +174,6 @@
         let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
         let isAlreadyIn = isAlreadyLiked
         presenter?.indexLike = isAlreadyIn
-        print(isAlreadyLiked)
         configureLikeButtonImage(isAlreadyLiked)
     }
 

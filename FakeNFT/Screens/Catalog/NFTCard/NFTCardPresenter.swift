@@ -15,19 +15,19 @@ protocol NFTCardPresenterProtocol: AnyObject {
     var nftArray: Nft { get }
     var nftArrays: [Nft] { get }
     var cryptos: [Crypto] { get }
-    func getUserProfile() -> ProfileModel?
-    func getUserOrder() -> OrderModel?
-    func presentCollectionViewData()
-    var currentIndex: Int { get set}
-    func setupData(data: Nft)
     var ima: [URL] { get set }
     var nftCollection: NFTCollection { get }
-    func setupDataNft(data: NFTCollection)
-    func toggleLikeStatus(model: Nft)
-    func toggleCartStatus(model: Nft)
+    var currentIndex: Int { get set }
     var userProfile: ProfileModel? { get set }
     var userOrder: OrderModel? { get set }
     var indexLike: Bool { get set }
+    func getUserProfile() -> ProfileModel?
+    func getUserOrder() -> OrderModel?
+    func presentCollectionViewData()
+    func setupData(data: Nft)
+    func setupDataNft(data: NFTCollection)
+    func toggleLikeStatus(model: Nft)
+    func toggleCartStatus(model: Nft)
     func isAlreadyInCart(nftId: String) -> Bool
     func isAlreadyLiked(nftId: String) -> Bool
 }
@@ -93,8 +93,9 @@ final class NFTCardPresenter: NFTCardPresenterProtocol {
     }
 
     func presentCollectionViewData() {
+        guard let firstImageURL = nftArray.images.first else { return }
         let viewData = CatalogCollectionViewData(
-            coverImageURL: "\(nftArray.images.first!)",
+            coverImageURL: "\(firstImageURL)",
             title: nftArray.name,
             description: nftArray.author,
             authorName: nftArray.author,
