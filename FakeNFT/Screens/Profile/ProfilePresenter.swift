@@ -143,7 +143,7 @@ final class ProfilePresenter {
     
     private func showMyNft() {
         guard let profile = profile else { return }
-        router?.showMyNftController(nftIds: profile.nfts)
+        router?.showMyNftController(profile: profile)
     }
 }
 

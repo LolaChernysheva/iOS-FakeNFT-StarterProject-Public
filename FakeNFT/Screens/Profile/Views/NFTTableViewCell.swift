@@ -18,7 +18,9 @@ struct NFTTableViewCellModel {
     let rating: Int
     var isLiked: Bool
     
-    static let empty: NFTTableViewCellModel = NFTTableViewCellModel(image: "", name: "", authorName: "", price: "", rating: 0, isLiked: false)
+    var onLikeAction: (Bool) -> Void
+    
+    static let empty: NFTTableViewCellModel = NFTTableViewCellModel(image: "", name: "", authorName: "", price: "", rating: 0, isLiked: false, onLikeAction: { _ in })
 }
 
 final class NFTTableViewCell: UITableViewCell {
@@ -132,8 +134,7 @@ final class NFTTableViewCell: UITableViewCell {
             nftImageView.kf.setImage(with: url)
         }
         
-        let likeImage = model.isLiked ? "profileImages/likeActive" : "profileImages/likeNoActive"
-        likeButton.setImage(UIImage(named: likeImage), for: .normal)
+        likeButton.setImage(model.isLiked ?Asset.Images.favouritesDone : Asset.Images.favouritesNoActive , for: .normal)
         
         ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
@@ -202,7 +203,7 @@ final class NFTTableViewCell: UITableViewCell {
         likeButton.snp.makeConstraints { make in
             make.size.equalTo(CGFloat.likeButtonSize)
             make.top.equalToSuperview()
-            make.leading.equalTo(nftImageView.snp.trailing).offset(CGFloat.likeButtonLeadingOffset)
+            make.trailing.equalTo(nftImageView.snp.trailing)
         }
         
         nftStackView.snp.makeConstraints { make in
@@ -239,7 +240,7 @@ final class NFTTableViewCell: UITableViewCell {
     
     @objc
     private func likeButtonTapped() {
-        
+        model.onLikeAction(!model.isLiked)
     }
 }
 
@@ -247,7 +248,6 @@ private extension CGFloat {
     static let nftViewContentHeight: CGFloat = 108
     static let nftImageViewSize: CGFloat = 108
     static let likeButtonSize: CGFloat = 40
-    static let likeButtonLeadingOffset: CGFloat = 68
     static let stackViewTopOffset: CGFloat = 23
     static let stackViewLeadingOffset: CGFloat = 20
     static let stackViewBottomOffset: CGFloat = 23

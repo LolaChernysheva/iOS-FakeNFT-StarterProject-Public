@@ -10,7 +10,7 @@ import UIKit
 
 protocol ProfileRouterProtocol: AnyObject {
     func showEditProfileController(profile: Profile, onDismiss: @escaping () -> Void)
-    func showMyNftController(nftIds: [String])
+    func showMyNftController(profile: Profile)
 }
 
 final class ProfileRouter: ProfileRouterProtocol {
@@ -29,9 +29,9 @@ final class ProfileRouter: ProfileRouterProtocol {
         view.present(editProfileViewController, animated: true)
     }
     
-    func showMyNftController(nftIds: [String]) {
+    func showMyNftController(profile: Profile) {
         guard let view = view as? UIViewController else { return }
-        let myNftController = ModulesAssembly.myNftScreenBuilder(nftIds: nftIds)
+        let myNftController = ModulesAssembly.myNftScreenBuilder(profile: profile)
         myNftController.hidesBottomBarWhenPushed = true
         view.navigationController?.pushViewController(myNftController, animated: true)
     }

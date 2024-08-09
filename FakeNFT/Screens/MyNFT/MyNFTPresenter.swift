@@ -19,14 +19,29 @@ final class MyNFTPresenter {
     
     private weak var view: MyNFTViewProtocol?
     private var service: MyNftNetworkServiceProtocol?
+    private var profileService: ProfileNetworkServiceProtocol?
     
+    private var profile: Profile?
     private var nftIds: [String]
-    private var nfts: [NftModel] = []
+    private var nfts: [NftModel] = [] {
+        didSet {
+            render(reloadData: true)
+        }
+    }
+    private var likedNftsIds: [String] = [] {
+        didSet {
+            updateNftModels()
+            render(reloadData: true)
+        }
+    }
     
-    init(view: MyNFTViewProtocol?, networkService: MyNftNetworkServiceProtocol?, nftIds: [String]) {
+    init(view: MyNFTViewProtocol?, networkService: MyNftNetworkServiceProtocol?, profileService: ProfileNetworkServiceProtocol?, profile: Profile) {
         self.view = view
         self.service = networkService
-        self.nftIds = nftIds
+        self.profileService = profileService
+        self.profile = profile
+        self.nftIds = profile.nfts
+        self.likedNftsIds = profile.likes
         loadNfts()
     }
     
@@ -45,10 +60,30 @@ final class MyNFTPresenter {
                 authorName: nft.authorName,
                 price: String("\(nft.price)"),
                 rating: nft.rating,
-                isLiked: nft.isLiked
+                isLiked: nft.isLiked,
+                onLikeAction: { [weak self] isLiked in
+                    guard let self else { return }
+                    if isLiked {
+                        if !self.likedNftsIds.contains(nft.id) {
+                            self.likedNftsIds.append(nft.id)
+                        }
+                    } else {
+                        self.likedNftsIds.removeAll { $0 == nft.id }
+                    }
+                    self.profile?.likes = self.likedNftsIds
+                    self.updateProfile()
+                }
             ))
         }
         return [.simple(cells: cells)]
+    }
+    
+    private func updateNftModels() {
+        nfts = nfts.map { nft in
+            var updatedNft = nft
+            updatedNft.isLiked = likedNftsIds.contains(nft.id)
+            return updatedNft
+        }
     }
     
     private func render(reloadData: Bool = true) {
@@ -68,17 +103,36 @@ final class MyNFTPresenter {
                             authorName: nft.author,
                             price: nft.price,
                             imageString: nft.images.first ?? "",
-                            isLiked: false) //TODO: -
+                            id: nft.id,
+                            isLiked: self.likedNftsIds.contains(nft.id))
                     )
-                    render()
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
             })
-            
         }
     }
     
+    private func updateProfile() {
+        guard let profile = profile else { return }
+        profileService?.updateProfile(profile: Profile(
+            name: profile.name,
+            avatar: profile.avatar,
+            description: profile.description,
+            website: profile.website,
+            nfts: profile.nfts, likes:
+                likedNftsIds,
+            id: profile.id)
+        ) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(profile):
+                self.render()
+            case let .failure(error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
 extension MyNFTPresenter: MyNFTPresenterProtocol {
