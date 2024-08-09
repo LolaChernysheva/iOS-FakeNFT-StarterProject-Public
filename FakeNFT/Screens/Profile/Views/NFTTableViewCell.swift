@@ -110,8 +110,9 @@ final class NFTTableViewCell: UITableViewCell {
     private lazy var ratingStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.distribution = .fillEqually
+        stack.spacing = 2
         stack.alignment = .center
+        stack.distribution = .fillEqually
         return stack
     }()
     
@@ -134,28 +135,30 @@ final class NFTTableViewCell: UITableViewCell {
             nftImageView.kf.setImage(with: url)
         }
         
-        likeButton.setImage(model.isLiked ?Asset.Images.favouritesDone : Asset.Images.favouritesNoActive , for: .normal)
+        likeButton.setImage(model.isLiked ? Asset.Images.favouritesDone : Asset.Images.favouritesNoActive, for: .normal)
         
         ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        let activeStarImage = UIImage(systemName: "star.fill")?.withTintColor(.ypYellow, renderingMode: .alwaysOriginal)
-        let inactiveStarImage = UIImage(systemName: "star.fill")?.withTintColor(.segmentInactive, renderingMode: .alwaysOriginal)
+        let starSize: CGFloat = 12
+        let activeStarImage = UIImage(systemName: "star.fill")?.withTintColor(.ypYellow, renderingMode: .alwaysOriginal).resized(to: CGSize(width: starSize, height: starSize))
+        let inactiveStarImage = UIImage(systemName: "star.fill")?.withTintColor(.segmentInactive, renderingMode: .alwaysOriginal).resized(to: CGSize(width: starSize, height: starSize))
         
         for index in 1...Self.totalStars {
-            let starImageView = UIImageView()
+            let starImageView = UIImageView(image: index <= model.rating ? activeStarImage : inactiveStarImage)
             starImageView.contentMode = .scaleAspectFit
-            starImageView.image = index <= model.rating ? activeStarImage : inactiveStarImage
             ratingStackView.addArrangedSubview(starImageView)
+            starImageView.snp.makeConstraints { make in
+                make.width.height.equalTo(starSize)
+            }
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        ratingStackView.arrangedSubviews.forEach { ratingStackView.removeArrangedSubview($0) }
+        ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     
     private func setupView() {
-       
         backgroundColor = .white
         selectionStyle = .none
         
@@ -215,7 +218,6 @@ final class NFTTableViewCell: UITableViewCell {
         
         ratingStackView.snp.makeConstraints { make in
             make.height.equalTo(CGFloat.ratingStackViewHeight)
-            make.width.equalTo(CGFloat.ratingStackViewWidth)
         }
         
         authorView.snp.makeConstraints { make in
@@ -244,6 +246,16 @@ final class NFTTableViewCell: UITableViewCell {
     }
 }
 
+private extension UIImage {
+    func resized(to size: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(origin: .zero, size: size))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+}
+
 private extension CGFloat {
     static let nftViewContentHeight: CGFloat = 108
     static let nftImageViewSize: CGFloat = 108
@@ -252,7 +264,6 @@ private extension CGFloat {
     static let stackViewLeadingOffset: CGFloat = 20
     static let stackViewBottomOffset: CGFloat = 23
     static let ratingStackViewHeight: CGFloat = 12
-    static let ratingStackViewWidth: CGFloat = 68
     static let authorViewHeight: CGFloat = 20
     static let authorViewWidth: CGFloat = 78
     static let authorLabelLeadingOffset: CGFloat = 5
@@ -261,3 +272,4 @@ private extension CGFloat {
     static let imageViewCornerRadius: CGFloat = 12
     static let nameLabelWidth: CGFloat = 100
 }
+
