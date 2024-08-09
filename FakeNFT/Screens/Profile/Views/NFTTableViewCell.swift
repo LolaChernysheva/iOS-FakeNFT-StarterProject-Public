@@ -16,7 +16,6 @@ struct NFTTableViewCellModel {
     let authorName: String
     let price: String
     let rating: Int
-    
     var isLiked: Bool
     
     static let empty: NFTTableViewCellModel = NFTTableViewCellModel(image: "", name: "", authorName: "", price: "", rating: 0, isLiked: false)
@@ -35,55 +34,55 @@ final class NFTTableViewCell: UITableViewCell {
     }
     
     private lazy var likeButton: UIButton = {
-        let button: UIButton = UIButton()
+        let button = UIButton()
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var nftImageView: UIImageView = {
-        let image: UIImageView = UIImageView()
-        image.layer.cornerRadius = 12
-        image.clipsToBounds = true
-        image.contentMode = .scaleAspectFill
-        return image
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = .imageViewCornerRadius
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
     private lazy var nameLabel: UILabel = {
-        let label: UILabel = UILabel()
+        let label = UILabel()
         label.font = .bodyBold
         label.textColor = .segmentActive
         return label
     }()
     
     private lazy var authorLabel: UILabel = {
-        let label: UILabel = UILabel()
+        let label = UILabel()
         label.font = .caption2
         label.textColor = .segmentActive
         return label
     }()
     
     private lazy var fromLabel: UILabel = {
-        let label: UILabel = UILabel()
+        let label = UILabel()
         label.text = "от"
         label.font = .caption1
         return label
     }()
     
     private lazy var priceLabel: UILabel = {
-        let label: UILabel = UILabel()
+        let label = UILabel()
         label.text = "Цена"
         label.font = .caption2
         return label
     }()
     
     private lazy var priceValueLabel: UILabel = {
-        let label: UILabel = UILabel()
+        let label = UILabel()
         label.font = .bodyBold
         return label
     }()
     
     private lazy var nftStackView: UIStackView = {
-        let stack: UIStackView = UIStackView()
+        let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .equalSpacing
         stack.alignment = .center
@@ -91,7 +90,7 @@ final class NFTTableViewCell: UITableViewCell {
     }()
     
     private lazy var nftStackLeft: UIStackView = {
-        let stack: UIStackView = UIStackView()
+        let stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         stack.alignment = .leading
@@ -99,7 +98,7 @@ final class NFTTableViewCell: UITableViewCell {
     }()
     
     private lazy var nftStackRight: UIStackView = {
-        let stack: UIStackView = UIStackView()
+        let stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         stack.alignment = .leading
@@ -107,7 +106,7 @@ final class NFTTableViewCell: UITableViewCell {
     }()
     
     private lazy var ratingStackView: UIStackView = {
-        let stack: UIStackView = UIStackView()
+        let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         stack.alignment = .center
@@ -115,24 +114,15 @@ final class NFTTableViewCell: UITableViewCell {
     }()
     
     private lazy var authorView: UIView = {
-        let view: UIView = UIView()
+        let view = UIView()
         view.clipsToBounds = true
         return view
     }()
     
     private lazy var nftViewContent: UIView = UIView()
     
-    
-    @objc
-    private func likeButtonTapped() {
-
-    }
-    
-    func setup() {
-        backgroundColor = .white
-        selectionStyle = .none
-        addElements()
-        setupConstraints()
+    private func setup() {
+        setupView()
         
         nameLabel.text = model.name
         authorLabel.text = model.authorName
@@ -142,39 +132,33 @@ final class NFTTableViewCell: UITableViewCell {
             nftImageView.kf.setImage(with: url)
         }
         
-        model.isLiked ? likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal) :
-        likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
+        let likeImage = model.isLiked ? "profileImages/likeActive" : "profileImages/likeNoActive"
+        likeButton.setImage(UIImage(named: likeImage), for: .normal)
         
-
-        ratingStackView.arrangedSubviews.forEach {
-            $0.removeFromSuperview()
-        }
+        ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        let activeStarImage = UIImage(systemName: "star.fill")?
-            .withTintColor(.ypYellow, renderingMode: .alwaysOriginal)
-        let inactiveStarImage = UIImage(systemName: "star.fill")?
-            .withTintColor(.segmentInactive, renderingMode: .alwaysOriginal)
+        let activeStarImage = UIImage(systemName: "star.fill")?.withTintColor(.ypYellow, renderingMode: .alwaysOriginal)
+        let inactiveStarImage = UIImage(systemName: "star.fill")?.withTintColor(.segmentInactive, renderingMode: .alwaysOriginal)
         
         for index in 1...Self.totalStars {
             let starImageView = UIImageView()
             starImageView.contentMode = .scaleAspectFit
             starImageView.image = index <= model.rating ? activeStarImage : inactiveStarImage
             ratingStackView.addArrangedSubview(starImageView)
-            
-            starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
-            starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true
         }
     }
     
     override func prepareForReuse() {
-        for view in ratingStackView.arrangedSubviews {
-            ratingStackView.removeArrangedSubview(view)
-        }
+        super.prepareForReuse()
+        ratingStackView.arrangedSubviews.forEach { ratingStackView.removeArrangedSubview($0) }
     }
     
-    private func addElements(){
+    private func setupView() {
+       
+        backgroundColor = .white
+        selectionStyle = .none
+        
         contentView.addSubview(nftViewContent)
-
         nftViewContent.addSubview(nftImageView)
         nftViewContent.addSubview(likeButton)
         nftViewContent.addSubview(nftStackView)
@@ -191,52 +175,78 @@ final class NFTTableViewCell: UITableViewCell {
         
         nftStackRight.addArrangedSubview(priceLabel)
         nftStackRight.addArrangedSubview(priceValueLabel)
+        
+        setupConstraints()
     }
     
     private func setupConstraints(){
-        [likeButton, nftImageView, nftStackView,
-         nftStackLeft, nameLabel, ratingStackView, authorView, fromLabel, authorLabel,
-         nftStackRight, priceLabel, priceValueLabel, nftViewContent].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        nftViewContent.snp.makeConstraints { make in
+            make.height.equalTo(CGFloat.nftViewContentHeight)
+            make.leading.equalToSuperview().offset(CGFloat.horizontalPadding)
+            make.trailing.equalToSuperview().offset(-CGFloat.horizontalTrailingPadding)
+            make.centerY.equalToSuperview()
         }
         
-        NSLayoutConstraint.activate([
-            nftViewContent.heightAnchor.constraint(equalToConstant: 108),
-            nftViewContent.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            nftViewContent.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -26),
-            nftViewContent.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
-            nftImageView.heightAnchor.constraint(equalToConstant: 108),
-            nftImageView.widthAnchor.constraint(equalToConstant: 108),
-            nftImageView.leadingAnchor.constraint(equalTo: nftViewContent.leadingAnchor),
-            nftImageView.centerYAnchor.constraint(equalTo: nftViewContent.centerYAnchor),
-            
-            likeButton.heightAnchor.constraint(equalToConstant: 40),
-            likeButton.widthAnchor.constraint(equalToConstant: 40),
-            likeButton.topAnchor.constraint(equalTo: nftViewContent.topAnchor, constant: 0),
-            likeButton.leadingAnchor.constraint(equalTo: nftViewContent.leadingAnchor, constant: 68),
-            
-            nftStackLeft.heightAnchor.constraint(equalToConstant: 62),
-            nftStackLeft.widthAnchor.constraint(equalToConstant: 95),
-            nftStackRight.heightAnchor.constraint(equalToConstant: 42),
-            nftStackRight.widthAnchor.constraint(equalToConstant: 90),
-            
-            nftStackView.topAnchor.constraint(equalTo: nftViewContent.topAnchor, constant: 23),
-            nftStackView.leadingAnchor.constraint(equalTo: nftViewContent.leadingAnchor, constant: 128),
-            nftStackView.trailingAnchor.constraint(equalTo: nftViewContent.trailingAnchor, constant: 0),
-            nftStackView.bottomAnchor.constraint(equalTo: nftViewContent.bottomAnchor, constant: -23),
-            
-            ratingStackView.heightAnchor.constraint(equalToConstant: 12),
-            ratingStackView.widthAnchor.constraint(equalToConstant: 68),
-            
-            authorView.heightAnchor.constraint(equalToConstant: 20),
-            authorView.widthAnchor.constraint(equalToConstant: 78),
-            
-            fromLabel.leadingAnchor.constraint(equalTo: authorView.leadingAnchor),
-            fromLabel.centerYAnchor.constraint(equalTo: authorView.centerYAnchor),
-            
-            authorLabel.leadingAnchor.constraint(equalTo: fromLabel.trailingAnchor, constant: 5),
-            authorLabel.centerYAnchor.constraint(equalTo: authorView.centerYAnchor),
-        ])
+        nftImageView.snp.makeConstraints { make in
+            make.height.width.equalTo(CGFloat.nftImageViewSize)
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        likeButton.snp.makeConstraints { make in
+            make.size.equalTo(CGFloat.likeButtonSize)
+            make.top.equalToSuperview()
+            make.leading.equalTo(nftImageView.snp.trailing).offset(CGFloat.likeButtonLeadingOffset)
+        }
+        
+        nftStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(CGFloat.stackViewTopOffset)
+            make.leading.equalTo(nftImageView.snp.trailing).offset(CGFloat.stackViewLeadingOffset)
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-CGFloat.stackViewBottomOffset)
+        }
+        
+        ratingStackView.snp.makeConstraints { make in
+            make.height.equalTo(CGFloat.ratingStackViewHeight)
+            make.width.equalTo(CGFloat.ratingStackViewWidth)
+        }
+        
+        authorView.snp.makeConstraints { make in
+            make.height.equalTo(CGFloat.authorViewHeight)
+            make.width.equalTo(CGFloat.authorViewWidth)
+        }
+        
+        fromLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        authorLabel.snp.makeConstraints { make in
+            make.leading.equalTo(fromLabel.snp.trailing).offset(CGFloat.authorLabelLeadingOffset)
+            make.centerY.equalToSuperview()
+        }
     }
+    
+    @objc
+    private func likeButtonTapped() {
+        
+    }
+}
+
+private extension CGFloat {
+    static let nftViewContentHeight: CGFloat = 108
+    static let nftImageViewSize: CGFloat = 108
+    static let likeButtonSize: CGFloat = 40
+    static let likeButtonLeadingOffset: CGFloat = 68
+    static let stackViewTopOffset: CGFloat = 23
+    static let stackViewLeadingOffset: CGFloat = 20
+    static let stackViewBottomOffset: CGFloat = 23
+    static let ratingStackViewHeight: CGFloat = 12
+    static let ratingStackViewWidth: CGFloat = 68
+    static let authorViewHeight: CGFloat = 20
+    static let authorViewWidth: CGFloat = 78
+    static let authorLabelLeadingOffset: CGFloat = 5
+    static let horizontalPadding: CGFloat = 16
+    static let horizontalTrailingPadding: CGFloat = 26
+    static let imageViewCornerRadius: CGFloat = 12
 }
