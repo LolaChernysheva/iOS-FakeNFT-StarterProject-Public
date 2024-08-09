@@ -10,7 +10,6 @@ import Foundation
 
 protocol MyNFTPresenterProtocol: AnyObject {
     var nftIds: [String] { get }
-    
     func setup()
     func sortByPrice()
     func sortByRating()
@@ -25,15 +24,25 @@ final class MyNFTPresenter {
     
     private var profile: Profile?
     private (set)  var nftIds: [String]
+    
     private var nfts: [NftModel] = [] {
         didSet {
             render(reloadData: true)
         }
     }
+    
     private var likedNftsIds: [String] = [] {
         didSet {
             updateNftModels()
             render(reloadData: true)
+        }
+    }
+    
+    private(set) var isLoading: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.view?.updateLoadingState(isLoading: self.isLoading)
+            }
         }
     }
     
@@ -93,9 +102,11 @@ final class MyNFTPresenter {
     }
     
     private func loadNfts() {
+        isLoading = true
         nftIds.forEach { id in
             service?.fetchNft(id: id, completion: { [ weak self ] result in
                 guard let self else { return }
+                self.isLoading = false
                 switch result {
                 case let .success(nft):
                     self.nfts.append(

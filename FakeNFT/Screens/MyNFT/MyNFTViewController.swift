@@ -8,9 +8,11 @@
 
 import UIKit
 import SnapKit
+import ProgressHUD
 
 protocol MyNFTViewProtocol: AnyObject {
     func display(data: MyNFTScreenModel, reloadData: Bool)
+    func updateLoadingState(isLoading: Bool)
 }
 
 final class MyNFTViewController: UIViewController {
@@ -142,6 +144,14 @@ final class MyNFTViewController: UIViewController {
         self.present(actionSheet, animated: true, completion: nil)
     }
     
+    private func disableUserInteraction() {
+        view.isUserInteractionEnabled = false
+    }
+    
+    private func enableUserInteraction() {
+        view.isUserInteractionEnabled = true
+    }
+    
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
@@ -158,6 +168,16 @@ extension MyNFTViewController: MyNFTViewProtocol {
             tableView.reloadData()
         }
         
+    }
+    
+    func updateLoadingState(isLoading: Bool) {
+        if isLoading {
+            ProgressHUD.show()
+            disableUserInteraction()
+        } else {
+            ProgressHUD.dismiss()
+            enableUserInteraction()
+        }
     }
 }
 
