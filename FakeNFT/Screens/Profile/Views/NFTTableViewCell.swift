@@ -166,6 +166,12 @@ final class NFTTableViewCell: UITableViewCell {
         nftStackView.addArrangedSubview(nftStackLeft)
         nftStackView.addArrangedSubview(nftStackRight)
         
+        nftStackLeft.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        nftStackLeft.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        nftStackRight.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        nftStackRight.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        
         nftStackLeft.addArrangedSubview(nameLabel)
         nftStackLeft.addArrangedSubview(ratingStackView)
         nftStackLeft.addArrangedSubview(authorView)
@@ -225,6 +231,10 @@ final class NFTTableViewCell: UITableViewCell {
             make.leading.equalTo(fromLabel.snp.trailing).offset(CGFloat.authorLabelLeadingOffset)
             make.centerY.equalToSuperview()
         }
+        
+        nameLabel.snp.makeConstraints { make in
+            make.width.equalTo(CGFloat.nameLabelWidth)
+        }
     }
     
     @objc
@@ -249,4 +259,5 @@ private extension CGFloat {
     static let horizontalPadding: CGFloat = 16
     static let horizontalTrailingPadding: CGFloat = 26
     static let imageViewCornerRadius: CGFloat = 12
+    static let nameLabelWidth: CGFloat = 100
 }

@@ -32,6 +32,7 @@ final class ProfileRouter: ProfileRouterProtocol {
     func showMyNftController(nftIds: [String]) {
         guard let view = view as? UIViewController else { return }
         let myNftController = ModulesAssembly.myNftScreenBuilder(nftIds: nftIds)
+        myNftController.hidesBottomBarWhenPushed = true
         view.navigationController?.pushViewController(myNftController, animated: true)
     }
 }

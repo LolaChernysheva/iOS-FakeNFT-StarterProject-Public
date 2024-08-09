@@ -39,7 +39,6 @@ final class MyNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        hidesBottomBarWhenPushed = true
         setupTableView()
         setupView()
     }
@@ -47,6 +46,7 @@ final class MyNFTViewController: UIViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(NFTTableViewCell.self, forCellReuseIdentifier: NFTTableViewCell.identifier)
     }
     
