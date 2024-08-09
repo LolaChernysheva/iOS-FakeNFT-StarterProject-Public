@@ -273,8 +273,9 @@ extension ProfileViewController: UITableViewDataSource {
 
 extension ProfileViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        print("Link tapped: \(URL)")
-        return true
+        let webViewController = WebViewController(urlString: URL.absoluteString)
+        navigationController?.pushViewController(webViewController, animated: true)
+        return false
     }
 }
 
