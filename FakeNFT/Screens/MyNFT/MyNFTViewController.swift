@@ -99,14 +99,17 @@ final class MyNFTViewController: UIViewController {
     private func showActionSheet() {
         let actionSheet = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: "По цене", style: .default, handler: { _ in
-            print("Сортировка по цене")
+        actionSheet.addAction(UIAlertAction(title: "По цене", style: .default, handler: { [weak self] _ in
+            guard let self else { return }
+            self.presenter.sortByPrice()
         }))
-        actionSheet.addAction(UIAlertAction(title: "По рейтингу", style: .default, handler: { _ in
-            print("Сортировка по рейтингу")
+        actionSheet.addAction(UIAlertAction(title: "По рейтингу", style: .default, handler: { [weak self] _ in
+            guard let self else { return }
+            self.presenter.sortByRating()
         }))
-        actionSheet.addAction(UIAlertAction(title: "По названию", style: .default, handler: { _ in
-            print("Сортировка по названию")
+        actionSheet.addAction(UIAlertAction(title: "По названию", style: .default, handler: { [weak self] _ in
+            guard let self else { return }
+            self.presenter.sortByName()
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))

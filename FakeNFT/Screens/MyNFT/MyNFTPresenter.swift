@@ -10,6 +10,9 @@ import Foundation
 
 protocol MyNFTPresenterProtocol: AnyObject {
     func setup()
+    func sortByPrice()
+    func sortByRating()
+    func sortByName() 
 }
 
 final class MyNFTPresenter {
@@ -80,6 +83,21 @@ final class MyNFTPresenter {
 
 extension MyNFTPresenter: MyNFTPresenterProtocol {
     func setup() {
+        render()
+    }
+    
+    func sortByPrice() {
+        nfts.sort { $0.price < $1.price }
+        render()
+    }
+    
+    func sortByRating() {
+        nfts.sort { $0.rating > $1.rating }
+        render()
+    }
+    
+    func sortByName() {
+        nfts.sort { $0.name < $1.name }
         render()
     }
 }
