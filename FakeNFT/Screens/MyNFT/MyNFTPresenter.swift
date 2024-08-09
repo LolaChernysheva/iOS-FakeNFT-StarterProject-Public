@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dispatch
 
 protocol MyNFTPresenterProtocol: AnyObject {
     var nftIds: [String] { get }
@@ -23,7 +24,7 @@ final class MyNFTPresenter {
     private var profileService: ProfileNetworkServiceProtocol?
     
     private var profile: Profile?
-    private (set)  var nftIds: [String]
+    private (set) var nftIds: [String]
     
     private var nfts: [NftModel] = [] {
         didSet {
@@ -103,10 +104,15 @@ final class MyNFTPresenter {
     
     private func loadNfts() {
         isLoading = true
+        let group = DispatchGroup()
+        
         nftIds.forEach { id in
-            service?.fetchNft(id: id, completion: { [ weak self ] result in
+            group.enter()
+            
+            service?.fetchNft(id: id, completion: { [weak self] result in
                 guard let self else { return }
-                self.isLoading = false
+                defer { group.leave() }
+                
                 switch result {
                 case let .success(nft):
                     self.nfts.append(
@@ -124,6 +130,12 @@ final class MyNFTPresenter {
                 }
             })
         }
+        
+        group.notify(queue: .main) { [weak self] in
+            guard let self else { return }
+            self.isLoading = false
+            self.render()
+        }
     }
     
     private func updateProfile() {
@@ -133,8 +145,8 @@ final class MyNFTPresenter {
             avatar: profile.avatar,
             description: profile.description,
             website: profile.website,
-            nfts: profile.nfts, likes:
-                likedNftsIds,
+            nfts: profile.nfts,
+            likes: likedNftsIds,
             id: profile.id)
         ) { [weak self] result in
             guard let self else { return }
