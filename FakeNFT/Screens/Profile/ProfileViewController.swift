@@ -154,7 +154,7 @@ final class ProfileViewController: UIViewController {
     
     private func configureTableView() {
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(profileContainerView.snp.bottom).offset(40)
+            make.top.equalTo(profileContainerView.snp.bottom).offset(CGFloat.tableViewTopInsets)
             make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
             make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
             make.bottom.equalToSuperview()
@@ -293,4 +293,5 @@ private extension CGFloat {
     static let horizontalOffset: CGFloat = 16
     static let topOffset: CGFloat = 20
     static let avatarWidthHeight: CGFloat = 70
+    static let tableViewTopInsets: CGFloat = 20
 }

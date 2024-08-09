@@ -22,6 +22,7 @@ final class TextViewCell: UITableViewCell {
     private lazy var textView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
+        textView.font = .bodyRegular
         textView.isEditable = true
         textView.textColor = .black
         textView.delegate = self
