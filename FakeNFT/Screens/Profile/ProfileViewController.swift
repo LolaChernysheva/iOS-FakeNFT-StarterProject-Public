@@ -64,6 +64,8 @@ final class ProfileViewController: UIViewController {
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.textColor = .linkBlue
+        textView.delegate = self
+        textView.backgroundColor = .clear
         return textView
     }()
     
@@ -164,6 +166,24 @@ final class ProfileViewController: UIViewController {
         userNameLabel.text = model.userName
         descriptionLabel.text = model.userAbout
         linkTextView.text = model.websiteUrlString
+        updateLinkTextView()
+    }
+    
+    private func updateLinkTextView() {
+        guard !model.websiteUrlString.isEmpty else {
+            linkTextView.attributedText = nil
+            return
+        }
+        
+        let attributedString = NSMutableAttributedString(string: "")
+        let linkAttributes: [NSAttributedString.Key: Any] = [
+            .link: model.websiteUrlString,
+            .foregroundColor: UIColor.linkBlue
+        ]
+        let linkText = NSAttributedString(string: model.websiteUrlString, attributes: linkAttributes)
+        
+        attributedString.append(linkText)
+        linkTextView.attributedText = attributedString
     }
     
     private func tableDataCell(indexPath: IndexPath) -> Cell {

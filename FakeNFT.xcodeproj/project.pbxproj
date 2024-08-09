@@ -56,6 +56,7 @@
 		F36E44922C61693D00D00ED6 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36E44912C61693D00D00ED6 /* ProfileRequest.swift */; };
 		F384BBFC2C63A310004E9C0F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BBFB2C63A310004E9C0F /* HeaderView.swift */; };
 		F384BBFE2C63A75A004E9C0F /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BBFD2C63A75A004E9C0F /* TextFieldCell.swift */; };
+		F384BC102C6641C3004E9C0F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC0F2C6641C3004E9C0F /* WebViewController.swift */; };
 		F3D9B24A2C45A4FF00509587 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9B2492C45A4FE00509587 /* DetailCell.swift */; };
 		F3EAEF482C41397700834E53 /* ModulesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF472C41397700834E53 /* ModulesAssembly.swift */; };
 		F3EAEF4B2C413DAA00834E53 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */; };
@@ -133,6 +134,7 @@
 		F36E44912C61693D00D00ED6 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		F384BBFB2C63A310004E9C0F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		F384BBFD2C63A75A004E9C0F /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		F384BC0F2C6641C3004E9C0F /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		F3D9B2492C45A4FE00509587 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		F3EAEF472C41397700834E53 /* ModulesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesAssembly.swift; sourceTree = "<group>"; };
 		F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 				F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */,
 				F3EAEF4C2C413DF000834E53 /* ProfilePresenter.swift */,
 				F3EAEF4E2C413DFD00834E53 /* ProfileScreenModel.swift */,
+				F384BC0F2C6641C3004E9C0F /* WebViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				F36E448D2C614EB300D00ED6 /* ProfileNetworkService.swift in Sources */,
 				F3EAEF4B2C413DAA00834E53 /* ProfileViewController.swift in Sources */,
+				F384BC102C6641C3004E9C0F /* WebViewController.swift in Sources */,
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
