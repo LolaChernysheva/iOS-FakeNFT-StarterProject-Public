@@ -182,8 +182,8 @@ final class NFTTableViewCell: UITableViewCell {
     private func setupConstraints(){
         nftViewContent.snp.makeConstraints { make in
             make.height.equalTo(CGFloat.nftViewContentHeight)
-            make.leading.equalToSuperview().offset(CGFloat.horizontalPadding)
-            make.trailing.equalToSuperview().offset(-CGFloat.horizontalTrailingPadding)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
         }
         

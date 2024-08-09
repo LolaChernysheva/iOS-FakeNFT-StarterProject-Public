@@ -38,7 +38,8 @@ final class MyNFTViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .linkBlue
+        view.backgroundColor = .white
+        hidesBottomBarWhenPushed = true
         setupTableView()
         setupView()
     }
@@ -52,15 +53,35 @@ final class MyNFTViewController: UIViewController {
     private func setupView() {
         view.addSubview(tableView)
         configureTableView()
+        configureNavBar()
     }
     
     private func configureTableView() {
+        tableView.backgroundColor = .white
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview()
             make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
             make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
             make.bottom.equalToSuperview()
         }
+    }
+    
+    private func configureNavBar() {
+        let backButton = UIButton(type: .custom)
+        let rightButton = UIButton(type: .custom)
+        
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        let rightBarButtonItem = UIBarButtonItem(customView: rightButton)
+        
+        backButton.setImage(Asset.Images.backward, for: .normal)
+        rightButton.setImage(Asset.Images.sort, for: .normal)
+        
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+
+        self.navigationItem.leftBarButtonItem = backBarButtonItem
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        
     }
     
     private func setup() {
@@ -73,6 +94,31 @@ final class MyNFTViewController: UIViewController {
         case let .simple(cells):
             return cells[indexPath.row]
         }
+    }
+    
+    private func showActionSheet() {
+        let actionSheet = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "По цене", style: .default, handler: { _ in
+            print("Сортировка по цене")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "По рейтингу", style: .default, handler: { _ in
+            print("Сортировка по рейтингу")
+        }))
+        actionSheet.addAction(UIAlertAction(title: "По названию", style: .default, handler: { _ in
+            print("Сортировка по названию")
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Закрыть", style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func sortButtonTapped() {
+        showActionSheet()
     }
 }
 
@@ -120,8 +166,13 @@ extension MyNFTViewController: UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        .cellHeight
+    }
+    
 }
 
 private extension CGFloat {
     static let horizontalOffset = 16.0
+    static let cellHeight = 140.0
 }
