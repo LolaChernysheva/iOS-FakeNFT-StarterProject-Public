@@ -178,12 +178,18 @@ final class ProfileViewController: UIViewController {
         let attributedString = NSMutableAttributedString(string: "")
         let linkAttributes: [NSAttributedString.Key: Any] = [
             .link: model.websiteUrlString,
-            .foregroundColor: UIColor.linkBlue
+            .foregroundColor: UIColor.linkBlue,
+            .font: UIFont.caption1
         ]
         let linkText = NSAttributedString(string: model.websiteUrlString, attributes: linkAttributes)
         
         attributedString.append(linkText)
         linkTextView.attributedText = attributedString
+        
+        linkTextView.linkTextAttributes = [
+            .foregroundColor: UIColor.linkBlue,
+            .font: UIFont.caption1
+        ]
     }
     
     private func tableDataCell(indexPath: IndexPath) -> Cell {
