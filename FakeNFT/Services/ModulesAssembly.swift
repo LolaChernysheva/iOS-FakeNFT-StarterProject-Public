@@ -11,6 +11,7 @@ import UIKit
 protocol ModulesAssemblyProtocol: AnyObject {
     static func mainScreenBuilder() -> UIViewController
     static func editProfileScreenBuilder(profile: Profile, onDismiss: @escaping () -> Void) -> UIViewController
+    static func myNftScreenBuilder(nftIds: [String]) -> UIViewController
 }
 
 final class ModulesAssembly: ModulesAssemblyProtocol {
@@ -48,5 +49,14 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         let presenter = EditProfilePresenter(view: editProfileViewController, profile: profile, networkService: networkService)
         editProfileViewController.presenter = presenter
         return editProfileViewController
+    }
+    
+    static func myNftScreenBuilder(nftIds: [String]) -> UIViewController {
+        let myNftViewController = MyNFTViewController()
+        let networkClient = DefaultNetworkClient()
+        let networkService = MyNftNetworkService(networkClient: networkClient)
+        let myNftPresenter = MyNFTPresenter(view: myNftViewController, networkService: networkService, nftIds: nftIds)
+        myNftViewController.presenter = myNftPresenter
+        return myNftViewController
     }
 }

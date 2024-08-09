@@ -97,8 +97,9 @@ final class ProfilePresenter {
         .detail(DetailCellModel(
             title: NSLocalizedString("Мои NFT", comment: ""),
             subtitle: String(profile?.nfts.count ?? 0),
-            action: {
-                
+            action: { [weak self] in
+                guard let self else { return }
+                self.showMyNft()
             }))
     }
     
@@ -138,6 +139,11 @@ final class ProfilePresenter {
                 completion(.failure(error))
             }
         }
+    }
+    
+    private func showMyNft() {
+        guard let profile = profile else { return }
+        router?.showMyNftController(nftIds: profile.nfts)
     }
 }
 
