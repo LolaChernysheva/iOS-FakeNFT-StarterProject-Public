@@ -43,7 +43,9 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
     
     static func editProfileScreenBuilder(profile: Profile) -> UIViewController {
         let editProfileViewController = EditProfileViewController()
-        let presenter = EditProfilePresenter(view: editProfileViewController, profile: profile)
+        let networkClient = DefaultNetworkClient()
+        let networkService = ProfileNetworkService(networkClient: networkClient)
+        let presenter = EditProfilePresenter(view: editProfileViewController, profile: profile, networkService: networkService)
         editProfileViewController.presenter = presenter
         return editProfileViewController
     }

@@ -56,6 +56,8 @@
 		F36E44922C61693D00D00ED6 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36E44912C61693D00D00ED6 /* ProfileRequest.swift */; };
 		F384BBFC2C63A310004E9C0F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BBFB2C63A310004E9C0F /* HeaderView.swift */; };
 		F384BBFE2C63A75A004E9C0F /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BBFD2C63A75A004E9C0F /* TextFieldCell.swift */; };
+		F384BC002C63D3DB004E9C0F /* UpdateProfileRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BBFF2C63D3DB004E9C0F /* UpdateProfileRequestModel.swift */; };
+		F384BC062C643C65004E9C0F /* UpdateProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC052C643C65004E9C0F /* UpdateProfileRequest.swift */; };
 		F384BC102C6641C3004E9C0F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC0F2C6641C3004E9C0F /* WebViewController.swift */; };
 		F3D9B24A2C45A4FF00509587 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9B2492C45A4FE00509587 /* DetailCell.swift */; };
 		F3EAEF482C41397700834E53 /* ModulesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF472C41397700834E53 /* ModulesAssembly.swift */; };
@@ -134,6 +136,8 @@
 		F36E44912C61693D00D00ED6 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		F384BBFB2C63A310004E9C0F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		F384BBFD2C63A75A004E9C0F /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		F384BBFF2C63D3DB004E9C0F /* UpdateProfileRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileRequestModel.swift; sourceTree = "<group>"; };
+		F384BC052C643C65004E9C0F /* UpdateProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileRequest.swift; sourceTree = "<group>"; };
 		F384BC0F2C6641C3004E9C0F /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		F3D9B2492C45A4FE00509587 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		F3EAEF472C41397700834E53 /* ModulesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesAssembly.swift; sourceTree = "<group>"; };
@@ -411,6 +415,8 @@
 			children = (
 				F36E448F2C61568D00D00ED6 /* Profile.swift */,
 				F36E44912C61693D00D00ED6 /* ProfileRequest.swift */,
+				F384BBFF2C63D3DB004E9C0F /* UpdateProfileRequestModel.swift */,
+				F384BC052C643C65004E9C0F /* UpdateProfileRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -631,6 +637,7 @@
 				E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */,
 				F384BBFE2C63A75A004E9C0F /* TextFieldCell.swift in Sources */,
 				F3D9B24A2C45A4FF00509587 /* DetailCell.swift in Sources */,
+				F384BC002C63D3DB004E9C0F /* UpdateProfileRequestModel.swift in Sources */,
 				F3EAEF4F2C413DFD00834E53 /* ProfileScreenModel.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				F36E448D2C614EB300D00ED6 /* ProfileNetworkService.swift in Sources */,
@@ -652,6 +659,7 @@
 				F36E44922C61693D00D00ED6 /* ProfileRequest.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
+				F384BC062C643C65004E9C0F /* UpdateProfileRequest.swift in Sources */,
 				0CFCB74E2A7817DC0009A829 /* NftStorage.swift in Sources */,
 				16243B232C4587F6005A4CA9 /* Asset.swift in Sources */,
 				F3FB9E402C528D3700EB56D9 /* ProfileRouter.swift in Sources */,

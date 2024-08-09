@@ -12,6 +12,7 @@ typealias ProfileCompletion = (Result<ProfileResponseModel, Error>) -> Void
 
 protocol ProfileNetworkServiceProtocol: AnyObject {
     func loadProfile(profileId: String, completion: @escaping ProfileCompletion)
+    func updateProfile(profile: Profile, completion: @escaping ProfileCompletion)
 }
 
 final class ProfileNetworkService: ProfileNetworkServiceProtocol {
@@ -23,14 +24,34 @@ final class ProfileNetworkService: ProfileNetworkServiceProtocol {
     }
     
     func loadProfile(profileId: String, completion: @escaping ProfileCompletion) {
-        let request = ProfileRequest(id: profileId, method: .get)
-        networkClient.send(request: request, type: ProfileResponseModel.self) { [weak self] result in
+        let request = ProfileRequest(id: profileId, httpMethod: .get, dto: nil)
+        networkClient.send(request: request, type: ProfileResponseModel.self) { result in
             switch result {
             case let .success(profile):
                 completion(.success(profile))
             case let .failure(error):
                 completion(.failure(error))
                 print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func updateProfile(profile: Profile, completion: @escaping ProfileCompletion) {
+        
+        let request = UpdateProfileRequest(
+            profile: UpdateProfileRequestModel(
+                name: profile.name,
+                description: profile.description,
+                website: profile.website,
+                likes: profile.likes)
+        )
+        
+        networkClient.send(request: request, type: ProfileResponseModel.self) { result in
+            switch result {
+            case let .success(profile):
+                completion(.success(profile))
+            case let .failure(error):
+                completion(.failure(error))
             }
         }
     }

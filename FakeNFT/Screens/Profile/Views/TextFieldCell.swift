@@ -11,6 +11,10 @@ import SnapKit
 
 struct TextFieldCellModel {
     var text: String
+
+    var textDidChanged: (String) -> Void
+    
+    static let empty = TextFieldCellModel(text: "", textDidChanged: { _ in })
 }
 
 final class TextFieldCell: UITableViewCell {
@@ -26,7 +30,7 @@ final class TextFieldCell: UITableViewCell {
         return textField
     }()
     
-    var model: TextFieldCellModel? {
+    var model: TextFieldCellModel = .empty {
         didSet {
             setup()
         }
@@ -38,6 +42,7 @@ final class TextFieldCell: UITableViewCell {
     ){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .segmentInactive
+        textField.addTarget(self, action: #selector(onEditingChanged), for: .editingDidEnd)
         setupConstraints()
     }
     
@@ -57,8 +62,11 @@ final class TextFieldCell: UITableViewCell {
     }
     
     private func setup() {
-        guard let model else {return}
         textField.text = model.text
+    }
+    
+    @objc private func onEditingChanged(_ textField: UITextField) {
+        model.textDidChanged(textField.text ?? "")
     }
 }
 

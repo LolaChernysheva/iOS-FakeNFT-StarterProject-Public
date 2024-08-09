@@ -9,11 +9,11 @@
 import UIKit
 
 struct Profile {
-    let name: String
+    var name: String
     var avatar: UIImage
-    let description: String
-    let website: String
-    let nfts: [String]
-    let likes: [String]
-    let id: String
+    var description: String
+    var website: String
+    var nfts: [String]
+    var likes: [String]
+    var id: String
 }
