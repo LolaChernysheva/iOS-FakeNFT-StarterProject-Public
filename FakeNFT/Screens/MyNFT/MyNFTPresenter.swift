@@ -9,6 +9,8 @@
 import Foundation
 
 protocol MyNFTPresenterProtocol: AnyObject {
+    var nftIds: [String] { get }
+    
     func setup()
     func sortByPrice()
     func sortByRating()
@@ -22,7 +24,7 @@ final class MyNFTPresenter {
     private var profileService: ProfileNetworkServiceProtocol?
     
     private var profile: Profile?
-    private var nftIds: [String]
+    private (set)  var nftIds: [String]
     private var nfts: [NftModel] = [] {
         didSet {
             render(reloadData: true)

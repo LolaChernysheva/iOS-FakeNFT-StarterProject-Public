@@ -22,6 +22,14 @@ final class MyNFTViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var emptyViewLabel: UILabel = {
+        let label = UILabel()
+        label.text = "У Вас ещё нет NFT"
+        label.font = .bodyBold
+        label.textAlignment = .center
+        return label
+    }()
+    
     var presenter: MyNFTPresenterProtocol!
     
     private var screenModel: MyNFTScreenModel = .empty {
@@ -39,7 +47,6 @@ final class MyNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupTableView()
         setupView()
     }
     
@@ -51,8 +58,13 @@ final class MyNFTViewController: UIViewController {
     }
     
     private func setupView() {
-        view.addSubview(tableView)
-        configureTableView()
+        if presenter.nftIds.isEmpty {
+            configureEmptyView()
+        } else {
+            view.addSubview(tableView)
+            setupTableView()
+            configureTableView()
+        }
         configureNavBar()
     }
     
@@ -63,6 +75,18 @@ final class MyNFTViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
             make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
             make.bottom.equalToSuperview()
+        }
+    }
+    
+    private func configureEmptyView() {
+        view.addSubview(emptyViewLabel)
+        
+        emptyViewLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(CGFloat.emptyViewHeight)
         }
     }
     
@@ -80,7 +104,9 @@ final class MyNFTViewController: UIViewController {
         rightButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
 
         self.navigationItem.leftBarButtonItem = backBarButtonItem
-        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        if !presenter.nftIds.isEmpty {
+            self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        }
         
     }
     
@@ -178,4 +204,5 @@ extension MyNFTViewController: UITableViewDataSource {
 private extension CGFloat {
     static let horizontalOffset = 16.0
     static let cellHeight = 140.0
+    static let emptyViewHeight = 22.0
 }
