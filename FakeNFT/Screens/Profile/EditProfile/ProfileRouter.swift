@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ProfileRouterProtocol: AnyObject {
-    func showEditProfileController(profile: Profile)
+    func showEditProfileController(profile: Profile, onDismiss: @escaping () -> Void)
 }
 
 final class ProfileRouter: ProfileRouterProtocol {
@@ -20,9 +20,9 @@ final class ProfileRouter: ProfileRouterProtocol {
         self.view = view
     }
     
-    func showEditProfileController(profile: Profile) {
+    func showEditProfileController(profile: Profile, onDismiss: @escaping () -> Void) {
         guard let view = view as? UIViewController else { return }
-        let editProfileViewController = ModulesAssembly.editProfileScreenBuilder(profile: profile)
+        let editProfileViewController = ModulesAssembly.editProfileScreenBuilder(profile: profile, onDismiss: onDismiss)
         editProfileViewController.modalPresentationStyle = .pageSheet
         editProfileViewController.hidesBottomBarWhenPushed = true
         view.present(editProfileViewController, animated: true)

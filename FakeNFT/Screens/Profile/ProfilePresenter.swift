@@ -57,10 +57,11 @@ final class ProfilePresenter {
     private func loadProfile() {
         isLoading = true
         networkService?.loadProfile(profileId: "1", completion: { [weak self] result in
-            self?.isLoading = false
+            guard let self = self else { return }
+            self.isLoading = false
             switch result {
             case let .success(profileResponce):
-                self?.profile = Profile(
+                self.profile = Profile(
                     name: profileResponce.name,
                     avatar: UIImage(),
                     description: profileResponce.description,
@@ -69,22 +70,25 @@ final class ProfilePresenter {
                     likes: profileResponce.likes,
                     id: profileResponce.id
                 )
-                self?.loadImage(from: profileResponce.avatar, completion: { result in
+                self.loadImage(from: profileResponce.avatar) { result in
                     switch result {
                     case let .success(avatarImage):
-                        self?.profile?.avatar = avatarImage
+                        self.profile?.avatar = avatarImage
                         DispatchQueue.main.async {
-                            self?.render()
+                            self.render()
                         }
                     case let .failure(error):
                         print(error.localizedDescription)
+                        DispatchQueue.main.async {
+                            self.render()
+                        }
                     }
-                })
-                DispatchQueue.main.async {
-                    self?.render()
                 }
             case let .failure(error):
                 print(error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.render()
+                }
             }
         })
     }
@@ -146,6 +150,9 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     
     func editProfile() {
         guard let profile = profile else { return }
-        router?.showEditProfileController(profile: profile)
+        router?.showEditProfileController(profile: profile, onDismiss: { [weak self] in
+            guard let self else { return }
+            self.loadProfile()
+        })
     }
 }

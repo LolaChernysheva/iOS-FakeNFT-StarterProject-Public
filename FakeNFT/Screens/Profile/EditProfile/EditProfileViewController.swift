@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 protocol EditProfileViewProtocol: AnyObject {
+    var onDismiss: (() -> Void)? { get set }
+    
     func display(data: EditProfileScreenModel, reloadTableData: Bool)
 }
 
@@ -44,6 +46,13 @@ final class EditProfileViewController: UIViewController {
         return view
     }()
     
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        let image = Asset.Images.close?.withRenderingMode(.alwaysOriginal)
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         return tableView
@@ -58,6 +67,17 @@ final class EditProfileViewController: UIViewController {
     
     var presenter: EditProfilePresenter!
     
+    var onDismiss: (() -> Void)?
+    
+    init(onDismiss: (() -> Void)?) {
+        self.onDismiss = onDismiss
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         presenter.setup()
     }
@@ -69,9 +89,15 @@ final class EditProfileViewController: UIViewController {
         setupTapGesture()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        presenter.saveChanges()
+        onDismiss?()
+    }
+    
     private func setupView() {
         setupTableView()
         setupConstraints()
+        backButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     }
     
     private func setupTableView() {
@@ -86,6 +112,7 @@ final class EditProfileViewController: UIViewController {
     private func setupConstraints() {
         view.addSubview(avatarImageView)
         view.addSubview(tableView)
+        view.addSubview(backButton)
         avatarImageView.addSubview(darkOverlay)
         darkOverlay.addSubview(overlayLabel)
         
@@ -114,6 +141,11 @@ final class EditProfileViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-Constants.horizontalInsets)
             make.bottom.equalToSuperview().offset(-Constants.horizontalInsets)
         }
+        
+        backButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(Constants.closeButtonTopInsets)
+            make.trailing.equalToSuperview().offset(-Constants.horizontalInsets)
+        }
     }
     
     private func setup() {
@@ -137,6 +169,11 @@ final class EditProfileViewController: UIViewController {
     
     @objc private func hideKeyboard() {
         view.endEditing(true)
+    }
+    
+    @objc private func closeButtonTapped() {
+        onDismiss?()
+        dismiss(animated: true)
     }
 }
 
@@ -217,6 +254,7 @@ private struct Constants {
     static let avatarSize: CGFloat = 70
     static let horizontalInsets: CGFloat = 16
     static let tableViewTopInsets: CGFloat = 24
+    static let closeButtonTopInsets: CGFloat = 16
 }
 
 extension EditProfileViewController: UITextFieldDelegate {

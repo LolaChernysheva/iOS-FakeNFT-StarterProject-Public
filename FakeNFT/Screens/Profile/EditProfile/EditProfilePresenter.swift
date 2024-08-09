@@ -10,6 +10,7 @@ import UIKit
 
 protocol EditProfilePresenterProtocol: AnyObject {
     func setup()
+    func saveChanges()
 }
 
 final class EditProfilePresenter: EditProfilePresenterProtocol {
@@ -51,16 +52,27 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                                     DispatchQueue.global().sync {
                                         self.profile.name = name
                                     }
-                                    self.updateProfileInfo(profile: profile)
                                 }))
                          ])
     }
     
     private func buildDescriptionSection() -> Section {
-        .headeredSection(header: NSLocalizedString("Описание", comment: ""),
-                         cells: [
-                            .textViewCell(TextViewCellModel(text: profile.description))
-                         ])
+        .headeredSection(
+            header: NSLocalizedString("Описание", comment: ""),
+            cells: [
+                .textViewCell(
+                    TextViewCellModel(
+                        text: profile.description,
+                        textDidChanged: { [weak self] description in
+                            guard let self else { return }
+                            DispatchQueue.global().sync {
+                                self.profile.description = description
+                            }
+                        }
+                    )
+                )
+            ]
+        )
     }
     
     private func buildSiteSection() -> Section {
@@ -73,7 +85,6 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                                     DispatchQueue.global().sync {
                                         self.profile.website = website
                                     }
-                                    self.updateProfileInfo(profile: profile)
                                 }))
                          ])
     }
@@ -86,7 +97,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         networkService?.updateProfile(profile: profile, completion: { result in
             switch result {
             case let .success(profile):
-                print("=== updatedProfile", profile)
+                print("profile info successfully updated")
             case let .failure(error):
                 print(error.localizedDescription)
             }
@@ -95,6 +106,10 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     
     func setup() {
         render()
+    }
+    
+    func saveChanges() {
+        updateProfileInfo(profile: profile)
     }
 }
 

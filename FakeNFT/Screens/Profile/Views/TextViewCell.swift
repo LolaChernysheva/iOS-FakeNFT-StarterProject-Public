@@ -11,6 +11,9 @@ import SnapKit
 
 struct TextViewCellModel {
     var text: String
+    var textDidChanged: (String) -> Void
+    
+    static let empty: TextViewCellModel = TextViewCellModel(text: "", textDidChanged: { _ in})
 }
 
 final class TextViewCell: UITableViewCell {
@@ -21,10 +24,11 @@ final class TextViewCell: UITableViewCell {
         textView.backgroundColor = .clear
         textView.isEditable = true
         textView.textColor = .black
+        textView.delegate = self
         return textView
     }()
     
-    var model: TextViewCellModel? {
+    var model: TextViewCellModel = .empty {
         didSet {
             setup()
         }
@@ -54,7 +58,12 @@ final class TextViewCell: UITableViewCell {
     }
     
     private func setup() {
-        guard let model else {return}
         textView.text = model.text
+    }
+}
+
+extension TextViewCell: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        model.textDidChanged(textView.text)
     }
 }

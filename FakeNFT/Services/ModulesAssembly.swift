@@ -10,7 +10,7 @@ import UIKit
 
 protocol ModulesAssemblyProtocol: AnyObject {
     static func mainScreenBuilder() -> UIViewController
-    static func editProfileScreenBuilder(profile: Profile) -> UIViewController
+    static func editProfileScreenBuilder(profile: Profile, onDismiss: @escaping () -> Void) -> UIViewController
 }
 
 final class ModulesAssembly: ModulesAssemblyProtocol {
@@ -41,8 +41,8 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         return nc
     }
     
-    static func editProfileScreenBuilder(profile: Profile) -> UIViewController {
-        let editProfileViewController = EditProfileViewController()
+    static func editProfileScreenBuilder(profile: Profile, onDismiss: @escaping () -> Void) -> UIViewController {
+        let editProfileViewController = EditProfileViewController(onDismiss: onDismiss)
         let networkClient = DefaultNetworkClient()
         let networkService = ProfileNetworkService(networkClient: networkClient)
         let presenter = EditProfilePresenter(view: editProfileViewController, profile: profile, networkService: networkService)
