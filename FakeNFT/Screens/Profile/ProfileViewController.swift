@@ -88,6 +88,7 @@ final class ProfileViewController: UIViewController {
     //MARK: life cycle methods
     
     override func viewWillAppear(_ animated: Bool) {
+        presenter.updateProfileData()
         presenter.setup()
     }
     

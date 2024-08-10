@@ -13,6 +13,7 @@ protocol ProfilePresenterProtocol: AnyObject {
     func setup()
     func editProfile()
     func showWebsite(URL: URL)
+    func updateProfileData()
 }
 
 final class ProfilePresenter {
@@ -171,5 +172,9 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     
     func showWebsite(URL: URL) {
         router?.showWebview(URL: URL)
+    }
+    
+    func updateProfileData() {
+        loadProfile()
     }
 }
