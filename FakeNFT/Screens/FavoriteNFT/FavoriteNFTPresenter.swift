@@ -19,6 +19,7 @@ final class FavoriteNFTPresenter {
     
     private weak var view: FavoriteNFTViewProtocol?
     private var service: MyNftNetworkServiceProtocol?
+    private var profileService: ProfileNetworkServiceProtocol?
     
     private var profile: Profile?
     
@@ -37,27 +38,35 @@ final class FavoriteNFTPresenter {
     init(
         view: FavoriteNFTViewProtocol?,
         service: MyNftNetworkServiceProtocol,
+        profileService: ProfileNetworkServiceProtocol,
         profile: Profile
     ) {
         self.view = view
         self.profile = profile
         self.likedNFTIds = profile.likes
         self.service = service
+        self.profileService = profileService
         loadNfts()
     }
     
     private func buildScreenModel() -> FavoriteNFTScreenModel {
         let cells: [Cell] = likedNfts.map { nft in
-                .nftCell(NFTCollectionViewCellModel(
-                    image: nft.imageString,
-                    name: nft.name,
-                    authorName: nft.authorName,
-                    price: String("\(nft.price)"),
-                    rating: nft.rating,
-                    isLiked: nft.isLiked,
-                    onLikeAction: { isLiked in
-                        //TODO: -
-                    })
+                .nftCell(
+                    NFTCollectionViewCellModel(
+                        image: nft.imageString,
+                        name: nft.name,
+                        authorName: nft.authorName,
+                        price: String("\(nft.price)"),
+                        rating: nft.rating,
+                        isLiked: nft.isLiked,
+                        onLikeAction: { [weak self] isLiked in
+                            guard let self else { return }
+                            self.likedNFTIds.removeAll { $0 == nft.id }
+                            self.likedNfts.removeAll { $0.id == nft.id }
+                            self.profile?.likes = self.likedNFTIds
+                            self.updateProfile()
+                        }
+                    )
                 )
         }
         return FavoriteNFTScreenModel(
@@ -103,6 +112,27 @@ final class FavoriteNFTPresenter {
             guard let self else { return }
             self.isLoading = false
             self.render()
+        }
+    }
+    
+    private func updateProfile() {
+        guard let profile = profile else { return }
+        profileService?.updateProfile(profile: Profile(
+            name: profile.name,
+            avatar: profile.avatar,
+            description: profile.description,
+            website: profile.website,
+            nfts: profile.nfts,
+            likes: likedNFTIds,
+            id: profile.id)
+        ) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(profile):
+                self.render()
+            case let .failure(error):
+                print(error.localizedDescription)
+            }
         }
     }
 }

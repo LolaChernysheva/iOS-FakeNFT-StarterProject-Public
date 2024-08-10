@@ -66,7 +66,8 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         let favoriteNftsController = FavoriteNFTViewController()
         let networkClient = DefaultNetworkClient()
         let networkService = MyNftNetworkService(networkClient: networkClient)
-        let favoriteNftsPresenter = FavoriteNFTPresenter(view: favoriteNftsController, service: networkService, profile: profile)
+        let profileNetworkService = ProfileNetworkService(networkClient: networkClient)
+        let favoriteNftsPresenter = FavoriteNFTPresenter(view: favoriteNftsController, service: networkService, profileService: profileNetworkService, profile: profile)
         favoriteNftsController.presenter = favoriteNftsPresenter
         return favoriteNftsController
     }
