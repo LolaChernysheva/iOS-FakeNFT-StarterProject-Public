@@ -155,7 +155,7 @@ final class ProfileViewController: UIViewController {
     
     private func configureTableView() {
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(profileContainerView.snp.bottom).offset(40)
+            make.top.equalTo(profileContainerView.snp.bottom).offset(CGFloat.tableViewTopInsets)
             make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
             make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
             make.bottom.equalToSuperview()
@@ -179,12 +179,18 @@ final class ProfileViewController: UIViewController {
         let attributedString = NSMutableAttributedString(string: "")
         let linkAttributes: [NSAttributedString.Key: Any] = [
             .link: model.websiteUrlString,
-            .foregroundColor: UIColor.linkBlue
+            .foregroundColor: UIColor.linkBlue,
+            .font: UIFont.caption1
         ]
         let linkText = NSAttributedString(string: model.websiteUrlString, attributes: linkAttributes)
         
         attributedString.append(linkText)
         linkTextView.attributedText = attributedString
+        
+        linkTextView.linkTextAttributes = [
+            .foregroundColor: UIColor.linkBlue,
+            .font: UIFont.caption1
+        ]
     }
     
     private func tableDataCell(indexPath: IndexPath) -> Cell {
@@ -274,8 +280,8 @@ extension ProfileViewController: UITableViewDataSource {
 
 extension ProfileViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        print("Link tapped: \(URL)")
-        return true
+        presenter.showWebsite(URL: URL)
+        return false
     }
 }
 
@@ -287,4 +293,5 @@ private extension CGFloat {
     static let horizontalOffset: CGFloat = 16
     static let topOffset: CGFloat = 20
     static let avatarWidthHeight: CGFloat = 70
+    static let tableViewTopInsets: CGFloat = 20
 }

@@ -12,6 +12,7 @@ import Kingfisher
 protocol ProfilePresenterProtocol: AnyObject {
     func setup()
     func editProfile()
+    func showWebsite(URL: URL)
 }
 
 final class ProfilePresenter {
@@ -160,5 +161,9 @@ extension ProfilePresenter: ProfilePresenterProtocol {
             guard let self else { return }
             self.loadProfile()
         })
+    }
+    
+    func showWebsite(URL: URL) {
+        router?.showWebview(URL: URL)
     }
 }

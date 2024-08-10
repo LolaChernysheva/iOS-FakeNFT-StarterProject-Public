@@ -11,6 +11,7 @@ import UIKit
 protocol ProfileRouterProtocol: AnyObject {
     func showEditProfileController(profile: Profile, onDismiss: @escaping () -> Void)
     func showMyNftController(profile: Profile)
+    func showWebview(URL: URL)
 }
 
 final class ProfileRouter: ProfileRouterProtocol {
@@ -34,5 +35,12 @@ final class ProfileRouter: ProfileRouterProtocol {
         let myNftController = ModulesAssembly.myNftScreenBuilder(profile: profile)
         myNftController.hidesBottomBarWhenPushed = true
         view.navigationController?.pushViewController(myNftController, animated: true)
+    }
+    
+    func showWebview(URL: URL) {
+        guard let view = view as? UIViewController else { return }
+        let webViewController = WebViewController(urlString: URL.absoluteString)
+        webViewController.hidesBottomBarWhenPushed = true
+        view.navigationController?.pushViewController(webViewController, animated: true)
     }
 }
