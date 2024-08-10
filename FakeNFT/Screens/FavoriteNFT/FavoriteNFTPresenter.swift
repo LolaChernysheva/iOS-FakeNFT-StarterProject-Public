@@ -10,6 +10,7 @@ import Foundation
 import Dispatch
 
 protocol FavoriteNFTPresenterProtocol: AnyObject {
+    var likedNFTIds: [String] { get }
     func setup()
 }
 
@@ -25,7 +26,7 @@ final class FavoriteNFTPresenter {
     
     private var likedNfts: [NftModel] = []
     
-    private var likedNFTIds: [String] = []
+    private(set) var likedNFTIds: [String] = []
     
     private(set) var isLoading: Bool = false {
         didSet {

@@ -36,6 +36,15 @@ final class FavoriteNFTViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var emptyViewLabel: UILabel = {
+        let label = UILabel()
+        label.text = "У Вас ещё нет избранных NFT"
+        label.font = .bodyBold
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     var presenter: FavoriteNFTPresenterProtocol!
     
     private var model: FavoriteNFTScreenModel = .empty {
@@ -56,6 +65,7 @@ final class FavoriteNFTViewController: UIViewController {
     
     private func setup() {
         title = model.title
+        updateEmptyView()
     }
     
     private func setupCollectionView() {
@@ -66,6 +76,7 @@ final class FavoriteNFTViewController: UIViewController {
         configureNavBar()
         setupCollectionView()
         configureCollectionView()
+        configureEmptyView()
     }
     
     private func configureNavBar() {
@@ -86,6 +97,23 @@ final class FavoriteNFTViewController: UIViewController {
             make.leading.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+    }
+    
+    private func configureEmptyView() {
+        view.addSubview(emptyViewLabel)
+        
+        emptyViewLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(CGFloat.emptyViewHeight)
+        }
+    }
+    
+    private func updateEmptyView() {
+        emptyViewLabel.isHidden = !presenter.likedNFTIds.isEmpty
+        collectionView.isHidden = presenter.likedNFTIds.isEmpty
     }
     
     private func disableUserInteraction() {
@@ -116,6 +144,7 @@ extension FavoriteNFTViewController: FavoriteNFTViewProtocol {
         if reloadData {
             collectionView.reloadData()
         }
+        updateEmptyView()
     }
     
     func updateLoadingState(isLoading: Bool) {
