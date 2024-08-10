@@ -52,7 +52,7 @@ final class TextViewCell: UITableViewCell {
         addSubview(textView)
         textView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(Constants.horizontalInsets)
             make.bottom.equalToSuperview()
             make.trailing.equalToSuperview()
         }
@@ -67,4 +67,8 @@ extension TextViewCell: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         model.textDidChanged(textView.text)
     }
+}
+
+private struct Constants {
+    static let horizontalInsets: CGFloat = 16
 }
