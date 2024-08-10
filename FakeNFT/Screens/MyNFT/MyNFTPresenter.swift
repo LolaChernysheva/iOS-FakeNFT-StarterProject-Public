@@ -47,7 +47,12 @@ final class MyNFTPresenter {
         }
     }
     
-    init(view: MyNFTViewProtocol?, networkService: MyNftNetworkServiceProtocol?, profileService: ProfileNetworkServiceProtocol?, profile: Profile) {
+    init(
+        view: MyNFTViewProtocol?,
+        networkService: MyNftNetworkServiceProtocol?,
+        profileService: ProfileNetworkServiceProtocol?,
+        profile: Profile
+    ) {
         self.view = view
         self.service = networkService
         self.profileService = profileService

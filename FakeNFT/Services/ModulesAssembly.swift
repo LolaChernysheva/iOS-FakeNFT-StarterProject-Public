@@ -12,6 +12,7 @@ protocol ModulesAssemblyProtocol: AnyObject {
     static func mainScreenBuilder() -> UIViewController
     static func editProfileScreenBuilder(profile: Profile, onDismiss: @escaping () -> Void) -> UIViewController
     static func myNftScreenBuilder(profile: Profile) -> UIViewController
+    static func favoriteNftsScreenBuilder(profile: Profile) -> UIViewController
 }
 
 final class ModulesAssembly: ModulesAssemblyProtocol {
@@ -59,5 +60,14 @@ final class ModulesAssembly: ModulesAssemblyProtocol {
         let myNftPresenter = MyNFTPresenter(view: myNftViewController, networkService: networkService, profileService: profileNetworkService, profile: profile)
         myNftViewController.presenter = myNftPresenter
         return myNftViewController
+    }
+    
+    static func favoriteNftsScreenBuilder(profile: Profile) -> UIViewController {
+        let favoriteNftsController = FavoriteNFTViewController()
+        let networkClient = DefaultNetworkClient()
+        let networkService = MyNftNetworkService(networkClient: networkClient)
+        let favoriteNftsPresenter = FavoriteNFTPresenter(view: favoriteNftsController, service: networkService, profile: profile)
+        favoriteNftsController.presenter = favoriteNftsPresenter
+        return favoriteNftsController
     }
 }
