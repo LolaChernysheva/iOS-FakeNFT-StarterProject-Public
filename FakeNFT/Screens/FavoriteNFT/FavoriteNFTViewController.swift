@@ -25,7 +25,7 @@ final class FavoriteNFTViewController: UIViewController {
         layout.itemSize = CGSize(width: CGFloat.itemWidth, height: CGFloat.itemHeight)
         layout.minimumLineSpacing = CGFloat.minimumLineSpacing
         layout.minimumInteritemSpacing = CGFloat.minimumInteritemSpacing
-        layout.sectionInset = UIEdgeInsets(top: 0, left: CGFloat.horizontalOffset, bottom: 0, right: CGFloat.horizontalOffset)
+        layout.sectionInset = UIEdgeInsets(top: 20, left: CGFloat.horizontalOffset, bottom: 0, right: CGFloat.horizontalOffset)
         return layout
     }()
     
