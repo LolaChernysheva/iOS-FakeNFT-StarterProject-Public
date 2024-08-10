@@ -8,6 +8,11 @@
 import Foundation
 import UIKit
 
+protocol StatisticsUserNFTCollectionViewCellDelegate: AnyObject {
+    func onLikeButtonTapped(cell: StatisticsUserNFTCollectionViewCell)
+    func addToCartButtonTapped(cell: StatisticsUserNFTCollectionViewCell)
+}
+
 final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
     var nftImageView = UIImageView()
     var heartButton = UIButton(type: .system)
@@ -17,6 +22,12 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
     var nftPriceLabel = UILabel()
     var cartButton = UIButton(type: .system)
     var bottomContainer = UIView()
+    
+    
+    private var isItemLiked = false
+    private var isItemInTheCart = false
+    private var nftModel: Nft?
+   
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,18 +50,30 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
             contentView.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
         }
+        
+        nftImageView.layer.cornerRadius = 12
+        nftImageView.layer.masksToBounds = true
     }
     
     private func prepareImageContainer(){
-        nftImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 108, height: 108))
+        nftImageView = UIImageView()
         nftImageView.layer.cornerRadius = 12
-        nftImageView.image = UIImage(systemName: "tortoise")
+        nftImageView.image = UIImage(systemName: "bird")
         nftImageView.contentMode = .scaleAspectFit
         nftImageView.backgroundColor = .purple.withAlphaComponent(0.035)
         
         
         heartButton = UIButton(frame:CGRect(x: 0, y: 0, width: 40, height: 40))
         heartButton.setImage(Asset.Images.favouritesNoActive, for: .normal)
+        heartButton.addTarget(self, action: #selector(didHeartButtonTapped), for: .touchUpInside)
+        setIsLiked(with: isItemLiked)
+    }
+    
+    @objc func didHeartButtonTapped(){
+        isItemLiked.toggle()
+        setIsLiked(with: isItemLiked)
+        
+        
     }
     private func prepareStarsContainer(){
         starsHorizontalStack.frame = CGRect(x: 0, y: 0, width: 68, height: 12)
@@ -69,9 +92,10 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
         nftNameLabel.font = .bodyBold
         nftNameLabel.textAlignment = .natural
         nftPriceLabel.font = .caption3
-        cartButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+
         cartButton.setImage(Asset.Images.bagCustom, for: .normal)
         cartButton.tintColor = .nftBlack
+        cartButton.addTarget(self, action: #selector(didCartButtonTapped), for: .touchUpInside)
         
         for subView in [nftNameLabel, nftPriceLabel, cartButton]{
             subView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,19 +104,23 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
         
     }
     
+    @objc func didCartButtonTapped(){
+        isItemInTheCart.toggle()
+        setIsInTheCart(with: isItemInTheCart)
+    }
+    
     private func activatingConstraints(){
         nftImageView.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top)
             make.leading.equalTo(contentView.snp.leading)
             make.trailing.equalTo(contentView.snp.trailing)
-            make.width.equalTo(108)
             make.height.equalTo(108)
         }
         heartButton.snp.makeConstraints { make in
             make.trailing.equalTo(nftImageView.snp.trailing)
             make.top.equalTo(nftImageView.snp.top)
             make.width.height.equalTo(40)
-        
+            
         }
         starsHorizontalStack.snp.makeConstraints { make in
             make.leading.equalToSuperview()
@@ -103,7 +131,6 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
         bottomContainer.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(starsHorizontalStack.snp.bottom).offset(4)
-            make.width.equalTo(108)
             make.height.equalTo(40)
         }
         
@@ -126,15 +153,17 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
     private func updateStarsRating(with newRating : Int){
         for (index, starView) in starsHorizontalStack.arrangedSubviews.enumerated() {
             guard let starImageView = starView as? UIImageView else { continue }
-            if index < newRating {
-                starImageView.image = Asset.Images.starDone
-            } else {
-                starImageView.image = Asset.Images.starNoActive
-            }
+            starImageView.image =  index < newRating ? Asset.Images.starDone :
+                Asset.Images.starNoActive
         }
     }
-    func setNFTImage(with newImage: UIImage){
-        nftImageView.image = newImage
+    func setNFTImage(with newImage: String){
+        let placeholderImage = UIImage(systemName: "photo")
+        
+        nftImageView.image = placeholderImage
+        if let url = URL(string: newImage){
+            nftImageView.loadImage(from: url)
+        }
     }
     func setIsLiked(with isLiked : Bool){
         if isLiked {
@@ -143,6 +172,15 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
             heartButton.setImage(Asset.Images.favouritesNoActive, for: .normal)
         }
     }
+    
+    func setIsInTheCart(with isInTheCart : Bool){
+        if isInTheCart{
+            cartButton.setImage(Asset.Images.deleteFromCart, for: .normal)
+        }else{
+            cartButton.setImage(Asset.Images.bagCustom, for: .normal)
+        }
+    }
+    
     func setNFTName(with newName : String){
         nftNameLabel.text = newName
     }
@@ -158,5 +196,9 @@ final class StatisticsUserNFTCollectionViewCell : UICollectionViewCell {
         } else {
             nftPriceLabel.text = "\(newPrice) ETH"
         }
+    }
+    
+    func getNftModel() -> Nft? {
+        return nftModel
     }
 }

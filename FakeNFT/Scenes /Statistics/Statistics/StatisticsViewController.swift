@@ -10,12 +10,7 @@ import UIKit
 import SnapKit
 
 protocol StatisticsViewProtocol: AnyObject {
-    
-}
-
-private struct MockUser {
-    let name : String
-    let rating : Int
+    func updateUsers(with users: [NFTUser])
 }
 
 final class StatisticsViewController: UIViewController {
@@ -26,14 +21,7 @@ final class StatisticsViewController: UIViewController {
     private var customNavBar = StatisticsCustomNavBar()
     private var ratingTableView = UITableView()
     
-    
-    
-    private var users = [MockUser(name: "Peter", rating: 200), MockUser(name: "John", rating: 22),
-                         MockUser(name: "Alex", rating: 64), MockUser(name: "Ivan", rating: 98),
-                         MockUser(name: "Kate", rating: 256), MockUser(name: "Yulia", rating: 222),
-                         MockUser(name: "Vlad", rating: 232), MockUser(name: "Marie", rating: 1),
-                         MockUser(name: "Paul", rating: 12)
-    ]
+    private var users : [NFTUser] = []
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -47,6 +35,7 @@ final class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .background
         initializeUI()
+        users = presenter?.getUserList() ?? []
     }
     
     private func initializeUI() {
@@ -116,7 +105,7 @@ final class StatisticsViewController: UIViewController {
         users.sort { $0.name < $1.name }
         ratingTableView.reloadData()
     }
-
+    
     private func sortUsersByRating() {
         users.sort { $0.rating > $1.rating }
         ratingTableView.reloadData()
@@ -138,28 +127,29 @@ extension StatisticsViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier,
                                                        for: indexPath) as? StatisticsTableViewCell else {return StatisticsTableViewCell()}
         cell.setUserName(with: users[indexPath.row].name)
-        if let newImage = UIImage(systemName: "person.crop.circle.fill") {
-            cell.setUserImage(with: newImage)
-        }
-        cell.setUserCollectionAmount(with: users[indexPath.row].rating)
+        cell.setUserImage(with: users[indexPath.row].avatar)
+        cell.setUserCollectionAmount(with: users[indexPath.row].nfts.count.description)
         cell.setCellIndex(with: indexPath.row + 1)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        loadUserCard()
+        loadUserCard(with: users[indexPath.row])
     }
 }
 
 extension StatisticsViewController {
-    func loadUserCard(){
-        
-                let userCardViewController = UserCardViewController()
-                userCardViewController.modalPresentationStyle = .fullScreen
-                          present(userCardViewController, animated: true, completion: nil)
+    func loadUserCard(with selectedUser : NFTUser){
+        if let userCardViewController = presenter?.loadUserCard(with: selectedUser) {
+            present(userCardViewController, animated: true, completion: nil)
+        }
     }
 }
 
 extension StatisticsViewController: StatisticsViewProtocol {
-    
+    func updateUsers(with users: [NFTUser]) {
+        self.users = users
+        sortUsersByRating()
+        ratingTableView.reloadData()
+    }
 }

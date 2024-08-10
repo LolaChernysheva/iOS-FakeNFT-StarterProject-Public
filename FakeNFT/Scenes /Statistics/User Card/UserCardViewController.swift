@@ -10,11 +10,12 @@ import UIKit
 
 
 protocol UserCardViewProtocol: AnyObject {
-
+    func updateUser(with user: NFTUser?)
 }
 
 final class UserCardViewController: UIViewController {
     var presenter: UserCardPresenterProtocol?
+    private var user : NFTUser?
     private var customNavBar = StatisticsCustomNavBar()
     private var userCard = UIView()
     private var userWebPageLinkButton = UIButton(type: .system)
@@ -38,23 +39,40 @@ final class UserCardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        presenter?.updateSelf(view: self)
         initializeUI()
     }
-    
     private func initializeUI() {
         setupUI()
         prepareNavBar()
         prepareUserCard()
         prepareWebPageLinkButton()
         prepareNavItem()
+        updateUIElements()
         activatingConstraints()
-        }
+    }
     
     private func setupUI() {
         for subView in [customNavBar, userCard, userWebPageLinkButton, nftUserCollectionNavItem ] {
             view.addSubview(subView)
             subView.translatesAutoresizingMaskIntoConstraints = false
         }
+    }
+    
+    private func updateUIElements(){
+        presenter?.updateUser()
+          if let userToShow = user {
+              let placeholderImage = UIImage(systemName: "person.crop.circle.fill")
+              if let url = URL(string: userToShow.avatar) {
+                  userImageImageView.loadImage(from: url, placeholder: placeholderImage)
+              } else {
+                  userImageImageView.image = placeholderImage
+              }
+              userImageImageView.tintColor = .nftPlaceHolderGray
+              userNameLabel.text = userToShow.name
+              userBioLabel.text = userToShow.description
+              navItemItemsAmount.text = "(\(userToShow.nfts.count))"
+          }
     }
     
     private func prepareNavBar(){
@@ -67,21 +85,20 @@ final class UserCardViewController: UIViewController {
     private func prepareUserCard(){
         userCard.frame = CGRect(x: 0, y: 0, width: 375, height: 162)
         userCard.backgroundColor = .background
-        
-        userImageImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
-        userImageImageView.layer.cornerRadius = 35
         userImageImageView.image = UIImage(systemName: "person.crop.circle.fill")
+        userImageImageView.layer.cornerRadius = 35
+        userImageImageView.clipsToBounds = true
         
         userNameLabel.textAlignment = .natural
         userNameLabel.font = .headline3
         userNameLabel.textColor = .nftBlack
-        userNameLabel.text = "Joaquin Phoenix"
-
+        userNameLabel.text = "Unknown user"
+        
         userBioLabel.numberOfLines = 0
-        userBioLabel.text = "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT,\nи еще больше — на моём сайте.\nОткрыт к коллаборациям."
+        userBioLabel.text = "No description available"
         userBioLabel.font = .caption2
         userBioLabel.textAlignment = .natural
-
+        
         for subView in [userImageImageView, userNameLabel, userBioLabel]{
             subView.translatesAutoresizingMaskIntoConstraints = false
             userCard.addSubview(subView)
@@ -104,7 +121,7 @@ final class UserCardViewController: UIViewController {
         nftUserCollectionNavItem.backgroundColor = .background
         nftUserCollectionNavItem.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showCollectionNFTScreen))
-               nftUserCollectionNavItem.addGestureRecognizer(tapGestureRecognizer)
+        nftUserCollectionNavItem.addGestureRecognizer(tapGestureRecognizer)
         
         
         navItemButton = UIButton(type: .system)
@@ -116,7 +133,7 @@ final class UserCardViewController: UIViewController {
         navItemTitle.font = .bodyBold
         navItemTitle.textAlignment = .natural
         
-        navItemItemsAmount.text = "(200)"
+        navItemItemsAmount.text = "(0)"
         navItemItemsAmount.font = .bodyBold
         navItemItemsAmount.textAlignment = .center
         
@@ -189,29 +206,33 @@ final class UserCardViewController: UIViewController {
     
     //MARK:- OBJC functions
     @objc private func backButtonTapped() {
-            dismiss(animated: true, completion: nil)
-        }
+        dismiss(animated: true, completion: nil)
+    }
     @objc private func showCollectionNFTScreen(){
-       loadUserCollection()
+        loadUserCollection()
     }
     
     @objc private func openUserWebPage() {
-            if let url = URL(string: "https://www.imdb.com") {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
+        if let url = URL(string: user?.website ?? "https://www.yandex.ru") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+    }
 }
 extension UserCardViewController {
     func loadUserCollection(){
-        let userCollectionViewController = UserCollectionViewController()
-        userCollectionViewController.modalPresentationStyle = .fullScreen
-                  present(userCollectionViewController, animated: true, completion: nil)
+        if let user = self.user,
+           let userCollectionViewController =  presenter?.loadUserCollection(with: user) {
+            present(userCollectionViewController, animated: true, completion: nil)
+        }
     }
 }
 
 
 // MARK: - UsersCardViewProtocol
 
-extension UserCardViewController: UserCollectionViewProtocol {
-
+extension UserCardViewController: UserCardViewProtocol {
+    
+    func updateUser(with selectedUser: NFTUser?){
+        self.user = selectedUser
+    }
 }
