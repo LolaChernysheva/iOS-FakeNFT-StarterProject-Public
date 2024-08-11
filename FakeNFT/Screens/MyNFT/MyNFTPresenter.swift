@@ -71,26 +71,28 @@ final class MyNFTPresenter {
     
     private func buildNftsSection() -> [MyNFTScreenModel.TableData.Section] {
         let cells: [MyNFTScreenModel.TableData.Cell] = nfts.map { nft in
-            .nftCell(NFTTableViewCellModel(
-                image: nft.imageString,
-                name: nft.name,
-                authorName: nft.authorName,
-                price: String("\(nft.price)"),
-                rating: nft.rating,
-                isLiked: nft.isLiked,
-                onLikeAction: { [weak self] isLiked in
-                    guard let self else { return }
-                    if isLiked {
-                        if !self.likedNftsIds.contains(nft.id) {
-                            self.likedNftsIds.append(nft.id)
+                .nftCell(NFTTableViewCellModel(
+                    image: nft.imageString,
+                    name: nft.name,
+                    authorName: nft.authorName,
+                    price: String("\(nft.price)"),
+                    rating: nft.rating,
+                    isLiked: nft.isLiked,
+                    onLikeAction: { [weak self] isLiked in
+                        guard let self else { return }
+                        DispatchQueue.main.async {
+                            if isLiked {
+                                if !self.likedNftsIds.contains(nft.id) {
+                                    self.likedNftsIds.append(nft.id)
+                                }
+                            } else {
+                                self.likedNftsIds.removeAll { $0 == nft.id }
+                            }
+                            self.profile?.likes = self.likedNftsIds
+                            self.updateProfile()
                         }
-                    } else {
-                        self.likedNftsIds.removeAll { $0 == nft.id }
                     }
-                    self.profile?.likes = self.likedNftsIds
-                    self.updateProfile()
-                }
-            ))
+                ))
         }
         return [.simple(cells: cells)]
     }
@@ -120,16 +122,18 @@ final class MyNFTPresenter {
                 
                 switch result {
                 case let .success(nft):
-                    self.nfts.append(
-                        NftModel(
-                            name: nft.name,
-                            rating: nft.rating,
-                            authorName: nft.author,
-                            price: nft.price,
-                            imageString: nft.images.first ?? "",
-                            id: nft.id,
-                            isLiked: self.likedNftsIds.contains(nft.id))
-                    )
+                    DispatchQueue.main.async {
+                        self.nfts.append(
+                            NftModel(
+                                name: nft.name,
+                                rating: nft.rating,
+                                authorName: nft.author,
+                                price: nft.price,
+                                imageString: nft.images.first ?? "",
+                                id: nft.id,
+                                isLiked: self.likedNftsIds.contains(nft.id))
+                        )
+                    }
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -170,11 +174,13 @@ final class MyNFTPresenter {
             id: profile.id)
         ) { [weak self] result in
             guard let self else { return }
-            switch result {
-            case let .success(profile):
-                self.render()
-            case let .failure(error):
-                print(error.localizedDescription)
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(profile):
+                    self.render()
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
             }
         }
     }
