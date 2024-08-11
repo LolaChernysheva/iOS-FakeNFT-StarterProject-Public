@@ -160,27 +160,37 @@ extension PaymentViewController: PaymentViewControllerProtocol {
         alert.addAction(repeatAction)
         alert.preferredAction = repeatAction
 
-        present(alert, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alert, animated: true)
+        }
     }
 
     func showProgressHud() {
-        progressHud.startAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.progressHud.startAnimating()
+        }
     }
 
     func hideProgressHud() {
-        progressHud.stopAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.progressHud.stopAnimating()
+        }
     }
 
     func setup(with data: CurrenciesScreenModel) {
         userAgreementLink = data.userAgreementLink
         currencies = data.currencies
-        currenciesCollection.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.currenciesCollection.reloadData()
+        }
     }
 
     func showPaymentSuccess() {
         let successPaymentVC = SuccessPaymentViewController(delegate: self)
         successPaymentVC.modalPresentationStyle = .fullScreen
-        present(successPaymentVC, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(successPaymentVC, animated: true)
+        }
     }
 }
 

@@ -209,15 +209,18 @@ final class CartViewController: UIViewController {
 extension CartViewController: CartViewProtocol {
     func update(with data: CartScreenModel) {
         cards = data.items
-        if cards.isEmpty {
-            if !stubView.isDescendant(of: view) {
-                setupStubView()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if cards.isEmpty {
+                if !stubView.isDescendant(of: view) {
+                    setupStubView()
+                }
+                hideMainViews()
+                stubView.isHidden = false
+            } else {
+                showMainViews(with: data)
+                stubView.isHidden = true
             }
-            hideMainViews()
-            stubView.isHidden = false
-        } else {
-            showMainViews(with: data)
-            stubView.isHidden = true
         }
     }
 
@@ -225,23 +228,31 @@ extension CartViewController: CartViewProtocol {
         guard let row = (cards.firstIndex { $0.id == deletedId }) else { return }
         let lastDeletedIndexPath = IndexPath(row: row, section: 0)
 
-        update(with: data)
-        nftTableView.performBatchUpdates {
-            nftTableView.deleteRows(at: [lastDeletedIndexPath], with: .automatic)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            update(with: data)
+            nftTableView.performBatchUpdates { [weak self] in
+                self?.nftTableView.deleteRows(at: [lastDeletedIndexPath], with: .automatic)
+            }
         }
     }
 
     func showProgressHud() {
-        if !stubView.isHidden {
-            stubView.isHidden = true
-        } else {
-            hideMainViews()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if !stubView.isHidden {
+                stubView.isHidden = true
+            } else {
+                hideMainViews()
+            }
+            progressHud.startAnimating()
         }
-        progressHud.startAnimating()
     }
 
     func hideProgressHud() {
-        progressHud.stopAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.progressHud.stopAnimating()
+        }
     }
 }
 

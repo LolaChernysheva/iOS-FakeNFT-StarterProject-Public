@@ -21,7 +21,7 @@ internal enum Asset {
         static let starDone = UIImage(named: "starDone")
         static let starNoActive = UIImage(named: "starNoActive")
         static let deleteFromCart = UIImage(named: "deleteFromCart")
-        static let successPayment = UIImage(named: "successPayment")
+        static let successPayment = UIImage(named: "SuccessPayment")
         static let bagCustom = UIImage(named: "bag.custom")
     }
 }
