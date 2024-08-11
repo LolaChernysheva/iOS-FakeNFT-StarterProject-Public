@@ -73,9 +73,9 @@ final class MyNFTViewController: UIViewController {
     private func configureTableView() {
         tableView.backgroundColor = .white
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.trailing.equalToSuperview().offset(-CGFloat.horizontalOffset)
-            make.leading.equalToSuperview().offset(CGFloat.horizontalOffset)
+            make.top.equalToSuperview().offset(CGFloat.tableViewTopOffset)
+            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }
@@ -225,4 +225,5 @@ private extension CGFloat {
     static let horizontalOffset = 16.0
     static let cellHeight = 140.0
     static let emptyViewHeight = 22.0
+    static let tableViewTopOffset = -20.0
 }

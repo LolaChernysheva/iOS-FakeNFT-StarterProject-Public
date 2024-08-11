@@ -96,6 +96,7 @@ final class NFTTableViewCell: UITableViewCell {
         stack.axis = .vertical
         stack.distribution = .equalSpacing
         stack.alignment = .leading
+        stack.spacing = .nftLeftStackSpacing
         return stack
     }()
     
@@ -271,5 +272,6 @@ private extension CGFloat {
     static let horizontalTrailingPadding: CGFloat = 26
     static let imageViewCornerRadius: CGFloat = 12
     static let nameLabelWidth: CGFloat = 100
+    static let nftLeftStackSpacing: CGFloat = 4
 }
 

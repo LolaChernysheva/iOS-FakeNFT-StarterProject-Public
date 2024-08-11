@@ -68,6 +68,7 @@
 		F384BC262C668A23004E9C0F /* MyNftNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC252C668A23004E9C0F /* MyNftNetworkService.swift */; };
 		F384BC2B2C668B79004E9C0F /* MyNftsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC2A2C668B79004E9C0F /* MyNftsRequest.swift */; };
 		F384BC2D2C668F72004E9C0F /* NftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC2C2C668F72004E9C0F /* NftModel.swift */; };
+		F384BC3A2C68D318004E9C0F /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384BC392C68D318004E9C0F /* UserDefaultsManager.swift */; };
 		F3D9B24A2C45A4FF00509587 /* DetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D9B2492C45A4FE00509587 /* DetailCell.swift */; };
 		F3EAEF482C41397700834E53 /* ModulesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF472C41397700834E53 /* ModulesAssembly.swift */; };
 		F3EAEF4B2C413DAA00834E53 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */; };
@@ -157,6 +158,7 @@
 		F384BC252C668A23004E9C0F /* MyNftNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNftNetworkService.swift; sourceTree = "<group>"; };
 		F384BC2A2C668B79004E9C0F /* MyNftsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNftsRequest.swift; sourceTree = "<group>"; };
 		F384BC2C2C668F72004E9C0F /* NftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftModel.swift; sourceTree = "<group>"; };
+		F384BC392C68D318004E9C0F /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		F3D9B2492C45A4FE00509587 /* DetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCell.swift; sourceTree = "<group>"; };
 		F3EAEF472C41397700834E53 /* ModulesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesAssembly.swift; sourceTree = "<group>"; };
 		F3EAEF4A2C413DAA00834E53 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
 				F3EAEF472C41397700834E53 /* ModulesAssembly.swift */,
+				F384BC392C68D318004E9C0F /* UserDefaultsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -717,6 +720,7 @@
 				16243B232C4587F6005A4CA9 /* Asset.swift in Sources */,
 				F3FB9E402C528D3700EB56D9 /* ProfileRouter.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
+				F384BC3A2C68D318004E9C0F /* UserDefaultsManager.swift in Sources */,
 				F33924B62C46C0AB00D4FD6E /* EditProfileViewController.swift in Sources */,
 				F384BC182C66708C004E9C0F /* MyNFTViewController.swift in Sources */,
 				F384BC2B2C668B79004E9C0F /* MyNftsRequest.swift in Sources */,
