@@ -24,7 +24,7 @@ final class MyNFTPresenter {
     private var profileService: ProfileNetworkServiceProtocol?
     
     private var profile: Profile?
-    private (set) var nftIds: [String]
+    private(set) var nftIds: [String]
     
     private var nfts: [NftModel] = [] {
         didSet {
@@ -139,7 +139,22 @@ final class MyNFTPresenter {
         group.notify(queue: .main) { [weak self] in
             guard let self else { return }
             self.isLoading = false
+            if UserDefaultsManager.shared.hasSavedSortType() {
+                self.applySortType()
+            }
             self.render()
+        }
+    }
+    
+    private func applySortType() {
+        guard let sortType = UserDefaultsManager.shared.loadSortType() else { return }
+        switch sortType {
+        case .byPrice:
+            sortByPrice()
+        case .byRating:
+            sortByRating()
+        case .byName:
+            sortByName()
         }
     }
     
@@ -172,16 +187,19 @@ extension MyNFTPresenter: MyNFTPresenterProtocol {
     
     func sortByPrice() {
         nfts.sort { $0.price < $1.price }
+        UserDefaultsManager.shared.saveSortType(.byPrice)
         render()
     }
     
     func sortByRating() {
         nfts.sort { $0.rating > $1.rating }
+        UserDefaultsManager.shared.saveSortType(.byRating)
         render()
     }
     
     func sortByName() {
         nfts.sort { $0.name < $1.name }
+        UserDefaultsManager.shared.saveSortType(.byName)
         render()
     }
 }
