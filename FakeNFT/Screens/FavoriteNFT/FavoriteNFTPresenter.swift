@@ -52,23 +52,25 @@ final class FavoriteNFTPresenter {
     
     private func buildScreenModel() -> FavoriteNFTScreenModel {
         let cells: [Cell] = likedNfts.map { nft in
-                .nftCell(
-                    NFTCollectionViewCellModel(
-                        image: nft.imageString,
-                        name: nft.name,
-                        authorName: nft.authorName,
-                        price: String("\(nft.price)"),
-                        rating: nft.rating,
-                        isLiked: nft.isLiked,
-                        onLikeAction: { [weak self] isLiked in
-                            guard let self else { return }
+            .nftCell(
+                NFTCollectionViewCellModel(
+                    image: nft.imageString,
+                    name: nft.name,
+                    authorName: nft.authorName,
+                    price: String("\(nft.price)"),
+                    rating: nft.rating,
+                    isLiked: nft.isLiked,
+                    onLikeAction: { [weak self] isLiked in
+                        guard let self else { return }
+                        DispatchQueue.main.async {
                             self.likedNFTIds.removeAll { $0 == nft.id }
                             self.likedNfts.removeAll { $0.id == nft.id }
                             self.profile?.likes = self.likedNFTIds
                             self.updateProfile()
                         }
-                    )
+                    }
                 )
+            )
         }
         return FavoriteNFTScreenModel(
             title: "Избранные NFT",
@@ -94,15 +96,17 @@ final class FavoriteNFTPresenter {
                 defer { group.leave() }
                 switch result {
                 case let .success(nft):
-                    self.likedNfts.append(NftModel(
-                        name: nft.name,
-                        rating: nft.rating,
-                        authorName: nft.author,
-                        price: nft.price,
-                        imageString: nft.images.first ?? "",
-                        id: nft.id,
-                        isLiked: true)
-                    )
+                    DispatchQueue.main.async {
+                        self.likedNfts.append(NftModel(
+                            name: nft.name,
+                            rating: nft.rating,
+                            authorName: nft.author,
+                            price: nft.price,
+                            imageString: nft.images.first ?? "",
+                            id: nft.id,
+                            isLiked: true)
+                        )
+                    }
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -128,11 +132,13 @@ final class FavoriteNFTPresenter {
             id: profile.id)
         ) { [weak self] result in
             guard let self else { return }
-            switch result {
-            case let .success(profile):
-                self.render()
-            case let .failure(error):
-                print(error.localizedDescription)
+            DispatchQueue.main.async {
+                switch result {
+                case let .success(profile):
+                    self.render()
+                case let .failure(error):
+                    print(error.localizedDescription)
+                }
             }
         }
     }
