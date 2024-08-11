@@ -74,7 +74,9 @@ extension PaymentPresenter: PaymentPresenterProtocol {
         paymentService.pay(
             currencyId: currencyId
         ) { [view, showError] result in
-            view?.hideProgressHud()
+            DispatchQueue.main.async {
+                view?.hideProgressHud()
+            }
             switch result {
             case .success(let payment):
                 if payment.success {

@@ -81,30 +81,35 @@ struct DefaultNetworkClient: NetworkClient {
 
   // MARK: - Private
 
-  private func create(request: NetworkRequest) -> URLRequest? {
-    guard let endpoint = request.endpoint else {
-      assertionFailure("Empty endpoint")
-      return nil
-    }
+    private func create(request: NetworkRequest) -> URLRequest? {
+        guard let endpoint = request.endpoint else {
+            assertionFailure("Empty endpoint")
+            return nil
+        }
 
-    var urlRequest = URLRequest(url: endpoint)
-    urlRequest.httpMethod = request.httpMethod.rawValue
+        var urlRequest = URLRequest(url: endpoint)
+        urlRequest.httpMethod = request.httpMethod.rawValue
 
-    if let dto = request.dto,
-       let dtoEncoded = try? encoder.encode(dto) {
-      urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      urlRequest.httpBody = dtoEncoded
-    }
+        if request.httpMethod == .put {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        }
 
-    if request.isUrlEncoded {
-      urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-    }
+        if let dto = request.dto,
+           let dtoEncoded = try? encoder.encode(dto) {
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = dtoEncoded
+        }
 
-    if let token = request.token {
-      urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        if request.isUrlEncoded {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        }
+
+        if let token = request.token {
+            urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        }
+        return urlRequest
     }
-    return urlRequest
-  }
 
   private func parse<T: Decodable>(data: Data, type _: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) {
     do {
