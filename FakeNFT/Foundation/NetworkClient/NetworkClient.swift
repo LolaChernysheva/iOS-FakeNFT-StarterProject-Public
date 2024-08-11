@@ -57,7 +57,7 @@ struct DefaultNetworkClient: NetworkClient {
         return
       }
     }
-
+      
     task.resume()
 
     return DefaultNetworkTask(dataTask: task)
@@ -89,16 +89,22 @@ struct DefaultNetworkClient: NetworkClient {
 
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.setValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
 
         if request.httpMethod == .put {
             urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         }
 
-        if let dto = request.dto,
+        if let dto = request.dto, 
            let dtoEncoded = try? encoder.encode(dto) {
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = dtoEncoded
+        }
+        
+        if let body = request.body {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = body
         }
 
         if request.isUrlEncoded {
@@ -108,6 +114,7 @@ struct DefaultNetworkClient: NetworkClient {
         if let token = request.token {
             urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
         }
+
         return urlRequest
     }
 

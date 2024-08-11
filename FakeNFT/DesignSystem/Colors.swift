@@ -46,6 +46,8 @@ extension UIColor {
 
     static let nftYellow = UIColor(hexString: "#FEEF0D")
     static let nftPlaceHolderGray = UIColor(hexString: "#625C5C")
+    static let linkBlue = UIColor(hexString: "#0A84FF")
+    static let ypYellow = UIColor(hexString: "#FEEF0D")
 
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white

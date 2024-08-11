@@ -12,6 +12,7 @@ protocol NetworkRequest {
   var httpMethod: HttpMethod { get }
   var dto: Encodable? { get }
   var token: String? { get }
+  var body: Data? { get }
   var isUrlEncoded: Bool { get }
 }
 
@@ -20,6 +21,7 @@ extension NetworkRequest {
   var httpMethod: HttpMethod { .get }
   var dto: Encodable? { nil }
   var token: String? { Token.token }
+  var body: Data? { nil }
   var isUrlEncoded: Bool { false }
 }
 

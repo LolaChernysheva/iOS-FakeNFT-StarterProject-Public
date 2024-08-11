@@ -7,8 +7,8 @@
 
 import UIKit
 
-internal enum Asset {
-    internal enum Images {
+enum Asset {
+    enum Images {
         static let tabBarProfile = UIImage(named: "profile")
         static let tabBarCart = UIImage(named: "cart")
         static let tabBarCatalog = UIImage(named: "catalog")
@@ -23,5 +23,6 @@ internal enum Asset {
         static let deleteFromCart = UIImage(named: "deleteFromCart")
         static let successPayment = UIImage(named: "SuccessPayment")
         static let bagCustom = UIImage(named: "bag.custom")
+        static let edit = UIImage(named: "edit")
     }
 }
