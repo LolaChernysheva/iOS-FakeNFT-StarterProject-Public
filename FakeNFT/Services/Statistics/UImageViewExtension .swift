@@ -11,8 +11,8 @@ import UIKit
 extension UIImageView {
     func loadImage(from url: URL, placeholder: UIImage? = nil) {
         self.image = placeholder
-        
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
             if let data = data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
                     self?.image = image

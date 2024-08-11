@@ -9,10 +9,10 @@ import Foundation
 import ProgressHUD
 import UIKit
 
-final class StatisticsUsersNetworkRequest : NetworkRequest {
+final class StatisticsUsersNetworkRequest: NetworkRequest {
     var endpoint: URL?
     var token: String?
-    
+
     init() {
         let endpointURL = RequestConstants.baseURL + RequestConstants.usersURL
         guard let endpoint = URL(string: endpointURL) else { return }
@@ -27,29 +27,27 @@ protocol StatisticsUsersNetworkServiceProtocol: AnyObject {
 }
 
 final class StatisticsUsersNetworkService: StatisticsUsersNetworkServiceProtocol {
-    
-    
+
     private var usersNFT: [NFTUser] = []
-    
+
     let networkClient: NetworkClient
-    
+
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
-    
+
     convenience init() {
         self.init(networkClient: DefaultNetworkClient())
     }
-    
-    
+
     func getNFTUsers() -> [NFTUser] {
         return usersNFT
     }
-    
+
     func fetchNFTUsers(completion: @escaping ([NFTUser]) -> Void) {
         ProgressHUD.show()
         let request = StatisticsUsersNetworkRequest()
-        networkClient.send(request: request , type: [NFTUser].self) { [weak self] result in
+        networkClient.send(request: request, type: [NFTUser].self) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let nftUsers):
@@ -69,7 +67,7 @@ final class StatisticsUsersNetworkService: StatisticsUsersNetworkServiceProtocol
             ProgressHUD.dismiss()
         }
     }
-    
+
     private func currentWindow() -> UIWindow? {
         if let windowScene = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })

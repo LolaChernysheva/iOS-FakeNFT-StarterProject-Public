@@ -12,21 +12,21 @@ import ProgressHUD
 protocol UserCollectionPresenterProtocol: AnyObject {
     func getCollectionList() -> [NFTItem]
     func setUser(with newUser: NFTUser)
-    func loadData(completion: @escaping () -> Void)   
+    func loadData(completion: @escaping () -> Void)
 }
 
 final class UserCollectionPresenter {
     private var userCollectionNetworkService: UserCollectionNetworkServiceProtocol
     private var selectedUser: NFTUser?
     private var collectionList: [NFTItem] = []
-    
+
     weak var view: UserCollectionViewProtocol?
 
     init(selectedUser: NFTUser) {
         self.selectedUser = selectedUser
         self.userCollectionNetworkService = UserCollectionNetworkService(networkClient: DefaultNetworkClient())
     }
-    
+
     func loadData(completion: @escaping () -> Void) {
         collectionList = []
         guard let selectedUser = selectedUser else { return }
@@ -45,11 +45,11 @@ final class UserCollectionPresenter {
 // MARK: UsersCollectionPresenterProtocol
 
 extension UserCollectionPresenter: UserCollectionPresenterProtocol {
-    
+
     func setUser(with newUser: NFTUser) {
         self.selectedUser = newUser
     }
-    
+
     func getCollectionList() -> [NFTItem] {
         return collectionList
     }

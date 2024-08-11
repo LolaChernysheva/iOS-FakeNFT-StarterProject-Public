@@ -83,8 +83,6 @@ final class StatisticsCustomNavBar: UIView {
         titleLabel.textAlignment = .center
     }
 
-
-
      func isTitleInvisible(it_s newValue: Bool) {
         titleLabel.isHidden = newValue
     }

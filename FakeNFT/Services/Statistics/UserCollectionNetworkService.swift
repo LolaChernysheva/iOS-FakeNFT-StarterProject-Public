@@ -9,13 +9,12 @@ import Foundation
 import ProgressHUD
 import UIKit
 
-final class UserCollectionItemNetworkRequest : NetworkRequest {
+final class UserCollectionItemNetworkRequest: NetworkRequest {
     var endpoint: URL?
     var token: String?
     var itemId: String?
-    
-    
-    init(itemId: String?){
+
+    init(itemId: String?) {
         guard let itemId = itemId else {return}
         let endpointURL = RequestConstants.baseURL + RequestConstants.itemById + itemId
         guard let endpoint = URL(string: endpointURL) else { return }
@@ -39,41 +38,40 @@ final class UserCollectionNetworkService: UserCollectionNetworkServiceProtocol {
              }
              semaphore.signal()
     }
-    
-    
+
     private var userCollection: [NFTItem] = []
-    
+
     private var ongoingTasks = 0
     private let semaphore = DispatchSemaphore(value: 1)
     let dispatchGroup = DispatchGroup()
-    
+
     let networkClient: NetworkClient
-    
+
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
     convenience init() {
         self.init(networkClient: DefaultNetworkClient())
     }
-    
+
     func fetchNFTCollectionFrom(user: NFTUser, completion: @escaping () -> Void) {
         ProgressHUD.show()
         self.userCollection = []
-       
+
         for itemId in user.nfts {
             dispatchGroup.enter()
             semaphore.wait()
             ongoingTasks += 1
             semaphore.signal()
             let request = UserCollectionItemNetworkRequest(itemId: itemId)
-            networkClient.send(request: request , type: NFTItem.self){  [weak self] result in
-                guard let self = self else { 
+            networkClient.send(request: request, type: NFTItem.self) {  [weak self] result in
+                guard let self = self else {
                     self?.dispatchGroup.leave()
                     return }
                 switch result {
                 case .success(let nftItem):
                     self.userCollection.append(nftItem)
-                case .failure(_):
+                case .failure:
                     if let window = currentWindow(),
                        let viewController = window.rootViewController {
                         ErrorAlertController.showError(on: viewController) {
@@ -88,14 +86,13 @@ final class UserCollectionNetworkService: UserCollectionNetworkServiceProtocol {
             ProgressHUD.dismiss()
             completion()
             }
-       
+
     }
-    
-    
+
     func getNFTCollection() -> [NFTItem] {
         return userCollection
     }
-    
+
     private func currentWindow() -> UIWindow? {
         if let windowScene = UIApplication.shared.connectedScenes
             .compactMap({ $0 as? UIWindowScene })
@@ -105,4 +102,3 @@ final class UserCollectionNetworkService: UserCollectionNetworkServiceProtocol {
         return nil
     }
 }
-

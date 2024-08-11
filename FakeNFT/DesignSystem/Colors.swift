@@ -46,12 +46,11 @@ extension UIColor {
 
     static let nftYellow = UIColor(hexString: "#FEEF0D")
     static let nftPlaceHolderGray = UIColor(hexString: "#625C5C")
-    
+
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white
     private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
     private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
-    
 
     static let notEnabled = UIColor(hexString: "#AEAFB4")
 
@@ -72,19 +71,19 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
-    
+
     static let nftWhite = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackLight
         : .yaBlackDark
     }
-    
+
     static let nftBlack = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackDark
         : .yaBlackLight
     }
-    
+
     static let nftLightGray = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaLightGrayLight
