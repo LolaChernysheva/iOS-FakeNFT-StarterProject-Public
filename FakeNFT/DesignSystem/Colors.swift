@@ -42,6 +42,7 @@ extension UIColor {
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black
     static let textGreen = UIColor(hexString: "#1C9F00")
+    static let textRed = UIColor(hexString: "#FF3B30")
 
     static let nftYellow = UIColor(hexString: "#FEEF0D")
     static let nftPlaceHolderGray = UIColor(hexString: "#625C5C")
@@ -51,6 +52,8 @@ extension UIColor {
     private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
     private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
     
+
+    static let notEnabled = UIColor(hexString: "#AEAFB4")
 
     static let segmentActive = UIColor { traits in
         return traits.userInterfaceStyle == .dark
