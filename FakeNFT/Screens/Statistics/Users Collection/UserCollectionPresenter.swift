@@ -58,6 +58,7 @@ final class UserCollectionPresenter {
 
 extension UserCollectionPresenter: UserCollectionPresenterProtocol {
     func onlikeButtonTapped(nft: Nft) {
+        ProgressHUD.show()
         collectionDataProvider.getUserProfile { [weak self] result in
             switch result {
             case .success(let profile):
@@ -82,9 +83,11 @@ extension UserCollectionPresenter: UserCollectionPresenterProtocol {
                 print("Error fetching profile: \(error)")
             }
         }
+        ProgressHUD.dismiss()
     }
     
     func addToCartButtonTapped(nft: Nft) {
+        ProgressHUD.show()
         collectionDataProvider.getUserOrder { [weak self] result in
             switch result {
             case .success(let order):
@@ -108,6 +111,7 @@ extension UserCollectionPresenter: UserCollectionPresenterProtocol {
                 print("Error fetching order: \(error)")
             }
         }
+        ProgressHUD.dismiss()
     }
     func setUser(with newUser: NFTUser) {
         self.selectedUser = newUser
