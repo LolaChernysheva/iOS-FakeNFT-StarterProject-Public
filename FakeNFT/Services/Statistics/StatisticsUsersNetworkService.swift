@@ -45,17 +45,15 @@ final class StatisticsUsersNetworkService: StatisticsUsersNetworkServiceProtocol
     }
 
     func fetchNFTUsers(completion: @escaping ([NFTUser]) -> Void) {
-        ProgressHUD.show()
+    
         let request = StatisticsUsersNetworkRequest()
         networkClient.send(request: request, type: [NFTUser].self) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let nftUsers):
-                print("Successfully fetched NFT users: \(nftUsers)")
                 self.usersNFT = nftUsers
                 completion(nftUsers)
             case .failure(let error):
-                print("Failed to fetch NFT users with error: \(error)")
                 completion([])
                 if let window = currentWindow(),
                    let viewController = window.rootViewController {
@@ -64,7 +62,6 @@ final class StatisticsUsersNetworkService: StatisticsUsersNetworkServiceProtocol
                     }
                 }
             }
-            ProgressHUD.dismiss()
         }
     }
 
