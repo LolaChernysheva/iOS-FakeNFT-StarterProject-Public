@@ -51,7 +51,6 @@ final class StatisticsUsersNetworkService: StatisticsUsersNetworkServiceProtocol
             guard let self = self else { return }
             switch result {
             case .success(let nftUsers):
-                print("Successfully fetched NFT users: \(nftUsers)")
                 self.usersNFT = nftUsers
                 completion(nftUsers)
             case .failure(let error):

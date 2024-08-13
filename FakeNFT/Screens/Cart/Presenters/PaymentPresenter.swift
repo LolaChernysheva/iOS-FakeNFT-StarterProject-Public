@@ -59,7 +59,7 @@ extension PaymentPresenter: PaymentPresenterProtocol {
                 view?.hideProgressHud()
                 view?.setup(with: model)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
@@ -85,7 +85,7 @@ extension PaymentPresenter: PaymentPresenterProtocol {
                     showError()
                 }
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
                 showError()
             }
         }

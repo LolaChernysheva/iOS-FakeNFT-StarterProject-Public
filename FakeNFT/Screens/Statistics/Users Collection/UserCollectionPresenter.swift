@@ -73,7 +73,7 @@ extension UserCollectionPresenter: UserCollectionPresenterProtocol {
                     DispatchQueue.main.async{
                         switch updateResult {
                         case .success(let updatedProfile):
-                            print("Profile updated successfully: \(updatedProfile)")
+                            print("Profile updated successfully")
                         case .failure(let error):
                             print("Error updating profile: \(error)")
                         }
@@ -102,7 +102,7 @@ extension UserCollectionPresenter: UserCollectionPresenterProtocol {
                    
                         switch updateResult {
                         case .success(let updatedOrder):
-                            print("Order updated successfully: \(updatedOrder)")
+                            print("Order updated successfully")
                         case .failure(let error):
                             print("Error updating order: \(error)")
                         }

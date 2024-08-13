@@ -27,7 +27,7 @@ final class StatisticsPresenter {
 
     private func setupPresenter() {
         statisticsUsersNetworkService.fetchNFTUsers(completion: {[weak self] nftUsers in
-            print("Setting up presenter with users: \(nftUsers)")
+         
             guard let self = self,
                   let view = self.view  as? UIViewController else { return }
             if nftUsers.isEmpty {
@@ -35,7 +35,6 @@ final class StatisticsPresenter {
                     self?.setupPresenter()
                 }
             } else {
-                print("Successfully fetched users: \(nftUsers)")
                 self.usersList = nftUsers
                 self.view?.updateUsers(with: nftUsers)
 

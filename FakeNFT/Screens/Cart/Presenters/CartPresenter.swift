@@ -81,7 +81,7 @@ extension CartPresenter: CartPresenterProtocol {
                 self.ids = ids
                 self.view?.updateAfterDelete(with: CartScreenModel(items: self.items), deletedId: id)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
@@ -97,7 +97,7 @@ extension CartPresenter: CartPresenterProtocol {
             case .success(let model):
                 self?.view?.update(with: model)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             }
             self?.view?.hideProgressHud()
         }
