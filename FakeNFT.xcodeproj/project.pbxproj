@@ -643,7 +643,6 @@
 				F366FB252C692DB000366565 /* Common */,
 				F366FB2D2C692DB000366565 /* NftDetails */,
 				F366FB302C692DB000366565 /* ProductDetails */,
-				F366FB3F2C692DB000366565 /* Statistics */,
 				F366FB412C692DB000366565 /* TabBarController */,
 			);
 			path = "Scenes ";
@@ -922,6 +921,7 @@
 		F36A843E2C692A2F00E6472C /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				F366FB3F2C692DB000366565 /* Statistics */,
 				F36A84052C692A2F00E6472C /* Cart */,
 				F36A84172C692A2F00E6472C /* Catalog */,
 				F36A841B2C692A2F00E6472C /* FavoriteNFT */,
