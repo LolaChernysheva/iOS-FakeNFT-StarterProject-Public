@@ -25,7 +25,7 @@ final class UserCollectionItemNetworkRequest: NetworkRequest {
 
 protocol UserCollectionNetworkServiceProtocol: AnyObject {
     func fetchNFTCollectionFrom(user: NFTUser, completion: @escaping () -> Void)
-    func getNFTCollection() -> [Nft]
+    func getNFTCollection() -> [NFTItem]
     func dismissProgressIndicator()
 }
 
@@ -39,7 +39,7 @@ final class UserCollectionNetworkService: UserCollectionNetworkServiceProtocol {
              semaphore.signal()
     }
 
-    private var userCollection: [Nft] = []
+    private var userCollection: [NFTItem] = []
 
     private var ongoingTasks = 0
     private let semaphore = DispatchSemaphore(value: 1)
@@ -64,7 +64,7 @@ final class UserCollectionNetworkService: UserCollectionNetworkServiceProtocol {
             ongoingTasks += 1
             semaphore.signal()
             let request = UserCollectionItemNetworkRequest(itemId: itemId)
-            networkClient.send(request: request, type: Nft.self) {  [weak self] result in
+            networkClient.send(request: request, type: NFTItem.self) {  [weak self] result in
                 guard let self = self else {
                     self?.dispatchGroup.leave()
                     return }
@@ -89,7 +89,7 @@ final class UserCollectionNetworkService: UserCollectionNetworkServiceProtocol {
 
     }
 
-    func getNFTCollection() -> [Nft] {
+    func getNFTCollection() -> [NFTItem] {
         return userCollection
     }
 
