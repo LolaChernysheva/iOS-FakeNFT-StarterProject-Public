@@ -28,18 +28,20 @@ final class StatisticsPresenter {
     private func setupPresenter() {
         statisticsUsersNetworkService.fetchNFTUsers(completion: {[weak self] nftUsers in
             print("Setting up presenter with users: \(nftUsers)")
-            guard let self = self,
-                  let view = self.view  as? UIViewController else { return }
-            if nftUsers.isEmpty {
-                ErrorAlertController.showError(on: view) { [weak self] in
-                    self?.setupPresenter()
-                }
-            } else {
-                print("Successfully fetched users: \(nftUsers)")
-                self.usersList = nftUsers
-                self.view?.updateUsers(with: nftUsers)
-
-            }
+                   guard let self = self else { return }
+                   
+                   DispatchQueue.main.async {
+                       guard let view = self.view as? UIViewController else { return }
+                       if nftUsers.isEmpty {
+                           ErrorAlertController.showError(on: view) { [weak self] in
+                               self?.setupPresenter()
+                           }
+                       } else {
+                           print("Successfully fetched users: \(nftUsers)")
+                           self.usersList = nftUsers
+                           self.view?.updateUsers(with: nftUsers)
+                       }
+                   }
         })
     }
 

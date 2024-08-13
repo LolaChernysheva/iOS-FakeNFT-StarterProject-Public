@@ -8,14 +8,14 @@
 import Foundation
 import UIKit
 
-class ErrorAlertController: UIAlertController {
+final class ErrorAlertController: UIAlertController {
     static func showError(on viewController: UIViewController, retryHandler: @escaping () -> Void) {
         let alert = ErrorAlertController(title: "Ошибка",
                                          message: "Не удалось получить данные",
                                          preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(title: "Отменя", style: .cancel, handler: nil)
-        let retryAction = UIAlertAction(title: "Повторить", style: .default) { _ in
+        let retryAction = UIAlertAction(title: "Повторить", style: .default) {[weak alert] _ in
             retryHandler()
         }
 
