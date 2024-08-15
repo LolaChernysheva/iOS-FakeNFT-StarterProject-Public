@@ -108,7 +108,10 @@ final class StatisticsViewController: UIViewController {
 
     private func sortUsersByRating() {
         users.sort { $0.rating > $1.rating }
-        ratingTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            ratingTableView.reloadData()
+        }
     }
 
 }
