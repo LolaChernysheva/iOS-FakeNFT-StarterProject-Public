@@ -166,7 +166,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         guard let profile = profile else { return }
         router?.showEditProfileController(profile: profile, onDismiss: { [weak self] in
             guard let self else { return }
-            self.loadProfile()
+            self.updateProfileData()
         })
     }
     

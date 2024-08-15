@@ -89,7 +89,6 @@ final class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         presenter.updateProfileData()
-        presenter.setup()
     }
     
     override func viewDidLoad() {
