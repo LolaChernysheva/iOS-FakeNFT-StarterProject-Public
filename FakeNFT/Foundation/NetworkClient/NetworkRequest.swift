@@ -8,18 +8,12 @@ enum HttpMethod: String {
 }
 
 protocol NetworkRequest {
-<<<<<<< HEAD
   var endpoint: URL? { get }
   var httpMethod: HttpMethod { get }
   var dto: Encodable? { get }
   var token: String? { get }
+  var body: Data? { get }
   var isUrlEncoded: Bool { get }
-=======
-    var endpoint: URL? { get }
-    var httpMethod: HttpMethod { get }
-    var dto: Encodable? { get }
-    var token: String? { get }
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
 }
 
 // default values
@@ -27,6 +21,7 @@ extension NetworkRequest {
   var httpMethod: HttpMethod { .get }
   var dto: Encodable? { nil }
   var token: String? { Token.token }
+  var body: Data? { nil }
   var isUrlEncoded: Bool { false }
 }
 

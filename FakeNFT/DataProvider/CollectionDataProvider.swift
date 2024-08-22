@@ -22,16 +22,11 @@ protocol  CollectionDataProviderProtocol: AnyObject {
 // MARK: - final class
 
 final class CollectionDataProvider: CollectionDataProviderProtocol {
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     enum CollectionDataError: Error {
         case dataNotFound
         case invalidData
     }
-<<<<<<< HEAD
 
     private var collectionData: NFTCollection?
     private let networkClient: DefaultNetworkClient
@@ -45,21 +40,6 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         return try self.collectionData ?? { throw CollectionDataError.dataNotFound }()
     }
 
-=======
-    
-    private var collectionData: NFTCollection?
-    private let networkClient: DefaultNetworkClient
-    private var profile: ProfileModel?
-    
-    init(networkClient: DefaultNetworkClient) {
-        self.networkClient = networkClient
-    }
-    
-    func getCollectionData() throws -> NFTCollection {
-        return try self.collectionData ?? { throw CollectionDataError.dataNotFound }()
-    }
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void) {
         networkClient.send(request: CollectionDataRequest(id: id), type: NFTCollection.self) { [weak self] result in
             guard let self = self else { return }
@@ -67,16 +47,11 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
             case .success(let data):
                 self.collectionData = data
                 completion(data)
-<<<<<<< HEAD
             case .failure:
-=======
-            case .failure(_):
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
                 break
             }
         }
     }
-<<<<<<< HEAD
 
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void) {
         networkClient.send(request: NFTRequest(id: id), type: Nft.self) { result in
@@ -84,15 +59,6 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         }
     }
 
-=======
-    
-    func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void) {
-        networkClient.send(request: NFTRequest(id: id), type: Nft.self)  { result in
-            completion(result)
-        }
-    }
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         let updateRequest = ProfileUpdateRequest(profileModel: profile)
         networkClient.send(request: updateRequest, type: ProfileModel.self) { result in
@@ -104,11 +70,7 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
             }
         }
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     func updateUserOrder(with order: OrderModel, completion: @escaping (Result<OrderModel, Error>) -> Void) {
         let updateRequest = OrderUpdateRequest(order: order)
         networkClient.send(request: updateRequest, type: OrderModel.self) { result in
@@ -120,11 +82,7 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
             }
         }
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         networkClient.send(request: ProfileGetRequest(), type: ProfileModel.self) { result in
             switch result {
@@ -135,11 +93,7 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
             }
         }
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     func getUserOrder(completion: @escaping (Result<OrderModel, Error>) -> Void) {
         networkClient.send(request: OrderGetRequest(), type: OrderModel.self) { result in
             switch result {

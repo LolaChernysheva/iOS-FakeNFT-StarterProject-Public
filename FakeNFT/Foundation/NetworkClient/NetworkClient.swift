@@ -57,7 +57,7 @@ struct DefaultNetworkClient: NetworkClient {
         return
       }
     }
-
+      
     task.resume()
 
     return DefaultNetworkTask(dataTask: task)
@@ -81,27 +81,6 @@ struct DefaultNetworkClient: NetworkClient {
 
   // MARK: - Private
 
-  private func create(request: NetworkRequest) -> URLRequest? {
-    guard let endpoint = request.endpoint else {
-      assertionFailure("Empty endpoint")
-      return nil
-    }
-
-    var urlRequest = URLRequest(url: endpoint)
-    urlRequest.httpMethod = request.httpMethod.rawValue
-
-    if let dto = request.dto,
-       let dtoEncoded = try? encoder.encode(dto) {
-      urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      urlRequest.httpBody = dtoEncoded
-    }
-
-<<<<<<< HEAD
-    if request.isUrlEncoded {
-      urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-=======
-    // MARK: - Private
-
     private func create(request: NetworkRequest) -> URLRequest? {
         guard let endpoint = request.endpoint else {
             assertionFailure("Empty endpoint")
@@ -110,27 +89,34 @@ struct DefaultNetworkClient: NetworkClient {
 
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.setValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+
+        if request.httpMethod == .put {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        }
+
+        if let dto = request.dto, 
+           let dtoEncoded = try? encoder.encode(dto) {
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = dtoEncoded
+        }
+        
+        if let body = request.body {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = body
+        }
+
+        if request.isUrlEncoded {
+            urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        }
 
         if let token = request.token {
             urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
         }
-        
-        urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
-        if let dto = request.dto,
-           let dtoEncoded = try? encoder.encode(dto) {
-            urlRequest.httpBody = dtoEncoded
-        }
-        
         return urlRequest
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     }
-
-    if let token = request.token {
-      urlRequest.setValue(token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-    }
-    return urlRequest
-  }
 
   private func parse<T: Decodable>(data: Data, type _: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) {
     do {

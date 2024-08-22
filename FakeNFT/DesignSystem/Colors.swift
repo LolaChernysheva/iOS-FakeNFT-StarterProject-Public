@@ -42,15 +42,19 @@ extension UIColor {
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black
     static let textGreen = UIColor(hexString: "#1C9F00")
+    static let textRed = UIColor(hexString: "#FF3B30")
 
     static let nftYellow = UIColor(hexString: "#FEEF0D")
     static let nftPlaceHolderGray = UIColor(hexString: "#625C5C")
-    
+    static let linkBlue = UIColor(hexString: "#0A84FF")
+    static let ypYellow = UIColor(hexString: "#FEEF0D")
+
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white
     private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
     private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
-    
+
+    static let notEnabled = UIColor(hexString: "#AEAFB4")
 
     static let segmentActive = UIColor { traits in
         return traits.userInterfaceStyle == .dark
@@ -69,19 +73,19 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
-    
+
     static let nftWhite = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackLight
         : .yaBlackDark
     }
-    
+
     static let nftBlack = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackDark
         : .yaBlackLight
     }
-    
+
     static let nftLightGray = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaLightGrayLight

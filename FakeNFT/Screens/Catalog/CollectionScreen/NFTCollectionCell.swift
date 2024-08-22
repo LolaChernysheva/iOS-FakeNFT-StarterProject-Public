@@ -18,11 +18,9 @@ protocol NFTCollectionCellDelegate: AnyObject {
 
 // MARK: - Final Class
 
-final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
-
+ class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     private var nftModel: Nft?
     var presenter: CatalogСollectionPresenterProtocol?
-
     weak var delegate: NFTCollectionCellDelegate?
 
     private lazy var nftImage: UIImageView = {
@@ -34,7 +32,7 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         return imageView
     }()
 
-    private lazy var likeButton: UIButton = {
+     lazy var likeButton: UIButton = {
         let button = UIButton()
         button.imageView?.tintColor = .red
         button.addTarget(self, action: #selector(userDidLike), for: .touchUpInside)
@@ -42,7 +40,7 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         return button
     }()
 
-    private lazy var cartButton: UIButton = {
+     lazy var cartButton: UIButton = {
         let button = UIButton(type: .custom)
         button.tintColor = .black
         button.setImage(UIImage(named: "addToCart")?.withRenderingMode(.alwaysTemplate), for: .normal)
@@ -161,12 +159,12 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         updateLikeButtonImage()
     }
 
-    private func configureLikeButtonImage(_ isAlreadyLiked: Bool) {
+     func configureLikeButtonImage(_ isAlreadyLiked: Bool) {
         let likeName = isAlreadyLiked ? "likeActive" : "likeNotActive"
         likeButton.setImage(UIImage(named: likeName), for: .normal)
     }
 
-    private func configureCartButtonImage(_ isAlreadyInCart: Bool) {
+     func configureCartButtonImage(_ isAlreadyInCart: Bool) {
         let cartImage = isAlreadyInCart ? "deleteFromCart" : "addToCart"
         cartButton.setImage(UIImage(named: cartImage)?.withRenderingMode(.alwaysTemplate), for: .normal)
     }
@@ -174,6 +172,7 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     func updateLikeButtonImage() {
         guard let nftModel = nftModel else { return }
         let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
+        presenter?.indexLike = isAlreadyLiked
         configureLikeButtonImage(isAlreadyLiked)
     }
 

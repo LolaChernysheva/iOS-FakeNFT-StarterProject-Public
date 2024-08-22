@@ -10,11 +10,7 @@ import Foundation
 struct NFTTableViewRequest: NetworkRequest {
     var token: String?
     var endpoint: URL?
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> f05c1aeb510623a91e58024a1959f91bfd8a7d8f
     init() {
         guard let endpoint = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net/api/v1/collections") else { return }
         self.endpoint = endpoint
